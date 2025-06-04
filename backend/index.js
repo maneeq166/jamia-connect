@@ -5,6 +5,7 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
+const { profileRouter } = require("./routes/profileRoute");
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use(cors({
 }))
 
 app.use("/api/v1/auth",authRouter);
+app.use("/api/v1/profile",profileRouter);
 
 
 async function connection(){
