@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const { z } = require("zod");
 const bcrypt = require("bcrypt")
+
 async function getProfileInfo(req, res) {
   const userId = req.userId;
 
@@ -44,13 +45,13 @@ async function updateProfileInfo(req, res) {
   console.log(parsedBody);
 
   try {
+      const data = parsedBody.data;
+    // const user = await User.findOneAndUpdate({ _id: userId },{$set: data},{new:true}).select("-password");
     const user = await User.findOne({ _id: userId }).select("-password");
-
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const data = parsedBody.data;
 
     if (data.username) user.username = data.username;
     if (data.email) user.email = data.email;

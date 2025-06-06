@@ -4,8 +4,8 @@ const { getProfileInfo, updateProfileInfo, updateProfilePassword } = require("..
 const profileRouter = Router();
 
 profileRouter.get("/me",authMiddleware,getProfileInfo);
-profileRouter.put("/update",authMiddleware,updateProfileInfo)
-profileRouter.patch("/password",authMiddleware,updateProfilePassword)
+profileRouter.put("/update",authMiddleware,updateProfileInfo);
+profileRouter.patch("/password",authMiddleware,updateProfilePassword);
 
 module.exports ={
     profileRouter

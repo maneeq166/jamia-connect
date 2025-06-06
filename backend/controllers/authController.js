@@ -4,8 +4,10 @@ const bcrpyt = require("bcrypt");
 const jwt = require("jsonwebtoken")
 
 const userSignup =  async (req,res) =>{
-    
+    console.log("Request Body:", req.body);
+
     try {
+
         const requiredBody = z.object({
         username:z.string().min(3).max(15),
         email:z.string().email(),
@@ -14,30 +16,32 @@ const userSignup =  async (req,res) =>{
 
     const safeParse = requiredBody.safeParse(req.body);
 
+  
     if (!safeParse.success) {
       return res.json({
         message: "incorrect format",
-        error: safeParse.error,
+        error: safeParse.error.flatten(),
+        success: false
       });
     }
 
     const {username,email,password} = req.body;
 
     if(!username||!email||!password){
-        return res.status(400).json({message:"Input field cannot be empty"})
+        return res.status(400).json({message:"Input field cannot be empty",success: false})
     }
 
     const userExists = await User.findOne({email});
 
     if(userExists){
-        return res.status(400).json({message:"User already exists"})
+        return res.status(400).json({message:"User already exists",success: false})
     }
 
     const hashedpassword = await bcrpyt.hash(password,10);
 
     if(!hashedpassword){
         return res.status(400).json({
-            message:"Wrong password"
+            message:"Wrong password",success: false
         })
     }
 
@@ -47,11 +51,12 @@ const userSignup =  async (req,res) =>{
         password:hashedpassword
     })
 
-    res.json({user})
+    res.json({message:"You are signed up",success: true})
 
     } catch (error) {
         res.status(500).json({
-            message:"Internal Server error"
+            message:"Internal Server error",
+            success: false
         })
         console.log(error);
         
@@ -79,8 +84,10 @@ const userSignin = async (req,res) =>{
        return res.status(400).json({message:"User does not exists"})
     }
         const token = jwt.sign({id:user._id},process.env.JWT_SECRET);
-        res.cookie("token",token);
-        res.json({message:"logged in",token})
+        res.cookie("token",token,{httpOnly: true,
+  secure: false, // false for localhost
+  sameSite: "lax"});
+        res.json({message:"Signin successful!",token})
     
     } catch (error) {
         console.log(error);
