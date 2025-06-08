@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const { z } = require("zod");
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
 
 async function getProfileInfo(req, res) {
   const userId = req.userId;
@@ -45,13 +45,12 @@ async function updateProfileInfo(req, res) {
   console.log(parsedBody);
 
   try {
-      const data = parsedBody.data;
+    const data = parsedBody.data;
     // const user = await User.findOneAndUpdate({ _id: userId },{$set: data},{new:true}).select("-password");
     const user = await User.findOne({ _id: userId }).select("-password");
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
 
     if (data.username) user.username = data.username;
     if (data.email) user.email = data.email;
@@ -92,7 +91,8 @@ async function updateProfilePassword(req, res) {
     if (!user) return res.status(404).json({ message: "User not found" });
 
     const isMatch = await bcrypt.compare(currentPassword, user.password);
-    if (!isMatch) return res.status(401).json({ message: "Incorrect current password" });
+    if (!isMatch)
+      return res.status(401).json({ message: "Incorrect current password" });
 
     user.password = await bcrypt.hash(newPassword, 10);
     await user.save();
@@ -104,8 +104,49 @@ async function updateProfilePassword(req, res) {
   }
 }
 
+
+async function otherUserProfile(req, res) {
+  try {
+    const username = req.params.username;
+
+    if (!username)
+      return res.status(400).json({ message: "likh de naam bhai" });
+
+    const user = await User.findOne({ username }).select("-password");
+
+    if (!user)
+      return res.status(404).json({ message: "isne kabhi id nhi baniye" });
+
+    console.log("Searched User:", user);
+
+    return res.json({
+      message: "Here is your result",
+      user,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
+}
+
+async function getAllUsers(req, res) {
+  try {
+    const users = await User.find().select("-password -link");
+
+    return res.json({
+      message: "Here are all the users",
+      users,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
+}
+
 module.exports = {
   getProfileInfo,
   updateProfileInfo,
-  updateProfilePassword
+  updateProfilePassword,
+  otherUserProfile,
+  getAllUsers
 };

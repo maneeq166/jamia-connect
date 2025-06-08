@@ -15,7 +15,9 @@ function Signup() {
         username,
         email,
         password,
-      });
+      },{
+    withCredentials: true, // Important if server sets cookie
+  });
 
       if (res.data.success) {
         alert(res.data.message || "Signup successful!");
