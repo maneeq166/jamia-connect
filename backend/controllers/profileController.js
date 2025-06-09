@@ -131,7 +131,8 @@ async function otherUserProfile(req, res) {
 
 async function getAllUsers(req, res) {
   try {
-    const users = await User.find().select("-password -link");
+    const users = await User.find().select("-password");
+    users.select("-links")
 
     return res.json({
       message: "Here are all the users",
@@ -142,6 +143,8 @@ async function getAllUsers(req, res) {
     return res.status(500).json({ message: "Server error" });
   }
 }
+
+
 
 module.exports = {
   getProfileInfo,

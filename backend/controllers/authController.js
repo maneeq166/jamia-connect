@@ -32,7 +32,11 @@ const userSignup =  async (req,res) =>{
     }
 
     const userExists = await User.findOne({email});
+    const nameExists = await User.findOne({username});
 
+    if(nameExists){
+        return res.status(400).json({message:"Naam pehle hi leliya gya hai😔",success: false})
+    }
     if(userExists){
         return res.status(400).json({message:"User already exists",success: false})
     }
@@ -51,7 +55,7 @@ const userSignup =  async (req,res) =>{
         password:hashedpassword
     })
 
-    res.json({message:"You are signed up",success: true})
+    res.json({message:`${username} Signed up `,success: true})
 
     } catch (error) {
         res.status(500).json({
@@ -87,7 +91,7 @@ const userSignin = async (req,res) =>{
         res.cookie("token",token,{httpOnly: true,
   secure: false, // false for localhost
   sameSite: "lax"});
-        res.json({message:"Signin successful!",token})
+        res.json({message:"Signed In!",token})
     
     } catch (error) {
         console.log(error);

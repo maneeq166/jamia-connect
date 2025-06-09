@@ -1,13 +1,17 @@
-import React from 'react'
+// ProtectedRoutes.js
+import React from 'react';
 import { Navigate } from 'react-router-dom';
+import { useAuthStore } from '../auth/authContext';
 
-function ProtectedRoutes({children}) {
-    const token = localStorage.getItem("token");
+function ProtectedRoutes({ children }) {
+  const isSignedIn = useAuthStore(state => state.isSignedIn);
+  console.log("isSignedIn:",isSignedIn);
 
-    if(!token){
-        return <Navigate to='/signin' />
-    }
-    return children
+  if (!isSignedIn) {
+    return <Navigate to="/signin" />;
+  }
+
+  return children;
 }
 
-export default ProtectedRoutes
+export default ProtectedRoutes;

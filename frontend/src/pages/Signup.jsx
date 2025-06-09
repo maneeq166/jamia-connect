@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function Signup() {
   const [username, setName] = useState('');
@@ -15,51 +16,67 @@ function Signup() {
         username,
         email,
         password,
-      },{
-    withCredentials: true, // Important if server sets cookie
-  });
+      }, { withCredentials: true });
 
       if (res.data.success) {
-        alert(res.data.message || "Signup successful!");
+        toast.success(res.data.message || "Signup successful!");
         navigate("/signin");
       } else {
-        alert(res.data.message || "Signup failed.");
+        console.log(res);        
+        toast.error(res.data.message || "Signup failed.");
       }
     } catch (error) {
-      console.error('Signup error:', error.response?.data?.message || error.message);
-      alert(error.response?.data?.message || 'Signup failed.');
+      console.log(error)      
+      toast.error(error.response?.data?.message || 'Signup failed.');
     }
   };
 
   return (
-    <div className="max-w-sm mx-auto mt-10 p-6 bg-white border border-gray-200 rounded-lg shadow">
-      <h2 className="text-2xl font-semibold text-center mb-4">Signup</h2>
-      <form onSubmit={handleSignup} className="space-y-4">
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setName(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md"
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md"
-        />
-        <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">
-          Sign Up
-        </button>
-      </form>
+    <div className="min-h-screen bg-[#F4FFC3] flex flex-col justify-center px-6 py-12 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 className="text-center text-3xl font-bold tracking-tight text-[#5D8736]">Create a new account</h2>
+      </div>
+
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <form onSubmit={handleSignup} className="bg-white py-8 px-6 shadow rounded-lg space-y-6 border border-[#A9C46C]">
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md"
+            required
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md"
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md"
+            required
+          />
+          <button
+            type="submit"
+            className="w-full bg-[#5D8736] text-white py-2 rounded-md hover:bg-[#809D3C] font-semibold"
+          >
+            Sign Up
+          </button>
+        </form>
+        <p className="mt-6 text-center text-sm text-gray-600">
+          Already have an account?{' '}
+          <a href="/signin" className="font-medium text-[#5D8736] hover:text-[#809D3C]">
+            Sign in
+          </a>
+        </p>
+      </div>
     </div>
   );
 }
