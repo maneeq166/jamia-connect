@@ -10,6 +10,8 @@ import LayoutWithHeader from './components/LayoutWithHeader.jsx';
 import LayoutWithoutHeader from './components/LayoutWithoutHeader.jsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import UpdateProfile from './pages/UpdateProfile.jsx';
+
 
 function App() {
   return (
@@ -22,11 +24,12 @@ function App() {
             <Route
               path="/profile"
               element={
-                <ProtectedRoutes>
-                  <Profile />
-                </ProtectedRoutes>
+                // <ProtectedRoutes>
+                // {/* </ProtectedRoutes> */}
+                <Profile />
               }
             />
+            <Route path='/update-profile' element={<UpdateProfile/>} />
           </Route>
 
           {/* Routes WITHOUT header */}

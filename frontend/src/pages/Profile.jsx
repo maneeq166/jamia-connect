@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { PaperClipIcon } from "@heroicons/react/20/solid";
+import Button from "../components/Button";
+import { useNavigate } from "react-router-dom";
+
 
 function Profile() {
+  const nav = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -89,7 +93,11 @@ function Profile() {
           )}
         </dl>
       </div>
+      <Button className="h-[40px]" onClick={()=>nav("/update-profile")} >
+        Update User
+      </Button>
     </div>
+
   );
 }
 
