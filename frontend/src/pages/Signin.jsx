@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useAuthStore } from '../auth/authContext';
+
 
 
 
@@ -11,26 +11,30 @@ function Signin() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-    const login = useAuthStore((state) => state.login);
+    // const login = useAuthStore((state) => state.login);
+    // const isSignedIn = useAuthStore((state) => state.isSignedIn);
 
   const handleSignin = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post('http://localhost:3000/api/v1/auth/signin', {
-        email,
-        password,
-      }, { withCredentials: true });
+  e.preventDefault();
+  try {
+    const res = await axios.post('http://localhost:3000/api/v1/auth/signin', {
+      email,
+      password,
+    });  // removed withCredentials
 
-      
-      login(res.data.token)
-      toast.success(res.data.message || 'Signin successful!');
-      // localStorage.setItem('token', res.data.token);
-      navigate('/profile');
-    } catch (error) {
-      console.log(error);      
-      toast.error(error.response?.data?.message || 'Signin failed.');
-    }
-  };
+    // Save token in localStorage
+    localStorage.setItem('token', res.data.token);
+
+    console.log('User signed in:', true);
+    toast.success(res.data.message || 'Signin successful!');
+
+    navigate('/profile');
+  } catch (error) {
+    console.log(error);
+    toast.error(error.response?.data?.message || 'Signin failed.');
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-[#F4FFC3] flex flex-col justify-center px-6 py-12 lg:px-8">

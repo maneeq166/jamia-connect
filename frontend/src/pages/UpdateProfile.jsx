@@ -36,28 +36,37 @@ function UpdateProfile() {
   const [validationErrors, setValidationErrors] = useState({});
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const res = await axios.get("http://localhost:3000/api/v1/profile/me", {
-          withCredentials: true,
-        });
-        const user = res.data.user;
-        setFormData({
-          username: user.username || "",
-          email: user.email || "",
-          state: user.state || "",
-          department: user.department || "",
-          year: user.year?.toString() || "",
-          bio: user.bio || "",
-          links: user.links?.length ? user.links : [""],
-        });
-      } catch (err) {
-        setError("Failed to load profile.");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+   const fetchProfile = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error("User not authenticated");
+    }
+
+    const res = await axios.get("http://localhost:3000/api/v1/profile/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const user = res.data.user;
+    setFormData({
+      username: user.username || "",
+      email: user.email || "",
+      state: user.state || "",
+      department: user.department || "",
+      year: user.year?.toString() || "",
+      bio: user.bio || "",
+      links: user.links?.length ? user.links : [""],
+    });
+  } catch (err) {
+    setError("Failed to load profile.");
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
     fetchProfile();
   }, []);
@@ -107,8 +116,10 @@ function UpdateProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
+    
 
     try {
+      const token = localStorage.getItem('token');
       await axios.put(
         "http://localhost:3000/api/v1/profile/update",
         {
@@ -116,7 +127,9 @@ function UpdateProfile() {
           year: parseInt(formData.year) || undefined,
           links: formData.links.filter((link) => link.trim() !== ""),
         },
-        { withCredentials: true }
+        {headers: {
+          Authorization: `Bearer ${token}`
+        }}
       );
 
       setSuccess("Profile updated successfully!");

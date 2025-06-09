@@ -19,7 +19,10 @@ const userSchema = new mongoose.Schema({
   department: { type: String, default: "" },
   year: { type: Number, default: "" },
   bio: { type: String, default: "" },
-  avatar: { type: String, default: "" },
+  avatar: { 
+    url:String,
+    public_id:String
+  },
   links :{
     type:[String]
   },

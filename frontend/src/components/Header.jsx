@@ -1,17 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+
+import { motion ,AnimatePresence } from 'framer-motion';
 import { gsap } from 'gsap';
-import { Menu, X } from 'lucide-react';
-import { useAuthStore } from '../auth/authContext';
-import { Link } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';  // for hamburger & close icons
+import { Link, useNavigate } from 'react-router-dom';
 
 const Header = () => {
-  const { isSignedIn, login, logout } = useAuthStore();
-  // const navigate = useNavigate();
   const logoRef = useRef(null);
+  const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [isSignedIn, setIsSignedIn] = useState(false);
 
+  // Animate logo on mount
   useEffect(() => {
     gsap.fromTo(
       logoRef.current,
@@ -20,12 +21,29 @@ const Header = () => {
     );
   }, []);
 
-  // const navLinks = [
-  //   { name: 'Home', href: '/' },
-  //   { name: 'PYQs', href: '#' },
-  //   { name: 'Forums', href: '#' },
-  //   { name: 'Blogs', href: '#' },
-  // ];
+  // Check auth token on mount
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsSignedIn(!!token);
+  }, []);
+
+  const login = (token) => {
+    localStorage.setItem('token', token);
+    setIsSignedIn(true);
+  };
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    setIsSignedIn(false);
+    setShowProfileDropdown(false);
+    setMenuOpen(false);
+    navigate("/signin")
+  };
+
+  // Close mobile menu when clicking on a link (optional)
+  const handleMobileLinkClick = () => {
+    setMenuOpen(false);
+  };
 
   return (
     <motion.header
@@ -46,24 +64,14 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Nav Links (Desktop) */}
-        {/* <div className="hidden md:flex items-center gap-6">
-          {isSignedIn &&
-            navLinks.map((link, idx) => (
-              <motion.div key={idx} whileHover={{ scale: 1.1 }}>
-                <Link to={link.href} className="hover:underline transition duration-200">
-                  {link.name}
-                </Link>
-              </motion.div>
-            ))}
-        </div> */}
-
-        {/* Buttons */}
+        {/* Desktop Nav & Buttons */}
         <div className="hidden md:flex items-center gap-4 relative">
           {isSignedIn ? (
             <>
               <button
-                onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+                onClick={() =>{ setShowProfileDropdown(!showProfileDropdown);
+                  
+                }}
                 className="font-semibold hover:underline"
               >
                 Profile ▾
@@ -76,7 +84,13 @@ const Header = () => {
                     exit={{ opacity: 0, y: -10 }}
                     className="absolute top-12 right-0 bg-white text-black rounded-lg shadow-lg w-40 backdrop-blur-md border border-gray-200"
                   >
-                    <Link to="/profile" className="block px-4 py-2 hover:bg-gray-100">My Profile</Link>
+                    <Link
+                      to="/profile"
+                      className="block px-4 py-2 hover:bg-gray-100"
+                      onClick={() =>{ setShowProfileDropdown(false);navigate("/profile")}}
+                    >
+                      My Profile
+                    </Link>
                     <button
                       onClick={logout}
                       className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
@@ -102,57 +116,71 @@ const Header = () => {
           )}
         </div>
 
-        {/* Mobile Menu Button */}
-        {/* 
+        {/* Mobile menu button */}
         <div className="md:hidden">
-          <button onClick={() => setMenuOpen(!menuOpen)}>
+          <button
+            onClick={() => {
+              setMenuOpen(!menuOpen);
+              setShowProfileDropdown(false); // close profile dropdown on mobile toggle
+            }}
+            aria-label="Toggle menu"
+          >
             {menuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
-        </div> 
-        */}
+        </div>
       </div>
 
-      {/* Mobile Menu (Commented Out) */}
-      {/*
+      {/* Mobile Menu */}
       <AnimatePresence>
         {menuOpen && (
-          <motion.div
-            initial={{ height: 0 }}
-            animate={{ height: 'auto' }}
-            exit={{ height: 0 }}
-            className="md:hidden px-6 py-4 space-y-3 bg-[#0f4f3d]"
+          <motion.nav
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="md:hidden bg-[#0f4f3d] px-6 py-4 space-y-3 overflow-hidden"
           >
-            {navLinks.map((link, idx) => (
-              <Link
-                key={idx}
-                to={link.href}
-                className="block text-white text-lg"
-              >
-                {link.name}
-              </Link>
-            ))}
-            <div className="pt-3 border-t border-white/20">
-              {isSignedIn ? (
-                <>
-                  <Link to="/profile" className="block py-1">Profile</Link>
-                  <button onClick={logout} className="block text-red-400 py-1">Logout</button>
-                </>
-              ) : (
-                <>
-                  <Link to="/signin" className="block py-1">Sign In</Link>
-                  <Link
-                    to="/signup"
-                    className="block bg-white text-[#5D8736] py-2 px-4 mt-2 rounded-full font-semibold text-center shadow"
-                  >
-                    Join Now
-                  </Link>
-                </>
-              )}
-            </div>
-          </motion.div>
+            {isSignedIn ? (
+              <>
+                <Link
+                  to="/profile"
+                  className="block text-white text-lg"
+                  onClick={() => {
+                    handleMobileLinkClick();
+                  }}
+                >
+                  Profile
+                </Link>
+                <button
+                  onClick={() => {
+                    logout();
+                    handleMobileLinkClick();
+                  }}
+                  className="block text-red-400 text-left py-1"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/signin"
+                  className="block text-white text-lg"
+                  onClick={handleMobileLinkClick}
+                >
+                  Sign In
+                </Link>
+                <Link
+                  to="/signup"
+                  className="block bg-white text-[#5D8736] py-2 px-4 mt-2 rounded-full font-semibold text-center shadow"
+                  onClick={handleMobileLinkClick}
+                >
+                  Join Now
+                </Link>
+              </>
+            )}
+          </motion.nav>
         )}
       </AnimatePresence>
-      */}
     </motion.header>
   );
 };

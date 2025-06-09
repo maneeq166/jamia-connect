@@ -146,11 +146,6 @@ async function getAllUsers(req, res) {
 
 
 
-
-
-
-
-
 module.exports = {
   getProfileInfo,
   updateProfileInfo,

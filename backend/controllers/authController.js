@@ -18,7 +18,7 @@ const userSignup =  async (req,res) =>{
 
   
     if (!safeParse.success) {
-      return res.json({
+      return res.status(400).json({
         message: "incorrect format",
         error: safeParse.error.flatten(),
         success: false
@@ -68,36 +68,34 @@ const userSignup =  async (req,res) =>{
 
 }
 
-const userSignin = async (req,res) =>{
-    try {
-        
-    const {email,password} = req.body;
+const userSignin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-    if(!email||!password){
-        return res.status(400).json({message:"Input field cannot be empty"})
+    if (!email || !password) {
+      return res.status(400).json({ message: "Input field cannot be empty" });
     }
 
-    const user = await User.findOne({email});
-    if(!user){
-        return res.status(400).json({message:"User does not exists"})
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "User does not exist" });
     }
 
-    const userMatched = await bcrpyt.compare(password,user.password);
+    const userMatched = await bcrpyt.compare(password, user.password);
+    if (!userMatched) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
 
-    if(!userMatched){
-       return res.status(400).json({message:"User does not exists"})
-    }
-        const token = jwt.sign({id:user._id},process.env.JWT_SECRET);
-        res.cookie("token",token,{httpOnly: true,
-  secure: false, // false for localhost
-  sameSite: "lax"});
-        res.json({message:"Signed In!",token})
-    
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "Internal Server Error" });
-    }
-}
+    // Sign JWT token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+
+    // Send token in response body (client saves it in localStorage)
+    res.json({ message: "Signed In!", token });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
 
 module.exports = {
     userSignup,userSignin

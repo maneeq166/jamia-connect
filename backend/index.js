@@ -3,11 +3,11 @@ const app = express();
 const authRouter = require("./routes/authRoute")
 const cors = require("cors");
 const connectDB = require("./config/db");
-const dotenv = require("dotenv");
+require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const { profileRouter } = require("./routes/profileRoute");
 
-dotenv.config();
+
 
 
 app.use(express.json());

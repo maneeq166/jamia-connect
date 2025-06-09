@@ -2,22 +2,24 @@ const jwt = require("jsonwebtoken");
 
 function authMiddleware(req, res, next) {
   try {
-    const token = req.cookies.token;
-    if (!token) {
-      return res.status(400).json({ message: "token does not exist" });
+    // Get token from Authorization header: "Bearer <token>"
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ message: "Token does not exist" });
     }
 
+    const token = authHeader.split(' ')[1];
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("decodedToken:",decodedToken);
+
     if (!decodedToken) {
-      return res.status(400).json({ message: "User does not exists" });
-    } else {
-      req.userId = decodedToken.id;
-      next();
+      return res.status(401).json({ message: "User does not exist" });
     }
+
+    req.userId = decodedToken.id;
+    next();
   } catch (error) {
     console.log("Error in authMiddleware:", error);
-    res.status(400).json({message:"Unauthorized:Invalid or Expired token"})
+    res.status(401).json({ message: "Unauthorized: Invalid or Expired token" });
   }
 }
 
