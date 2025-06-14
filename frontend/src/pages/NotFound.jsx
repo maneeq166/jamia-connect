@@ -1,5 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import FloatingBubbles from '../components/FloatingBubbles';
+
 
 export default function NotFound() {
   const navigate = useNavigate();
