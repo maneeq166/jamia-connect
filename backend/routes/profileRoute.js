@@ -1,7 +1,7 @@
 const {Router} = require("express");
 const { authMiddleware} =require("../middleware/authMiddleware");
-const { getProfileInfo, updateProfileInfo, updateProfilePassword, otherUserProfile, getAllUsers } = require("../controllers/profileController");
-const { uploadImage } = require("../controllers/profileImgController");
+const { getProfileInfo, updateProfileInfo, updateProfilePassword, otherUserProfile, getAllUsers } = require("../controllers/profile-controllers/profileController");
+const { uploadImage } = require("../controllers/profile-controllers/profileImgController");
 const { uploadMiddleware } = require("../middleware/uploadMiddleware");
 const profileRouter = Router();
 

@@ -1,5 +1,5 @@
-const { uploadToCloudinary } = require("../helpers/cloudinaryHelper");
-const User = require("../models/User");
+const { uploadToCloudinary } = require("../../helpers/cloudinaryHelper");
+const User = require("../../models/User");
 
 async function uploadImage(req, res) {
   const id = req.userId;
