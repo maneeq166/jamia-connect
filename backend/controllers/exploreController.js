@@ -26,7 +26,7 @@ async function getManyUsers(req, res) {
 
 async function getUsers(req,res){
     try {
-        const username = req.query.username;
+        const username = req.params.username;
 
         const user = await User.findOne({username}).select("-password");
 

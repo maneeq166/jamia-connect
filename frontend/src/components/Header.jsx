@@ -65,7 +65,10 @@ const Header = () => {
         </div>
 
         {/* Desktop Nav & Buttons */}
-        <div className="hidden md:flex items-center gap-4 relative">
+        <div className="hidden md:flex items-center gap-6 relative">
+          <div className='px-4'>
+            <p className="font-semibold hover:underline hover:cursor-pointer" onClick={()=>navigate("/explore")}>Explore</p>
+            </div>
           {isSignedIn ? (
             <>
               <button

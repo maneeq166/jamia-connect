@@ -3,6 +3,8 @@ const Message = require("../models/Message.js");
 // POST /api/v1/chat/send
 exports.sendMessage = async (req, res) => {
   try {
+    console.log(req.body);
+    
     const { senderId, receiverId, content } = req.body;
 
     console.log(req.body);

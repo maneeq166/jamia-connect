@@ -11,6 +11,8 @@ import LayoutWithoutHeader from './components/LayoutWithoutHeader.jsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UpdateProfile from './pages/UpdateProfile.jsx';
+import Explore from './pages/Explore.jsx';
+import OthersProfile from './pages/OthersProfile.jsx';
 
 
 function App() {
@@ -24,12 +26,14 @@ function App() {
             <Route
               path="/profile"
               element={
-                // <ProtectedRoutes>
-                // {/* </ProtectedRoutes> */}
+                <ProtectedRoutes>
                 <Profile />
+                </ProtectedRoutes> 
               }
             />
             <Route path='/update-profile' element={<UpdateProfile/>} />
+            <Route path='/explore' element={<Explore/>}></Route>
+            <Route path='/user/:username' element={<OthersProfile/>}></Route>
           </Route>
 
           {/* Routes WITHOUT header */}
