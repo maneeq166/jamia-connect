@@ -69,17 +69,20 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F4FFC3] to-[#A9C46C] font-poppins">
-      <div className="max-w-6xl mx-auto px-6 py-16 relative">
+    <div className="min-h-screen relative bg-gradient-to-br from-[#F4FFC3] to-[#5D8736] font-poppins">
+  {/* Enhanced Radial Glow */}
+  <div className="absolute inset-0 bg-[radial-gradient(circle_600px_at_50%_300px,rgba(244,255,195,0.5),rgba(169,196,108,0.35),rgba(93,135,54,0.2),transparent)] z-0 pointer-events-none" />
+
+  <div className="max-w-6xl mx-auto px-6 py-16 relative z-10">
         {/* Hero */}
         <section ref={heroRef} className="text-center space-y-6 mb-20 relative">
           {/* Jamia Logo Background */}
           <div className="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
-            <img 
+            {/* <img 
               src="https://upload.wikimedia.org/wikipedia/en/5/5f/Jamia_Millia_Islamia_Logo.svg" 
               alt="Jamia Logo" 
               className="w-80 h-80 object-contain"
-            />
+            /> */}
           </div>
           
           <div className="relative z-10">
@@ -126,3 +129,15 @@ const Home = () => {
 };
 
 export default Home;
+
+
+{/* <div className="min-h-screen w-full relative">
+  {/* Radial Gradient Background */}
+  // <div
+  //   className="absolute inset-0 z-0"
+  //   style={{
+  //     background: "radial-gradient(125% 125% at 50% 10%, #fff 40%, #6366f1 100%)",
+  //   }}
+  // />
+     {/* Your Content/Components */}
+// </div> */}

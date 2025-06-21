@@ -6,6 +6,11 @@
   --color-jmimid: #809D3C;
   --color-jmilight: #A9C46C;
   --color-jmipale: #F4FFC3;
+  --color-jmideep:   #3E5C25;  /* deeper green, good for borders or shadows */
+--color-jmihigh:   #DFF09E;  /* light lime highlight, subtle background shade */
+--color-jmisoft:   #E9F5D0;  /* soft green tint, great for cards or hover */
+--color-jmiaccent: #FFB84D;  /* orange-yellow accent, for buttons or icons */
+
 }
 
 .jamia-dark {

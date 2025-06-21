@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+// eslint-disable-next-line no-unused-vars
 import { motion ,AnimatePresence } from 'framer-motion';
 import { gsap } from 'gsap';
 import { Menu, X } from 'lucide-react';  // for hamburger & close icons
@@ -27,10 +28,10 @@ const Header = () => {
     setIsSignedIn(!!token);
   }, []);
 
-  const login = (token) => {
-    localStorage.setItem('token', token);
-    setIsSignedIn(true);
-  };
+  // const login = (token) => {
+  //   localStorage.setItem('token', token);
+  //   setIsSignedIn(true);
+  // };
 
   const logout = () => {
     localStorage.removeItem('token');
