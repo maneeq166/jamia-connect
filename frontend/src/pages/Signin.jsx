@@ -25,7 +25,6 @@ function Signin() {
     // Save token in localStorage
     localStorage.setItem('token', res.data.token);
 
-    console.log('User signed in:', true);
     toast.success(res.data.message || 'Signin successful!');
 
     navigate('/profile');

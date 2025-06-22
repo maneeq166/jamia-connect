@@ -8,6 +8,8 @@ import { motion } from "framer-motion";
 function Explore() {
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResult, setSearchResult] = useState(null);
   const totalPages = useRef(1);
   const nav = useNavigate();
 
@@ -17,8 +19,6 @@ function Explore() {
         `http://localhost:3000/api/v1/explore/users?page=${page}&limit=30`
       );
       setUsers(res.data.users);
-      console.log(totalPages);
-      console.log(totalPages.current);
 
       totalPages.current = res.data.totalPages;
     } catch (error) {
@@ -27,47 +27,71 @@ function Explore() {
     }
   };
 
+  const fetchUser = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:3000/api/v1/explore/user/${searchTerm}`
+      );
+      setSearchResult(res.data.user);
+      toast.success("User Found");
+      
+    } catch (error) {
+      console.log(error);
+      toast.error("Not Found!");
+    }
+  };
+
+ 
   useEffect(() => {
     fetchUsers();
   }, [page]);
 
   return (
     <>
-
-    <div className="flex items-center justify-center mt-10">
-
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="w-[900px] h-[150px] rounded-xl shadow-md bg-gradient-to-r from-[color:var(--color-jmidark)] via-[color:var(--color-jmimid)] to-[color:var(--color-jmilight)] flex items-center justify-center px-10"
-
+      <div className="flex items-center justify-center mt-10">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="w-[900px] h-[150px] rounded-xl shadow-md bg-gradient-to-r from-[color:var(--color-jmidark)] via-[color:var(--color-jmimid)] to-[color:var(--color-jmilight)] flex items-center justify-center px-10"
         >
-        <div>
-          <h1 className="text-2xl font-bold text-[color:var(--color-jmipale)]">
-            Welcome to Jamia Connect
-          </h1>
-          <p className="text-sm text-[color:var(--color-jmipale)]">
-            Find new people, connect, and grow your network.
-          </p>
-        </div>
+          <div>
+            <h1 className="text-2xl font-bold text-[color:var(--color-jmipale)]">
+              Welcome to Jamia Connect
+            </h1>
+            <p className="text-sm text-[color:var(--color-jmipale)]">
+              Find new people, connect, and grow your network.
+            </p>
+          </div>
 
-        {/* <motion.button
+          {/* <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="px-5 py-2 rounded-full bg-[color:var(--color-jmidark)] text-white font-medium shadow hover:bg-[color:var(--color-jmimid)] transition"
           >
           Explore Now
         </motion.button> */}
-      </motion.div>
-            </div>
-   
+        </motion.div>
+      </div>
+
       <div className="px-[100px] py-6">
-        <input
-          type="text"
-          placeholder="Search.."
-          className="w-full mb-5 py-3 px-4 outline-1 outline-offset-1  outline-[color:var(--color-jmipale))] rounded-md focus-within:outline-2 focus-within:outline-[color:var(--color-jmimid))] "
-        />
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (searchTerm.trim()) {
+              fetchUser();
+            }
+          }}
+        >
+          <input
+            type="text"
+            placeholder="Search by username..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full mb-5 py-3 px-4 outline-1 outline-offset-1 outline-[color:var(--color-jmipale))] rounded-md focus-within:outline-2 focus-within:outline-[color:var(--color-jmimid))] "
+          />
+        </form>
+
         {/* Header Row */}
         <div className="grid grid-cols-9 gap-4 px-6 py-3 bg-gradient-to-l from-[#5D8736] via-[#809D3C] to-[#A9C46C] text-white font-semibold rounded-md">
           <div className="col-span-1 text-center">Avatar</div>
@@ -77,8 +101,40 @@ function Explore() {
           <div className="col-span-1 text-end md:pr-6">Created At</div>
         </div>
 
-        {/* User Rows */}
-        {users.length > 0 ? (
+          {searchResult ? (
+            <div
+              key={searchResult._id}
+              className="grid grid-cols-9 gap-4 px-6 py-3 odd:bg-white even:bg-[color:var(--color-jmipale)] border-b border-[color:var(--color-jmipale)]  transition-all"
+            >
+              <div className="col-span-1 text-center">
+                <img
+                  src={
+                    searchResult?.avatar?.url ||
+                    "../assets/66ffcb56482c64bdf6b6010687938835.jpg"
+                  }
+                  alt="avatar"
+                  onClick={() => nav(`/user/${searchResult.username}`)}
+                  className="w-9 h-9 rounded-full mx-auto hover:scale-105 transition-transform cursor-pointer"
+                />
+              </div>
+
+              <div
+                onClick={() => nav(`/user/${searchResult.username}`)}
+                className="col-span-4 ml-10 text-[15px] underline hover:text-[color:var(--color-jmimid))] cursor-pointer"
+              >
+                {searchResult.username}
+              </div>
+
+              <div className="col-span-1 flex items-center">{searchResult.year}</div>
+              <div className="col-span-2 text-center flex items-center justify-center">
+                {searchResult.department}
+              </div>
+              <div className="col-span-1 text-end md:pr-6 text-gray-500 flex items-center justify-end">
+                {new Date(searchResult.createdAt).toLocaleDateString()}
+              </div>
+            </div>
+          
+          ) : users.length > 0 ? (
           users.map((user, index) => (
             <div
               key={user._id || index}
