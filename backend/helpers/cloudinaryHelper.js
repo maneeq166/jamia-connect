@@ -9,10 +9,7 @@ const uploadToCloudinary = async (localFilePath) => {
 
     const result = await cloudinary1343.uploader.upload(localFilePath, {
       resource_type: "image",
-    });
-
-    console.log(result);
-    
+    });   
 
     return {
       url: result.secure_url,

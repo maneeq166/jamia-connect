@@ -110,7 +110,7 @@ function Explore() {
                 <img
                   src={
                     searchResult?.avatar?.url ||
-                    "../assets/66ffcb56482c64bdf6b6010687938835.jpg"
+                    "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
                   }
                   alt="avatar"
                   onClick={() => nav(`/user/${searchResult.username}`)}
@@ -144,7 +144,7 @@ function Explore() {
                 <img
                   src={
                     user?.avatar?.url ||
-                    "../assets/66ffcb56482c64bdf6b6010687938835.jpg"
+                    "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
                   }
                   alt="avatar"
                   onClick={() => nav(`/user/${user.username}`)}
@@ -208,3 +208,6 @@ function Explore() {
 }
 
 export default Explore;
+
+
+

@@ -32,7 +32,7 @@ function OthersProfile() {
           <div aria-label="card-horizontal" className="flex items-center  gap-x-5">
             <div className="flex-shrink-0 w-40 h-40 rounded-full">
               <img
-                src={user.avatar.url}
+                src={user.avatar.url  || "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"}
                 alt="User Avatar"
                 className="object-cover w-full h-full rounded-full"
               />

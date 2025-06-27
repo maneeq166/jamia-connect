@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
 const connectDB = require("./config/db");
+const exploreRouter = require("./routes/exploreRoute");
 const authRouter = require("./routes/authRoute");
 const { profileRouter } = require("./routes/profileRoute");
 const { chatRouter } = require("./routes/chatRoute");
@@ -15,46 +16,61 @@ const server = http.createServer(app);
 
 // Setup Socket.IO server
 const { Server } = require("socket.io");
-const exploreRouter = require("./routes/exploreRoute");
 const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:5173",
+    cors: {
+        origin: "http://localhost:5173",
     credentials: true,
   },
 });
 
+io.on('connection',(socket)=>{
+  
+  console.log(socket.id);
+  socket.on('send name', (username) => {
+      
+        io.emit('send name', (username));
+    });
+
+    socket.on('send message', (chat) => {
+        io.emit('send message', (chat));
+    });
+})
+
 
 // Store online users (or manage via Redis in production)
-let onlineUsers = {};
+// let onlineUsers = {};
 
 // 🔌 Socket.IO Events
-io.on("connection", (socket) => {
-  console.log("User connected:", socket.id);
+// io.on("connection", (socket) => {
+//   console.log("User connected:", socket.id);
 
-  // When user joins with their userId
-  socket.on("join", (userId) => {
-    onlineUsers[userId] = socket.id;
-    console.log("User joined:", userId);
-  });
+//   // When user joins with their userId
+//   socket.on("join", (userId) => {
+  //     onlineUsers[userId] = socket.id;
+  //     console.log("User joined:", userId);
+//   });
 
-  // Receiving and forwarding a private message
-  socket.on("private-message", ({ to, message }) => {
-    const receiverSocketId = onlineUsers[to];
-    if (receiverSocketId) {
-      io.to(receiverSocketId).emit("private-message", message);
-    }
-  });
+//   // Receiving and forwarding a private message
+//   socket.on("private-message", ({ to, message }) => {
+  //     const receiverSocketId = onlineUsers[to];
+  //     if (receiverSocketId) {
+    //       io.to(receiverSocketId).emit("private-message", message);
+    //     }
+    //   });
 
-  socket.on("disconnect", () => {
-    console.log("User disconnected:", socket.id);
-    for (const [userId, sockId] of Object.entries(onlineUsers)) {
-      if (sockId === socket.id) {
-        delete onlineUsers[userId];
-        break;
-      }
-    }
-  });
-});
+    //   socket.on("disconnect", () => {
+//     console.log("User disconnected:", socket.id);
+//     for (const [userId, sockId] of Object.entries(onlineUsers)) {
+  //       if (sockId === socket.id) {
+    //         delete onlineUsers[userId];
+    //         break;
+//       }
+//     }
+//   });
+// });
+
+
+
 
 // Middlewares
 app.use(express.json());
@@ -76,7 +92,6 @@ app.use("/api/v1/explore",exploreRouter)
 // Connect to DB and start server
 async function connection() {
   try {
-    console.log("Database is connecting....");
     await connectDB();
     console.log("Database is connected");
 
