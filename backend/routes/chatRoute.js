@@ -4,9 +4,9 @@ const { sendMessage, getMessages } = require("../controllers/chatController");
 const chatRouter = Router();
 
 // Send a message
-chatRouter.post("/send", sendMessage);
+chatRouter.post("/addmessage", sendMessage);
 
 // Get messages between two users
-chatRouter.get("/messages/:from/:to", getMessages);
+chatRouter.post("/getmessage", getMessages);
 
 module.exports = { chatRouter };

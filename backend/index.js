@@ -5,6 +5,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
+const {initSocket} = require("./sockets/socket");
 const connectDB = require("./config/db");
 const exploreRouter = require("./routes/exploreRoute");
 const authRouter = require("./routes/authRoute");
@@ -22,19 +23,9 @@ const io = new Server(server, {
     credentials: true,
   },
 });
+// exporting all that io.on stuff in socket/socket.js
+initSocket(io);
 
-io.on('connection',(socket)=>{
-  
-  console.log(socket.id);
-  socket.on('send name', (username) => {
-      
-        io.emit('send name', (username));
-    });
-
-    socket.on('send message', (chat) => {
-        io.emit('send message', (chat));
-    });
-})
 
 
 // Store online users (or manage via Redis in production)
