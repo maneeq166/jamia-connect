@@ -1,12 +1,20 @@
-async function sendMessage(params) {
+const Message = require("../models/Message");
+
+exports.sendMessage = async (req,res) =>{
+  const {from , to , content } = req.body;
+
+  const data = await Message.create({
+    sender:from,
+    receiver:to,
+    content:content
+  })
+
+
+
+
+ }
+
+ exports.getMessages = async (req,res)=>{
+
   
-}
-
-async function getMessages(params) {
-  
-}
-
-
-module.exports ={
-  sendMessage,getMessages
-}
+ }

@@ -27,42 +27,6 @@ const io = new Server(server, {
 initSocket(io);
 
 
-
-// Store online users (or manage via Redis in production)
-// let onlineUsers = {};
-
-// 🔌 Socket.IO Events
-// io.on("connection", (socket) => {
-//   console.log("User connected:", socket.id);
-
-//   // When user joins with their userId
-//   socket.on("join", (userId) => {
-  //     onlineUsers[userId] = socket.id;
-  //     console.log("User joined:", userId);
-//   });
-
-//   // Receiving and forwarding a private message
-//   socket.on("private-message", ({ to, message }) => {
-  //     const receiverSocketId = onlineUsers[to];
-  //     if (receiverSocketId) {
-    //       io.to(receiverSocketId).emit("private-message", message);
-    //     }
-    //   });
-
-    //   socket.on("disconnect", () => {
-//     console.log("User disconnected:", socket.id);
-//     for (const [userId, sockId] of Object.entries(onlineUsers)) {
-  //       if (sockId === socket.id) {
-    //         delete onlineUsers[userId];
-    //         break;
-//       }
-//     }
-//   });
-// });
-
-
-
-
 // Middlewares
 app.use(express.json());
 app.use(cookieParser());
