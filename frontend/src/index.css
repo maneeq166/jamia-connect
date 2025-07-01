@@ -2,14 +2,14 @@
 @import "tailwindcss";
 
 @theme{
-  --color-jmidark: #5D8736;
-  --color-jmimid: #809D3C;
-  --color-jmilight: #A9C46C;
-  --color-jmipale: #F4FFC3;
-  --color-jmideep:   #3E5C25;  /* deeper green, good for borders or shadows */
---color-jmihigh:   #DFF09E;  /* light lime highlight, subtle background shade */
---color-jmisoft:   #E9F5D0;  /* soft green tint, great for cards or hover */
---color-jmiaccent: #FFB84D;  /* orange-yellow accent, for buttons or icons */
+  --color-jmi-100: #5D8736;
+  --color-jmi-200: #809D3C;
+  --color-jmi-300: #A9C46C;
+  --color-jmi-400: #F4FFC3;
+  --color-jmi-500:   #3E5C25;  /* deeper green, good for borders or shadows */
+--color-jmi-600:   #DFF09E;  /* light lime highlight, subtle background shade */
+--color-jmi-700:   #E9F5D0;  /* soft green tint, great for cards or hover */
+--color-jmi-800: #FFB84D;  /* orange-yellow accent, for buttons or icons */
 
 }
 
