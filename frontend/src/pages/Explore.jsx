@@ -53,13 +53,13 @@ function Explore() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="w-[900px] h-[150px] rounded-xl shadow-md bg-gradient-to-r from-[color:var(--color-jmidark)] via-[color:var(--color-jmimid)] to-[color:var(--color-jmilight)] flex items-center justify-center px-10"
+          className="w-[900px] h-[150px] rounded-xl shadow-md bg-gradient-to-r from-jmi-500 via-jmi-400 to-jmi-400 flex items-center justify-center px-10"
         >
           <div>
-            <h1 className="text-2xl font-bold text-[color:var(--color-jmipale)]">
+            <h1 className="text-2xl font-bold text-jmi-600">
               Welcome to Jamia Connect
             </h1>
-            <p className="text-sm text-[color:var(--color-jmipale)]">
+            <p className="text-sm text-jmi-700">
               Find new people, connect, and grow your network.
             </p>
           </div>
@@ -88,7 +88,7 @@ function Explore() {
             placeholder="Search by username..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full mb-5 py-3 px-4 outline-1 outline-offset-1 outline-[color:var(--color-jmipale))] rounded-md focus-within:outline-2 focus-within:outline-[color:var(--color-jmimid))] "
+            className="w-full mb-5 py-3 px-4 outline-1 outline-offset-1 outline-jmi-300 rounded-md focus-within:outline-2 focus-within:outline-jmi-text-jmi-300 "
           />
         </form>
 
@@ -104,7 +104,7 @@ function Explore() {
           {searchResult ? (
             <div
               key={searchResult._id}
-              className="grid grid-cols-9 gap-4 px-6 py-3 odd:bg-white even:bg-[color:var(--color-jmipale)] border-b border-[color:var(--color-jmipale)]  transition-all"
+              className="grid grid-cols-9 gap-4 px-6 py-3 odd:bg-white even:bg-jmi-600 border-b border-jmi-bg-jmi-600  transition-all"
             >
               <div className="col-span-1 text-center">
                 <img
@@ -120,7 +120,7 @@ function Explore() {
 
               <div
                 onClick={() => nav(`/user/${searchResult.username}`)}
-                className="col-span-4 ml-10 text-[15px] underline hover:text-[color:var(--color-jmimid))] cursor-pointer"
+                className="col-span-4 ml-10 text-[15px] underline hover:text-jmi-300 cursor-pointer"
               >
                 {searchResult.username}
               </div>
@@ -138,7 +138,7 @@ function Explore() {
           users.map((user, index) => (
             <div
               key={user._id || index}
-              className="grid grid-cols-9 gap-4 px-6 py-3 odd:bg-white even:bg-[color:var(--color-jmipale)] border-b border-[color:var(--color-jmipale)]  transition-all"
+              className="grid grid-cols-9 gap-4 px-6 py-3 odd:bg-white even:bg-jmi-300 border-b border-jmi-bg-jmi-600  transition-all"
             >
               <div className="col-span-1 text-center">
                 <img
@@ -154,7 +154,7 @@ function Explore() {
 
               <div
                 onClick={() => nav(`/user/${user.username}`)}
-                className="col-span-4 ml-10 text-[15px] underline hover:text-[color:var(--color-jmimid))] cursor-pointer"
+                className="col-span-4 ml-10 text-[15px] underline hover:text-jmi-500 cursor-pointer"
               >
                 {user.username}
               </div>
@@ -180,7 +180,7 @@ function Explore() {
             className={`px-4 py-2 rounded-md text-sm font-medium ${
               page === 1
                 ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                : " bg-[color:var(--color-jmimid))] text-white hover:cursor-pointer  hover:bg-[color:var(--color-jmidark))] "
+                : " bg-jmi-text-jmi-300 text-white hover:cursor-pointer  hover:bg-jmi-500 "
             }`}
           >
             Previous
@@ -196,7 +196,7 @@ function Explore() {
             className={`px-4 py-2 rounded-md text-sm font-medium ${
               page === 1
                 ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                : " bg-[color:var(--color-jmimid))] text-white hover:cursor-pointer  hover:bg-[color:var(--color-jmidark))] "
+                : " bg-jmi-text-jmi-300 text-white hover:cursor-pointer  hover:bg-jmi-500 "
             }`}
           >
             Next

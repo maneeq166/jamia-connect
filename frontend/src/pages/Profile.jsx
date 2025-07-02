@@ -40,7 +40,7 @@ useEffect(() => {
   if (loading)
     return (
       <div className="absolute top-1/2 right-1/2 text-center mt-10">
-        <div className="w-10 h-10 border-4 border-[color:var(--color-jmidark)] rounded-full animate-spin border-t-transparent"></div>
+        <div className="w-10 h-10 border-4 border-jmi-500 rounded-full animate-spin border-t-transparent"></div>
       </div>
     );
 
@@ -63,7 +63,7 @@ useEffect(() => {
             />
           </div>
           <div className="flex flex-col flex-1 gap-y-1">
-            <h3 className="text-xl font-semibold text-[color:var(--color-jmidark)]">
+            <h3 className="text-xl font-semibold text-jmi-500">
               Welcome, {user.username || "User"}!
             </h3>
             <p className="text-sm text-gray-500">
@@ -87,7 +87,7 @@ useEffect(() => {
           {user.bio && <ProfileRow label="Bio" value={user.bio} />}
           {user.links && user.links.length > 0 && (
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium text-[color:var(--color-jmidark)]">
+              <dt className="text-sm font-medium text-jmi-500">
                 Links
               </dt>
               <dd className="mt-1 text-sm text-blue-700 sm:col-span-2 sm:mt-0">
@@ -98,7 +98,7 @@ useEffect(() => {
                         href={link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="underline hover:text-[color:var(--color-jmidark)]"
+                        className="underline hover:text-jmi-500"
                       >
                         {link}
                       </a>
@@ -120,7 +120,7 @@ useEffect(() => {
 function ProfileRow({ label, value }) {
   return (
     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-      <dt className="text-sm font-medium text-[color:var(--color-jmidark)]">
+      <dt className="text-sm font-medium text-jmi-500">
         {label}
       </dt>
       <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">

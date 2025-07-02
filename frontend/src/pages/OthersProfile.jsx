@@ -2,11 +2,12 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { HovermeButton } from "../components/HovermeButton";
 
 function OthersProfile() {
   const [user, setUser] = useState(null);
   const { username } = useParams();
-
+  
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -19,15 +20,15 @@ function OthersProfile() {
         toast.error("Server Error");
       }
     };
-
+    
     if (username) fetchUser();
   }, [username]);
-
+  
   if (!user) return <div className="p-6">Loading...</div>;
-
+  
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f9fafb] to-[color:var(--color-jmipale)] py-10 px-4">
-      <div className="max-w-xl mx-auto bg-gradient-to-br from-[color:var(--color-jmihigh)] to-[color:var(--color-jmisoft)] border border-gray-200 rounded-lg shadow p-6 sm:p-10">
+    <div className="min-h-screen bg-gradient-to-br from-[#f9fafb] to-jmi-300 py-10 px-4">
+      <div className="max-w-2xl mx-auto bg-gradient-to-br from-jmi-400 to-jmi-300 border border-gray-200 rounded-lg shadow p-6 sm:p-10">
         <div className="sm:flex sm:items-center justify-center sm:space-x-6 mb-8">
           <div aria-label="card-horizontal" className="flex items-center  gap-x-5">
             <div className="flex-shrink-0 w-40 h-40 rounded-full">
@@ -35,14 +36,18 @@ function OthersProfile() {
                 src={user.avatar.url  || "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"}
                 alt="User Avatar"
                 className="object-cover w-full h-full rounded-full"
-              />
+                />
+              
             </div>
-            {/* <div className="flex flex-col flex-1 gap-y-1">
-              <h3 className="text-xl font-semibold text-[color:var(--color-jmidark)]">
-                {user.username || "User"}!
+            <div className="flex flex-col flex-1  text-center gap-y-1">
+              <h3 className="text-xl font-semibold text-jmi-600 hover:text-jmi-500">
+              {user.username || "User"}!
               </h3>
-            </div> */}
+
+              <HovermeButton   />
+              </div>
           </div>
+          
         </div>
 
         <div className="border-t flex justify-center  border-gray-100">
@@ -55,10 +60,10 @@ function OthersProfile() {
             {user.bio && <ProfileRow label="Bio:" value={user.bio} />}
             {user.links && user.links.length > 0 && (
               <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium text-[color:var(--color-jmidark)]">
+                <dt className="text-sm font-medium text-jmi-600">
                   Links:
                 </dt>
-                <dd className="mt-1 text-sm text-blue-700 sm:col-span-2 sm:mt-0">
+                <dd className="mt-1 text-sm text-jmi-500 sm:col-span-2 sm:mt-0">
                   <ul className="list-disc list-inside space-y-1">
                     {user.links.map((link, idx) => (
                       <li key={idx}>
@@ -66,7 +71,7 @@ function OthersProfile() {
                           href={link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="underline hover:text-[color:var(--color-jmidark)]"
+                          className="underline hover:text-jmi-600"
                         >
                           {link}
                         </a>
@@ -87,7 +92,7 @@ function OthersProfile() {
 function ProfileRow({ label, value }) {
   return (
     <div className="px-2  py-6 sm:grid sm:grid-cols-3 sm:gap-[60px] sm:px-0">
-      <dt className="text-sm font-medium text-[color:var(--color-jmidark)]">
+      <dt className="text-sm font-medium text-jmi-600">
         {label}
       </dt>
       <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">

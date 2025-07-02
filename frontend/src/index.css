@@ -2,14 +2,18 @@
 @import "tailwindcss";
 
 @theme{
-  --color-jmi-100: #5D8736;
-  --color-jmi-200: #809D3C;
-  --color-jmi-300: #A9C46C;
-  --color-jmi-400: #F4FFC3;
-  --color-jmi-500:   #3E5C25;  /* deeper green, good for borders or shadows */
---color-jmi-600:   #DFF09E;  /* light lime highlight, subtle background shade */
---color-jmi-700:   #E9F5D0;  /* soft green tint, great for cards or hover */
---color-jmi-800: #FFB84D;  /* orange-yellow accent, for buttons or icons */
+--color-jmi-100: #F4FFC3;    /* very pale lime */
+--color-jmi-200: #E9F5D0;    /* soft green tint */
+--color-jmi-300: #DFF09E;    /* light lime highlight */
+--color-jmi-400: #A9C46C;    /* mild olive */
+--color-jmi-500: #809D3C;    /* medium olive green */
+--color-jmi-600: #5D8736;    /* balanced green */
+--color-jmi-700: #3E5C25;    /* deep forest green */
+--color-jmi-800: #2F441B;    /* deeper green (added) */
+--color-jmi-900: #1E2C12;    /* near-black green (added) */
+--color-jmi-950: #FFB84D;    /* vibrant orange accent */
+--color-jmi-1000: #E69A15;   /* stronger accent (added) */
+
 
 }
 
