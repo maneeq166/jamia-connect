@@ -32,7 +32,7 @@ function App() {
               }
             />
             <Route
-              path="/chat/messages"
+              path="/chat/:username"
               element={
                 <ProtectedRoutes>
                   <Chat />

@@ -2,10 +2,10 @@
 
 import { useNavigate } from "react-router-dom";
 
-export function HovermeButton() {
+export function HovermeButton({username}) {
   const nav = useNavigate();
   return (
-    <button onClick={()=>nav("/chat/messages")} className="group relative inline-flex h-[30px] items-center justify-center rounded-full bg-jmi-500 py-4 pl-6 pr-14 font-medium text-jmi-100">
+    <button onClick={()=>nav(`/chat/${username}`)} className="group relative inline-flex h-[30px] items-center justify-center rounded-full bg-jmi-500 py-4 pl-6 pr-14 font-medium text-jmi-100">
       <span className="z-10 pr-2">want to talk with me</span>
       <div className="absolute right-1 inline-flex h-[24px] w-13 items-center justify-end rounded-full bg-jmi-400 transition-[width] group-hover:w-[calc(100%-8px)]">
         <div className="mr-3.5 flex items-center justify-center">

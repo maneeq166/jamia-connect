@@ -23,7 +23,7 @@ async function getManyUsers(req, res) {
     
   }
 }
-
+// app.use("/api/v1/explore", exploreRouter);
 async function getUsers(req,res){
     try {
         const username = req.params.username;
@@ -31,7 +31,7 @@ async function getUsers(req,res){
         const user = await User.findOne({username}).select("-password");
 
         if(!user){
-            res.status(404).json({message:"Not found",success:false});
+           return res.status(404).json({message:"Not found",success:false});
         }
 
         console.log(user);

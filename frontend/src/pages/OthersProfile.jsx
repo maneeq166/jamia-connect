@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 function OthersProfile() {
   const [user, setUser] = useState(null);
   const { username } = useParams();
+  
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -78,7 +79,7 @@ function OthersProfile() {
               >
                 {user.username || "User"}!
               </motion.h3>
-              <HovermeButton />
+              <HovermeButton username={username} />
             </div>
           </motion.div>
         </div>
