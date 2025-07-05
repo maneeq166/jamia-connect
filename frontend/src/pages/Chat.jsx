@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
+import Loader from "../components/Loader";
 
 function Chat() {
   const [message, setMessage] = useState("");
@@ -57,31 +58,38 @@ function Chat() {
     };
 
     socket.current.emit("send message", payload);
-    setMessages((prev) => [...prev, payload]);
     setMessage("");
   };
 
-  // Initialize socket connection and listeners
+  // Setup socket after user is fetched
   useEffect(() => {
-    fetchProfile();
+    if (!user) return;
+
     const token = localStorage.getItem("token");
 
     socket.current = io("http://localhost:3000", {
-      auth: { token }, // use auth object if backend expects it
+      auth: { token },
     });
 
-    socket.current.on("recieve message", (msg) => {
-      setMessages((prev) => [...prev, msg]);
-    });
+    socket.current.on("receive message", (msg) => {
+  console.log("Socket message received:", msg);
+  setMessages((prev) => [...prev, msg]);
+});
+
 
     return () => {
       socket.current.disconnect();
     };
+  }, [user]);
+
+  // Fetch user on first render
+  useEffect(() => {
+    fetchProfile();
   }, []);
 
-  // Load messages once user is set
+  // Load messages when user and receiver are set
   useEffect(() => {
-    if (user?.username) {
+    if (user?.username && username) {
       loadMessages();
     }
   }, [user, username]);
@@ -90,6 +98,14 @@ function Chat() {
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white text-xl">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-jmi-400 flex items-center justify-center p-4">
@@ -100,26 +116,30 @@ function Chat() {
         </div>
 
         {/* Messages */}
-        <div className="flex-1 p-4 space-y-2 overflow-y-auto">
-          {messages.map((msg, index) => {
-            const isSender = msg.sender === user?.username;
+        {user && (
+          <div className="flex-1 p-4 space-y-2 overflow-y-auto">
+            {messages.map((msg, index) => {
+              const isSender = msg.sender?.username === user?.username;
+              console.log(isSender,":",msg);
+              
 
-            return (
-              <div key={index} className={`flex ${isSender ? "justify-end" : "justify-start"}`}>
-                <div
-                  className={`max-w-[75%] px-4 py-2 rounded-xl shadow-sm text-sm ${
-                    isSender
-                      ? "bg-jmi-800 text-white rounded-br-none"
-                      : "bg-white text-jmi-700 rounded-bl-none"
-                  }`}
-                >
-                  {msg.content}
+              return (
+                <div key={index} className={`flex ${isSender ? "justify-end" : "justify-start"}`}>
+                  <div
+                    className={`max-w-[75%] px-4 py-2 rounded-xl shadow-sm text-sm ${
+                      isSender
+                        ? "bg-jmi-800 text-white rounded-br-none"
+                        : "bg-white text-jmi-700 rounded-bl-none"
+                    }`}
+                  >
+                    {msg.content}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-          <div ref={chatEndRef} />
-        </div>
+              );
+            })}
+            <div ref={chatEndRef} />
+          </div>
+        )}
 
         {/* Input */}
         <form

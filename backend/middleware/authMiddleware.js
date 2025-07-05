@@ -16,6 +16,8 @@ function authMiddleware(req, res, next) {
     }
 
     req.userId = decodedToken.id;
+// req.username = decodedToken.username;
+
     next();
   } catch (error) {
     console.log("Error in authMiddleware:", error);

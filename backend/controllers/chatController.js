@@ -39,11 +39,15 @@ exports.getMessages = async (req, res) => {
     }
 
     const messages = await Message.find({
-      $or: [
-        { sender: senderUser._id, receiver: receiverUser._id },
-        { sender: receiverUser._id, receiver: senderUser._id },
-      ],
-    }).sort({ timestamp: 1 });
+  $or: [
+    { sender: senderUser._id, receiver: receiverUser._id },
+    { sender: receiverUser._id, receiver: senderUser._id },
+  ],
+})
+  .sort({ timestamp: 1 })
+  .populate("sender", "username")   // Only get 'username' from sender
+  .populate("receiver", "username"); // Same for receiver
+
 
     return res.status(200).json({ messages, success: true });
   } catch (error) {

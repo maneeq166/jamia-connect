@@ -87,7 +87,12 @@ const userSignin = async (req, res) => {
     }
 
     // Sign JWT token
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign(
+  { id: user._id, username: user.username },
+  process.env.JWT_SECRET,
+  { expiresIn: '7d' }
+);
+
 
     // Send token in response body (client saves it in localStorage)
     res.json({ message: "Signed In!", token });
