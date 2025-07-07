@@ -11,6 +11,7 @@ const exploreRouter = require("./routes/exploreRoute");
 const authRouter = require("./routes/authRoute");
 const { profileRouter } = require("./routes/profileRoute");
 const { chatRouter } = require("./routes/chatRoute");
+const { pyqRouter } = require("./routes/pyq.route");
 
 // Create HTTP server (needed for socket.io)
 const server = http.createServer(app);
@@ -43,6 +44,7 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/profile", profileRouter);
 app.use("/api/v1/chat", chatRouter);
 app.use("/api/v1/explore",exploreRouter)
+app.use("/api/v1/pyqs",pyqRouter);
 
 // Connect to DB and start server
 async function connection() {

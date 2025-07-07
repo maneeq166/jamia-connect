@@ -14,6 +14,7 @@ import UpdateProfile from "./pages/UpdateProfile.jsx";
 import Explore from "./pages/Explore.jsx";
 import OthersProfile from "./pages/OthersProfile.jsx";
 import Chat from "./pages/Chat.jsx";
+import Pyqs from "./pages/Pyqs.jsx";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
                 </ProtectedRoutes>
               }
             />
+            <Route path="/pyq-material" element={<Pyqs/>}></Route>
             <Route path="/explore" element={<Explore />}></Route>
             <Route path="/user/:username" element={<OthersProfile />}></Route>
           </Route>

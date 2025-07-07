@@ -55,7 +55,11 @@ const userSignup =  async (req,res) =>{
         password:hashedpassword
     })
 
-    res.json({message:`${username} Signed up `,success: true})
+    if(user){
+      res.json({message:`${username} Signed up `,success: true})
+
+    }
+
 
     } catch (error) {
         res.status(500).json({

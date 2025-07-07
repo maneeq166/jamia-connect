@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
 import Loader from "../components/Loader";
+import NotFound from "./NotFound"
 
 function Chat() {
   const [message, setMessage] = useState("");
@@ -105,6 +106,15 @@ function Chat() {
         <Loader />
       </div>
     );
+  }
+
+
+  if(user.username==username){
+    console.log("dumbass nigga");
+    
+    return(
+      <NotFound />
+    )
   }
 
   return (

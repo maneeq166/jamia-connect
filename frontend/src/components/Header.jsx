@@ -101,6 +101,7 @@ const Header = () => {
                     >
                       Logout
                     </button>
+                    <img src="" alt="" />
                   </motion.div>
                 )}
               </AnimatePresence>
