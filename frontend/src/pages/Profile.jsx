@@ -4,38 +4,39 @@ import { PaperClipIcon } from "@heroicons/react/20/solid";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
 
+
 function Profile() {
   const nav = useNavigate();
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
+  
 
-useEffect(() => {
-  const fetchProfile = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        throw new Error('Token does not exist');
-      }
-
-      const res = await axios.get("http://localhost:3000/api/v1/profile/me", {
-        headers: {
-          Authorization: `Bearer ${token}`
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          throw new Error("Token does not exist");
         }
-      });
 
-      setUser(res.data.user);
-    } catch (error) {
-      console.error(
-        "Error fetching profile:",
-        error.response?.data?.message || error.message
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
-  fetchProfile();
-}, []);
+        const res = await axios.get("http://localhost:3000/api/v1/profile/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
+        setUser(res.data.user);
+      } catch (error) {
+        console.error(
+          "Error fetching profile:",
+          error.response?.data?.message || error.message
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProfile();
+  }, []);
 
   if (loading)
     return (
@@ -54,17 +55,71 @@ useEffect(() => {
   return (
     <div className="max-w-4xl mx-auto mt-10 bg-white border border-gray-200 rounded-lg shadow p-6 sm:p-10">
       <div className="sm:flex sm:items-center sm:space-x-6 mb-8">
-        <div aria-label="card-horizontal" className="flex items-center gap-x-5">
-          <div className="flex-shrink-0 w-40 h-40 rounded-lg">
+        <div
+          aria-label="card-horizontal"
+          className="flex relative items-center gap-x-5"
+        >
+          <div className="relative w-40 bg-amber-400 h-40 rounded-lg overflow-hidden">
+            {/* Profile Image */}
             <img
               src={
-                  user.avatar?.url ||
-                  "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
-                }
-                alt="User Avatar"
-              className="object-cover w-full h-full rounded-lg"
+                user.avatar?.url ||
+                "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
+              }
+              alt="User Avatar"
+              className="object-cover  w-full h-full rounded-lg"
             />
           </div>
+          
+          
+  {/* File Upload Input (Hidden) */}
+  <input
+    id="pfpInput"
+    type="file"
+    accept="image/*"
+    className="hidden"
+    onChange={async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const formData = new FormData();
+      formData.append("image", file);
+
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.patch(
+          "http://localhost:3000/api/v1/profile/avatar",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        alert("Profile picture updated!");
+        window.location.reload(); // Or refetch user
+      } catch (err) {
+        console.error("Upload error:", err);
+        alert("Failed to upload image");
+      }
+    }}
+  />
+
+  {/* Edit Button Overlay */}
+  <label
+    htmlFor="pfpInput"
+    className="absolute top-36 left-36 size-6 p-1 bg-jmi-400 rounded-full shadow-md cursor-pointer"
+  >
+    <img
+      src="https://www.svgrepo.com/show/130377/pencil.svg"
+      alt="edit"
+      className="w-full h-full"
+    />
+  </label>
+
+          
+          
+          
           <div className="flex flex-col flex-1 gap-y-1">
             <h3 className="text-xl font-semibold text-jmi-500">
               Welcome, {user.username || "User"}!
@@ -90,9 +145,7 @@ useEffect(() => {
           {user.bio && <ProfileRow label="Bio" value={user.bio} />}
           {user.links && user.links.length > 0 && (
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium text-jmi-500">
-                Links
-              </dt>
+              <dt className="text-sm font-medium text-jmi-500">Links</dt>
               <dd className="mt-1 text-sm text-blue-700 sm:col-span-2 sm:mt-0">
                 <ul className="list-disc list-inside space-y-1">
                   {user.links.map((link, idx) => (
@@ -123,9 +176,7 @@ useEffect(() => {
 function ProfileRow({ label, value }) {
   return (
     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-      <dt className="text-sm font-medium text-jmi-500">
-        {label}
-      </dt>
+      <dt className="text-sm font-medium text-jmi-500">{label}</dt>
       <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
         {value}
       </dd>

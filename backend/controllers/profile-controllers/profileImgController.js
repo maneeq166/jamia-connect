@@ -2,6 +2,7 @@ const { uploadToCloudinary } = require("../../helpers/cloudinaryHelper");
 const User = require("../../models/User");
 
 async function uploadImage(req, res) {
+  try {
   const id = req.userId;
   if (!req.file) {
     return res
@@ -33,10 +34,9 @@ async function uploadImage(req, res) {
       .json({ message: "Db me save nhi hui", success: false });
   }
 
-  res.status(200).json({message:"Lag gyi pfp",success:true
-  })
+  res.status(200).json({message:"Lag gyi pfp",success:true})
 
-  try {
+  
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "tod diya bhai server", success: false });

@@ -62,3 +62,8 @@ async function connection() {
 }
 
 connection();
+
+app.use((req,res,next)=>{
+  return res.status(404).json({message:"Route not found (404)",success:false})
+  next();
+})
