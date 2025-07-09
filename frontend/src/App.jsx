@@ -15,6 +15,7 @@ import Explore from "./pages/Explore.jsx";
 import OthersProfile from "./pages/OthersProfile.jsx";
 import Chat from "./pages/Chat.jsx";
 import Pyqs from "./pages/Pyqs.jsx";
+import UploadPyq from "./pages/UploadPyq.jsx";
 
 function App() {
   return (
@@ -45,6 +46,14 @@ function App() {
               element={
                 <ProtectedRoutes>
                   <UpdateProfile />
+                </ProtectedRoutes>
+              }
+            />
+            <Route
+              path="/upload-pyq"
+              element={
+                <ProtectedRoutes>
+                  <UploadPyq />
                 </ProtectedRoutes>
               }
             />

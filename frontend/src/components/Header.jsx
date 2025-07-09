@@ -66,9 +66,12 @@ const Header = () => {
         </div>
 
         {/* Desktop Nav & Buttons */}
-        <div className="hidden md:flex items-center gap-6 relative">
-          <div className='px-4'>
+        <div className="hidden md:flex items-center gap-10  relative">
+          <div className='px-4 flex gap-6  '>
+          
             <p className="font-semibold hover:underline hover:cursor-pointer" onClick={()=>navigate("/explore")}>Explore</p>
+            <p className="font-semibold hover:underline hover:cursor-pointer" onClick={()=>navigate("/pyq-material")}>PYQs</p>
+            
             </div>
           {isSignedIn ? (
             <>
