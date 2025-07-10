@@ -166,7 +166,7 @@ function Profile() {
           )}
         </dl>
       </div>
-      <Button className="h-[40px]" onClick={() => nav("/update-profile")}>
+      <Button className="h-[30px] px-6 py-1" onClick={() => nav("/update-profile")}>
         Update User
       </Button>
     </div>

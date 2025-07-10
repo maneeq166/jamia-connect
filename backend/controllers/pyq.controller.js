@@ -13,6 +13,9 @@ async function sendPyq(req, res) {
         .json({ message: "File is required", success: false });
     }
 
+    
+
+
     const { url, public_id } = await pyqHelper(req.file.path);
 
     fs.unlinkSync(req.file.path);
@@ -83,6 +86,24 @@ async function sendPyq(req, res) {
   }
 }
 
+async function getPyq(req, res) {
+  try {
+       
+    const pyq = await Pyq.find();
+    if (!pyq) {
+      return res.json({ message: "No Pyqs found" });
+    } else {      
+      return res.status(200).json({ pyq, success: true });
+    }
+  } catch (error) {
+
+    console.log(error);
+    return res.status(500).json({message:"Internal Server error"})
+    
+  }
+}
+
 module.exports = {
   sendPyq,
+  getPyq,
 };

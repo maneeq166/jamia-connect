@@ -1,39 +1,64 @@
-import React from 'react'
-import Card from '../components/Card'
-import Button from "../components/Button"
-import { useNavigate } from 'react-router-dom'
-
+import React, { useEffect, useState } from 'react';
+import Card from '../components/Card';
+import Button from "../components/Button";
+import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import Loader from '../components/BookLoader';
 
 const Pyqs = () => {
+  const [pyqs, setPyqs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [success, setSuccess] = useState();
   const nav = useNavigate();
+
+  const getPyqOnFe = async () => {
+    try {
+      const res = await axios.get("http://localhost:3000/api/v1/pyqs/get-study-material");
+      setPyqs(res.data.pyq);
+      setSuccess(res.data.success);
+    } catch (err) {
+      console.error("Failed to fetch PYQs:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getPyqOnFe();
+  }, []);
+
   return (
     <div>
       <div className="flex justify-end px-5 mt-5">
-        <Button onClick={()=>nav("/upload-pyq")} className="py-1 px-2 w-[200px]">Want to upload pyqs? </Button>
+        <Button onClick={() => nav("/upload-pyq")} className="py-1 px-2 w-[200px]">
+          Want to upload pyqs?
+        </Button>
       </div>
 
-      <div className="flex flex-wrap h-screen ml-5 mr-5 mt-2 bg-jmi-300 p-4 border-2 rounded-2xl border-jmi-500 gap-x-5">
-        <Card 
-          subject="OOPS" 
-          content="This is a diploma computer engineering OOPS last year paper" 
-          department="DCS" 
-          year="2024" 
-        />
-        <Card 
-          subject="Microprocessor" 
-          content="Microprocessor exam paper" 
-          department="DCS" 
-          year="2023" 
-        />
-        <Card 
-          subject="Microprocessor" 
-          content="Another Microprocessor exam paper" 
-          department="DCS" 
-          year="2023" 
-        />
+      <div className="flex flex-wrap min-h-screen ml-5 mr-5 mt-2 bg-jmi-300 p-4 border-2 rounded-2xl border-jmi-500 gap-x-5">
+        {loading ? (
+          <div className='flex justify-center items-center  h-screen w-full'>
+            <p className='text-xs'><Loader /></p>
+
+          </div>
+        ) : pyqs.length > 0 ? (
+          pyqs.map((pyq, index) => (
+            <Card
+              key={index}
+              index={index}
+              subject={pyq.subject}
+              content={pyq.content}
+              department={pyq.department}
+              year={pyq.year}
+              pdfUrl={pyq.url.url} 
+            />
+          ))
+        ) : (
+          <p className="text-lg">No PYQs found.</p>
+        )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Pyqs
+export default Pyqs;
