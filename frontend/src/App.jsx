@@ -16,6 +16,7 @@ import OthersProfile from "./pages/OthersProfile.jsx";
 import Chat from "./pages/Chat.jsx";
 import Pyqs from "./pages/Pyqs.jsx";
 import UploadPyq from "./pages/UploadPyq.jsx";
+import Blog from "./pages/Blog.jsx";
 
 function App() {
   return (
@@ -57,6 +58,7 @@ function App() {
                 </ProtectedRoutes>
               }
             />
+            <Route path="/blogs" element={<Blog/>} />
             <Route path="/pyq-material" element={<Pyqs/>}></Route>
             <Route path="/explore" element={<Explore />}></Route>
             <Route path="/user/:username" element={<OthersProfile />}></Route>

@@ -12,12 +12,14 @@ const authRouter = require("./routes/authRoute");
 const { profileRouter } = require("./routes/profileRoute");
 const { chatRouter } = require("./routes/chatRoute");
 const { pyqRouter } = require("./routes/pyq.route");
+const blogRouter = require("./routes/blog.route");
 
 // Create HTTP server (needed for socket.io)
 const server = http.createServer(app);
 
 // Setup Socket.IO server
 const { Server } = require("socket.io");
+
 const io = new Server(server, {
     cors: {
         origin: "http://localhost:5173",
@@ -45,6 +47,9 @@ app.use("/api/v1/profile", profileRouter);
 app.use("/api/v1/chat", chatRouter);
 app.use("/api/v1/explore",exploreRouter)
 app.use("/api/v1/pyqs",pyqRouter);
+app.use("/api/v1/blog",blogRouter)
+
+
 
 // Connect to DB and start server
 async function connection() {
@@ -60,6 +65,9 @@ async function connection() {
     console.error("Connection error:", error);
   }
 }
+
+
+
 
 connection();
 
