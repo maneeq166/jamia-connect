@@ -1,3 +1,4 @@
+const { uploadToCloudinary } = require("../../helpers/cloudinaryHelper");
 const { Blog } = require("../../models/Blog");
 const User = require("../../models/User");
 
@@ -13,17 +14,33 @@ async function addBlog(req, res) {
 
     const { username, email } = user;
 
-    const { content } = req.body;
-
-    if (!content) {
-      return res.status(400).json({ message: "Content is Empty!" });
+    let image1= null;
+    if(req.file){
+      const {url,public_id} = await uploadToCloudinary(req.file.path)
+      image1 = {url,public_id};
     }
 
+
+    const { title, content } = req.body;
+
+    if (!content || !title) {
+      return res.status(400).json({ message: "Title or Content is Empty!" });
+    }
+    
+    
+
     const blog = await Blog.create({
+      title,
       username,
       email,
       content,
+      ...(image1 && {image:image1})
     });
+    
+    if(!blog){
+      return res.status(400).json({message:"Blog not created"})
+    }
+    
 
     return res.json({ message: "Blog Posted!", success: true, user });
   } catch (error) {
@@ -76,7 +93,7 @@ async function getBlog(req, res) {
 async function deleteBlog(req, res) {
   try {
     const blogId = req.params.id;
-    const userId = req.userId;
+    const username = req.username;
 
     if (!blogId) {
       return res
@@ -91,7 +108,7 @@ async function deleteBlog(req, res) {
         .status(404)
         .json({ message: "No blog Found!", success: false });
     } else {
-      if (userId != blog.username) {
+      if (username != blog.username) {
         return res
           .status(400)
           .json({ message: "You can't make changes in this" });

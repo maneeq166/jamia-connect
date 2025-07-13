@@ -16,7 +16,7 @@ import OthersProfile from "./pages/OthersProfile.jsx";
 import Chat from "./pages/Chat.jsx";
 import Pyqs from "./pages/Pyqs.jsx";
 import UploadPyq from "./pages/UploadPyq.jsx";
-import Blog from "./pages/Blog.jsx";
+import Blog from "./pages/PostBlog.jsx";
 
 function App() {
   return (

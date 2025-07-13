@@ -39,7 +39,7 @@ async function uploadImage(req, res) {
   
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "tod diya bhai server", success: false });
+   return  res.status(500).json({ message: "tod diya bhai server", success: false });
   }
 }
 
