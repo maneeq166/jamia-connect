@@ -25,7 +25,22 @@ function Signin() {
     // Save token in localStorage
     localStorage.setItem('token', res.data.token);
 
-    toast.success(res.data.message || 'Signin successful!');
+    toast.success(res.data.message || "Signin successful!")
+//      {
+//   style: {
+//     background: "#F4FFC3",
+//     color: "#1E2C12",
+//     fontWeight: "bold",
+//     borderLeft: "5px solid #809D3C",
+//     fontSize: "16px",
+//   },
+//   icon: "✅",
+//   progressStyle: {
+//     background:"#809D3C",
+//   }
+// });
+    
+
 
     navigate('/profile');
   } catch (error) {

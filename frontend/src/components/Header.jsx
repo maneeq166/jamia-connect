@@ -56,7 +56,7 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center h-8  gap-3" ref={logoRef}>
-          <div className="bg-white text-[#5D8736] w-11 h-10 rounded-xl flex items-center justify-center font-bold text-xl shadow-md">
+          <div onClick={()=>navigate("/")} className="bg-white hover:cursor-pointer text-[#5D8736] w-11 h-10 rounded-xl flex items-center justify-center font-bold text-xl shadow-md">
             JC
           </div>
           <div>

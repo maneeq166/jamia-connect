@@ -16,6 +16,12 @@
 
 
 }
+.toast-jmi-success {
+  background-color: var(--color-jmi-100);
+  color: var(--color-jmi-900);
+  font-weight: bold;
+  border-left: 5px solid var(--color-jmi-500);
+}
 
 .jamia-dark {
   color: var(--jamia-dark);

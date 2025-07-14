@@ -10,6 +10,8 @@ const BlogSchema = new mongoose.Schema({
         url:String
     }
 
+},{
+    timestamps:true
 })
 
 const Blog = mongoose.model("Blog",BlogSchema);

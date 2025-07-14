@@ -118,7 +118,7 @@ function OthersProfile() {
                           href={link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="underline hover:text-jmi-600"
+                          className="underline hover:text-jmi-300 text-jmi-600"
                         >
                           {link}
                         </a>
