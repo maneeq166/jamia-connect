@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Button from "../components/Button";
+import { useNavigate } from "react-router-dom";
+
 
 const BlogIndex = () => {
+  const nav = useNavigate();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -30,6 +34,7 @@ const BlogIndex = () => {
 
   return (
     <div className="min-h-screen px-4 py-8 bg-gray-50">
+      <Button onClick={()=>nav("/blog/add-blog")} className="px-2 text-sm py-1">Create a blog</Button>
       <h1 className="text-4xl font-bold text-center mb-8 text-jmi-600">
         All Blogs
       </h1>
@@ -52,7 +57,7 @@ const BlogIndex = () => {
                   className="w-full h-40 object-cover rounded-md mb-4"
                 />
               )}
-              <h2 className="text-xl font-semibold text-jmi-700 mb-2">
+              <h2 onClick={()=>nav(`/blog/${blog._id}`)} className="text-xl hover:cursor-pointer hover:text-jmi-500 font-semibold text-jmi-700 mb-2">
                 {blog.title}
               </h2>
               <p className="text-gray-600 text-sm mb-2">

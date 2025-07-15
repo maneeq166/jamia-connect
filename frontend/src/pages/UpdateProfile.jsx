@@ -159,7 +159,7 @@ function UpdateProfile() {
         {!isEditing && (
           <Button
             onClick={() => setIsEditing(true)}
-            className="h-[10px] text-xs "
+            className="h-[10px] p-3 text-xs "
           >
             ✎ Edit Profile
           </Button>

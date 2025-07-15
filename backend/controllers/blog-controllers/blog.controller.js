@@ -57,7 +57,7 @@ async function getAllBlog(req, res) {
       return res.json({ message: "No Blog found!" });
     }
 
-    return res.status(200).json({ blogs });
+    return res.status(200).json({ blogs,success:true });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Server error" });
@@ -81,7 +81,7 @@ async function getBlog(req, res) {
         .status(404)
         .json({ message: "No blog Found!", success: false });
     } else {
-      return res.status(200).json({ blog });
+      return res.status(200).json({ blog, success:true });
     }
   } catch (error) {
     return res

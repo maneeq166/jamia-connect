@@ -18,6 +18,7 @@ import Pyqs from "./pages/Pyqs.jsx";
 import UploadPyq from "./pages/UploadPyq.jsx";
 import Blog from "./pages/PostBlog.jsx";
 import BlogIndex from "./pages/BlogIndex.jsx";
+import SingleBlog from "./pages/SingleBlog.jsx";
 
 function App() {
   return (
@@ -59,7 +60,12 @@ function App() {
                 </ProtectedRoutes>
               }
             />
-            <Route path="/blog/add-blog" element={<Blog/>} />
+            <Route path="/blog/add-blog" element={
+              <ProtectedRoutes>
+                <Blog/>
+              </ProtectedRoutes>
+              } />
+              <Route path="/blog/:id" element={<SingleBlog/>}></Route>
             <Route path="/blogs" element={<BlogIndex/>}  />
             <Route path="/pyq-material" element={<Pyqs/>}></Route>
             <Route path="/explore" element={<Explore />}></Route>
