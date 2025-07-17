@@ -19,6 +19,7 @@ import UploadPyq from "./pages/UploadPyq.jsx";
 import Blog from "./pages/PostBlog.jsx";
 import BlogIndex from "./pages/BlogIndex.jsx";
 import SingleBlog from "./pages/SingleBlog.jsx";
+import HistoryOfJMI from "./pages/HistoryOfJMI.jsx";
 
 function App() {
   return (
@@ -65,6 +66,7 @@ function App() {
                 <Blog/>
               </ProtectedRoutes>
               } />
+              <Route path="/history" element={<HistoryOfJMI/>}></Route>
               <Route path="/blog/:id" element={<SingleBlog/>}></Route>
             <Route path="/blogs" element={<BlogIndex/>}  />
             <Route path="/pyq-material" element={<Pyqs/>}></Route>

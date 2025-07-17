@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Header from "../components/Header";
+import HistoryOfJMI from "./HistoryOfJMI";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -119,56 +120,94 @@ const Home = () => {
 
         {/* About Jamia Section */}
         <div
-  ref={(el) => (featureCardsRef.current[features.length] = el)}
-  className="mt-20 bg-white/70 backdrop-blur-lg border border-[#A9C46C] rounded-xl p-6 shadow hover:shadow-2xl transition-shadow duration-300"
->
-  <div className="w-12 h-12 flex items-center justify-center rounded-lg  text-white text-2xl mb-4 mx-auto">
-    <img src="https://upload.wikimedia.org/wikipedia/en/d/df/Jamia_Millia_Islamia_Logo.svg" alt="" />
-  </div>
-  <h2 className="text-2xl md:text-3xl font-bold text-[#5D8736] mb-4 text-center">
-    About Jamia Millia Islamia
-  </h2>
-  <p className="text-[#5D8736] leading-relaxed text-justify">
-    <strong>
-      <a href="https://en.wikipedia.org/wiki/Jamia_Millia_Islamia" target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-green-800">
-        Jamia Millia Islamia
-      </a>
-    </strong>{" "}
-    is a public and research university located in New Delhi, India. It was originally established in 1920 at Aligarh during the British Raj by prominent leaders such as{" "}
-    <strong>
-      <a href="https://en.wikipedia.org/wiki/Maulana_Mohammad_Ali_Jauhar" target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-green-800">
-        Maulana Mohammad Ali Jauhar
-      </a>
-    </strong>
-    ,{" "}
-    <strong>
-      <a href="https://en.wikipedia.org/wiki/Hakim_Ajmal_Khan" target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-green-800">
-        Hakim Ajmal Khan
-      </a>
-    </strong>
-    , and{" "}
-    <strong>
-      <a href="https://en.wikipedia.org/wiki/Mahmud_Hasan_Deobandi" target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-green-800">
-        Mahmud Hasan Deobandi
-      </a>
-    </strong>
-    .
-    The university moved to its current location in Okhla, Delhi in 1935.
-    <br />
-    <br />
-    In 1962, it was declared a deemed university by the University Grants Commission, and later in 1988, it was granted the status of a central university by an Act of the Indian Parliament.
-    <br />
-    <br />
-    With a strong foundation rooted in self-reliance, education, and national service,{" "}
-    <strong>
-      <a href="https://en.wikipedia.org/wiki/Jamia_Millia_Islamia" target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-green-800">
-        Jamia
-      </a>
-    </strong>{" "}
-    has grown into a modern center of learning that promotes academic excellence, research, and inclusive development.
-  </p>
-</div>
+          ref={(el) => (featureCardsRef.current[features.length] = el)}
+          className="mt-20 bg-white/70 backdrop-blur-lg border border-[#A9C46C] rounded-xl p-6 shadow hover:shadow-2xl transition-shadow duration-300"
+        >
+          <div className="w-12 h-12 flex items-center justify-center rounded-lg  text-white text-2xl mb-4 mx-auto">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/en/d/df/Jamia_Millia_Islamia_Logo.svg"
+              alt=""
+            />
+          </div>
+          <h2 className="text-2xl md:text-3xl font-bold text-[#5D8736] mb-4 text-center">
+            About Jamia Millia Islamia
+          </h2>
+          <p className="text-[#5D8736] leading-relaxed text-justify">
+            <strong>
+              <a
+                href="https://en.wikipedia.org/wiki/Jamia_Millia_Islamia"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline hover:text-green-800"
+              >
+                Jamia Millia Islamia
+              </a>
+            </strong>{" "}
+            is a public and research university located in New Delhi, India. It
+            was originally established in 1920 at Aligarh during the British Raj
+            by prominent leaders such as{" "}
+            <strong>
+              <a
+                href="https://en.wikipedia.org/wiki/Maulana_Mohammad_Ali_Jauhar"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline hover:text-green-800"
+              >
+                Maulana Mohammad Ali Jauhar
+              </a>
+            </strong>
+            ,{" "}
+            <strong>
+              <a
+                href="https://en.wikipedia.org/wiki/Hakim_Ajmal_Khan"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline hover:text-green-800"
+              >
+                Hakim Ajmal Khan
+              </a>
+            </strong>
+            , and{" "}
+            <strong>
+              <a
+                href="https://en.wikipedia.org/wiki/Mahmud_Hasan_Deobandi"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline hover:text-green-800"
+              >
+                Mahmud Hasan Deobandi
+              </a>
+            </strong>
+            . The university moved to its current location in Okhla, Delhi in
+            1935.
+            <br />
+            <br />
+            In 1962, it was declared a deemed university by the University
+            Grants Commission, and later in 1988, it was granted the status of a
+            central university by an Act of the Indian Parliament.
+            <br />
+            <br />
+            With a strong foundation rooted in self-reliance, education, and
+            national service,{" "}
+            <strong>
+              <a
+                href="https://en.wikipedia.org/wiki/Jamia_Millia_Islamia"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline hover:text-green-800"
+              >
+                Jamia
+              </a>
+            </strong>{" "}
+            has grown into a modern center of learning that promotes academic
+            excellence, research, and inclusive development.
+          </p>
+          <Link to="/history" className="font-bold text-l text-jmi-600 mt-5 relative right-0">
+  FOR FULL HISTORY CLICK HERE
+</Link>
 
+
+        </div>
       </div>
     </div>
   );
@@ -176,15 +215,17 @@ const Home = () => {
 
 export default Home;
 
-
-
-{/* <div className="min-h-screen w-full relative">
-  {/* Radial Gradient Background */}
-  // <div
-  //   className="absolute inset-0 z-0"
-  //   style={{
-  //     background: "radial-gradient(125% 125% at 50% 10%, #fff 40%, #6366f1 100%)",
-  //   }}
-  // />
-     {/* Your Content/Components */}
+{
+  /* <div className="min-h-screen w-full relative">
+  {/* Radial Gradient Background */
+}
+// <div
+//   className="absolute inset-0 z-0"
+//   style={{
+//     background: "radial-gradient(125% 125% at 50% 10%, #fff 40%, #6366f1 100%)",
+//   }}
+// />
+{
+  /* Your Content/Components */
+}
 // </div> */}

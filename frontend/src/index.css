@@ -2,7 +2,7 @@
 @import "tailwindcss";
 
 @theme{
---color-jmi-100: #F4FFC3;    /* very pale lime */
+--color-jmi-100: #F4FFC3 ;    /* very pale lime */
 --color-jmi-200: #E9F5D0;    /* soft green tint */
 --color-jmi-300: #DFF09E;    /* light lime highlight */
 --color-jmi-400: #A9C46C;    /* mild olive */
