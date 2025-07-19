@@ -13,12 +13,14 @@ const { profileRouter } = require("./routes/profileRoute");
 const { chatRouter } = require("./routes/chatRoute");
 const { pyqRouter } = require("./routes/pyq.route");
 const blogRouter = require("./routes/blog.route");
+const { scrapeRouter } = require("./routes/scrape.route");
 
 // Create HTTP server (needed for socket.io)
 const server = http.createServer(app);
 
 // Setup Socket.IO server
 const { Server } = require("socket.io");
+
 
 const io = new Server(server, {
     cors: {
@@ -47,8 +49,8 @@ app.use("/api/v1/profile", profileRouter);
 app.use("/api/v1/chat", chatRouter);
 app.use("/api/v1/explore",exploreRouter)
 app.use("/api/v1/pyqs",pyqRouter);
-app.use("/api/v1/blog",blogRouter)
-
+app.use("/api/v1/blog",blogRouter);
+app.use("/api/v1/scrape",scrapeRouter);
 
 
 // Connect to DB and start server
