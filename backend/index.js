@@ -13,7 +13,7 @@ const { profileRouter } = require("./routes/profileRoute");
 const { chatRouter } = require("./routes/chatRoute");
 const { pyqRouter } = require("./routes/pyq.route");
 const blogRouter = require("./routes/blog.route");
-const { scrapeRouter } = require("./routes/scrape.route");
+const { scrapeRouter } = require("./routes/scrape.route.js");
 
 // Create HTTP server (needed for socket.io)
 const server = http.createServer(app);

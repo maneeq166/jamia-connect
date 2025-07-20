@@ -20,6 +20,7 @@ import Blog from "./pages/PostBlog.jsx";
 import BlogIndex from "./pages/BlogIndex.jsx";
 import SingleBlog from "./pages/SingleBlog.jsx";
 import HistoryOfJMI from "./pages/HistoryOfJMI.jsx";
+import JmiNotices from "./pages/JmiNotices.jsx";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
                 </ProtectedRoutes>
               }
             />
+            <Route path="/jmi-notices" element={<JmiNotices/>} />
             <Route
               path="/chat/:username"
               element={
