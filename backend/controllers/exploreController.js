@@ -37,7 +37,26 @@ async function getUsers(req, res) {
 
     console.log(user);
 
-    res.json({ user, success: true });
+    return res.json({ user, success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error", success: false });
+  }
+}
+
+
+
+async function getSingleUser(req,res){
+  try {
+    const username = req.params.username;
+    
+
+    const user= await User.findOne({username:username}).select("-password");
+
+    
+
+    return res.status(200).json({success:true,user})
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error", success: false });
@@ -47,4 +66,5 @@ async function getUsers(req, res) {
 module.exports = {
   getManyUsers,
   getUsers,
+  getSingleUser
 };
