@@ -17,7 +17,6 @@ const UserRow = ({ user }) => {
       <div className="col-span-1 flex items-center justify-center">
         <img
           src={
-            // UI UPDATED: Restored original placeholder image URL.
             user?.avatar?.url ||
             "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
           }

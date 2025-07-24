@@ -4,6 +4,11 @@ const http = require("http");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
+const passport = require("passport");
+require("./config/passport.config.js");
+
+
+
 
 const {initSocket} = require("./sockets/socket");
 const connectDB = require("./config/db");
@@ -42,6 +47,26 @@ app.use(cors({
   origin: "http://localhost:5173",
   credentials: true
 }));
+
+const session = require("express-session");
+const MongoStore = require("connect-mongo"); 
+
+app.use(
+  session({
+    secret: process.env.JWT_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: "mongodb://localhost:27017/jamia-connect", 
+    }),
+  })
+);
+
+
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 // Routes
 app.use("/api/v1/auth", authRouter);
