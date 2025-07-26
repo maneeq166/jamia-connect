@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
+import GoogleButton from "../components/GoogleButton";
 
 
 
@@ -81,6 +81,9 @@ function Signin() {
             Sign In
           </button>
         </form>
+        <div className="mt-2">
+          <GoogleButton text="Continue with Google" />
+        </div>
         <p className="mt-6 text-center text-sm text-gray-600">
           Don’t have an account?{' '}
           <a href="/signup" className="font-medium text-[#5D8736] hover:text-[#809D3C]">

@@ -21,6 +21,7 @@ import BlogIndex from "./pages/BlogIndex.jsx";
 import SingleBlog from "./pages/SingleBlog.jsx";
 import HistoryOfJMI from "./pages/HistoryOfJMI.jsx";
 import JmiNotices from "./pages/JmiNotices.jsx";
+import OAuthSuccess from "./components/OauthSuccess.jsx";
 
 function App() {
   return (
@@ -80,6 +81,7 @@ function App() {
           <Route element={<LayoutWithoutHeader />}>
             <Route path="/signin" element={<Signin />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/oauth-success" element={<OAuthSuccess />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

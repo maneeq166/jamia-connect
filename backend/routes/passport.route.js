@@ -1,17 +1,26 @@
+// routes/authRoute.js
 const express = require("express");
+const passPortRouter = express.Router();
 const passport = require("passport");
-const router = express.Router();
-const { googleCallback } = require("../controllers/passport.controller");
+const jwt = require("jsonwebtoken");
 
-// 1. Start Google Auth
-router.get("/google", passport.authenticate("google", {
-  scope: ["profile", "email"]
-}));
-
-// 2. Callback URL
-router.get("/google/callback",
-  passport.authenticate("google", { session: false, failureRedirect: "/" }),
-  googleCallback
+passPortRouter.get(
+  "/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
-module.exports = router;
+passPortRouter.get(
+  "/google/callback",
+  passport.authenticate("google", { failureRedirect: "/login", session: false }),
+  (req, res) => {
+    const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
+    // Redirect to frontend with token
+    res.redirect(`http://localhost:5173/oauth-success?token=${token}`);
+
+  }
+);
+
+module.exports = passPortRouter;
