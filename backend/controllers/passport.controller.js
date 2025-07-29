@@ -1,36 +1,46 @@
 // controllers/passport.controller.js
-const passport = require("passport");
-const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const jwt = require("jsonwebtoken");
-const User = require("../models/User"); 
+require('dotenv').config();
 
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:3000/api/v1/auth/google/callback",
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      try {
-        let user = await User.findOne({ googleId: profile.id });
+const googleCallbackController = (req, res) => {
+  console.log("--- Inside googleCallbackController ---");
 
-        if (!user) {
-          user = await User.create({
-            googleId: profile.id,
-            username: profile.displayName,
-            email: profile.emails[0].value,
-          });
-        }
+  // 1. Check if Passport attached the user object
+  console.log("1. req.user object:", req.user);
 
-        return done(null, user);
-      } catch (err) {
-        return done(err, null);
-      }
-    }
-  )
-);
+  if (!req.user) {
+    console.error("ERROR: req.user is missing. Passport authentication likely failed.");
+    return res.redirect(`${process.env.FRONTEND_URL}/login?error=user_not_found`);
+  }
 
-// Required for Passport but we use JWT instead of sessions
-passport.serializeUser((user, done) => done(null, user.id));
-passport.deserializeUser((id, done) => done(null, id));
+  // 2. Check environment variables
+  console.log("2. JWT_SECRET:", process.env.JWT_SECRET ? "Exists" : "MISSING!");
+  console.log("3. FRONTEND_URL:", process.env.FRONTEND_URL);
+
+  try {
+    const payload = {
+      id: req.user._id,
+      username: req.user.username,
+    };
+    console.log("4. JWT Payload to be signed:", payload);
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+    console.log("5. Generated JWT:", token ? "Success!" : "Failed to generate token.");
+
+    const redirectURL = `${process.env.FRONTEND_URL}/oauth-success?token=${token}`;
+    console.log("6. Final Redirect URL:", redirectURL);
+
+    console.log("--- Redirecting now ---");
+    res.redirect(redirectURL);
+
+  } catch (error) {
+    console.error("ERROR inside googleCallbackController:", error);
+    res.redirect(`${process.env.FRONTEND_URL}/login?error=token_signing_failed`);
+  }
+};
+
+module.exports = {
+  googleCallbackController,
+};

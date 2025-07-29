@@ -46,13 +46,11 @@ app.use(cors({
 
 // Initialize passport (session & strategies)
 const passport = require("passport");
-const passPortRouter = require("./routes/passport.route.js");
 require("./config/passport.config");
 app.use(passport.initialize());
 
 
 // Routes
-app.use("/api/v1/google",passPortRouter)
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/profile", profileRouter);
 app.use("/api/v1/chat", chatRouter);

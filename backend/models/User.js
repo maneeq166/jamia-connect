@@ -25,8 +25,12 @@ const userSchema = new mongoose.Schema({
   links :{
     type:[String]
   },
-
+isOAuth: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
+  googleId: {  
+    type: String,
+    unique: true,
+  },
 });
 
 const User = mongoose.model("User", userSchema);

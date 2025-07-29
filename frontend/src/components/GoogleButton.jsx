@@ -3,7 +3,8 @@ import React from 'react';
 
 function GoogleButton({ text }) {
   const handleGoogleLogin = () => {
-    window.open('http://localhost:3000/api/v1/google/google', '_self');
+    // This is the corrected URL
+    window.open('http://localhost:3000/api/v1/auth/google', '_self');
   };
 
   return (

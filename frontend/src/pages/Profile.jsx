@@ -86,7 +86,7 @@ function Profile() {
 
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.patch(
+        await axios.patch(
           "http://localhost:3000/api/v1/profile/avatar",
           formData,
           {

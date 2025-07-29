@@ -1,41 +1,74 @@
+
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("../models/User");
+require('dotenv').config();
 
+// This is the main Google OAuth strategy configuration
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      // This callback URL must match the one in your Google Cloud Console credentials
+      // and the route defined in passport.route.js
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        const email = profile.emails[0].value;
+        // 1. Check if user already exists in DB via their Google ID
+        let user = await User.findOne({ googleId: profile.id });
 
-        let user = await User.findOne({ email });
-
-        if (!user) {
-          // Generate a unique username based on displayName or email
-          let baseUsername = profile.displayName.replace(/\s+/g, "").toLowerCase();
-          let username = baseUsername;
-          let counter = 1;
-
-          // Ensure the username is unique
-          while (await User.findOne({ username })) {
-            username = `${baseUsername}${counter++}`;
-          }
-
-          user = await User.create({
-            username,
-            email
-          });
+        if (user) {
+          // If user exists, pass them to the next middleware
+          return done(null, user);
         }
 
-        return done(null, user);
-      } catch (err) {
-        return done(err, null);
+        // 2. If user doesn't exist, check if their email is already in use
+        user = await User.findOne({ email: profile.emails[0].value });
+        if (user) {
+          // If email exists (e.g., signed up with password before), link the Google ID
+          user.googleId = profile.id;
+          user.displayName = user.displayName || profile.displayName;
+          await user.save();
+          return done(null, user);
+        }
+
+        // 3. If user is completely new, create a new user record
+        let baseUsername = profile.displayName.replace(/\s+/g, "").toLowerCase();
+        let username = baseUsername;
+        let counter = 1;
+        while (await User.findOne({ username })) {
+          username = `${baseUsername}${counter++}`;
+        }
+
+        const newUser = await User.create({
+          googleId: profile.id,
+          username: username,
+          email: profile.emails[0].value,
+          displayName: profile.displayName,
+          // avatar: { url: profile.photos[0].value } // Optionally save profile picture
+        });
+
+        return done(null, newUser);
+      } catch (error) {
+        return done(error, false);
       }
     }
   )
 );
+
+// Used to serialize the user for the session (or in our case, for the JWT)
+passport.serializeUser((user, done) => {
+  done(null, user.id); // user.id is the MongoDB _id
+});
+
+// Used to deserialize the user
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (error) {
+    done(error, null);
+  }
+});
