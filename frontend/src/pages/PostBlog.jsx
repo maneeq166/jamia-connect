@@ -88,7 +88,7 @@ const Blog = () => {
       <div className="rounded-2xl shadow-2xl w-full max-w-3xl p-8 space-y-6 bg-white">
         <div className="flex justify-between items-center">
           <h1 className="text-4xl font-semibold bg-gradient-to-r from-jmi-400 via-jmi-600 to-jmi-600 bg-clip-text text-transparent">
-            Write your Blog
+            Write your Board
           </h1>
           <button
             onClick={blogSubmit}
@@ -119,7 +119,7 @@ const Blog = () => {
             <input
               type="text"
               id="title"
-              placeholder="Create Title for your amazing blog"
+              placeholder="Create Title for your amazing Board"
               className="w-full px-4 py-2 border border-jmi-300 rounded-md focus:outline-none focus:ring-2 focus:ring-jmi-600"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -136,7 +136,7 @@ const Blog = () => {
             </label>
             <textarea
               id="content"
-              placeholder="Write your blog content here..."
+              placeholder="Write your Board content here..."
               rows="6"
               className="w-full px-4 py-2 border border-jmi-300 rounded-md focus:outline-none focus:ring-2 focus:ring-jmi-600"
               value={content}

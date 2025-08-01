@@ -71,7 +71,7 @@ const Header = () => {
           
             <p className="font-semibold hover:underline hover:cursor-pointer" onClick={()=>navigate("/explore")}>Explore</p>
             <p className="font-semibold hover:underline hover:cursor-pointer" onClick={()=>navigate("/pyq-material")}>PYQs</p>
-            <p className="font-semibold hover:underline hover:cursor-pointer" onClick={()=>navigate("/blogs")}>Blogs</p>
+            <p className="font-semibold hover:underline hover:cursor-pointer" onClick={()=>navigate("/boards")}>Boards</p>
             <p className="font-semibold hover:underline hover:cursor-pointer" onClick={()=>navigate("/jmi-notices")}>Notices</p>
             </div>
           {isSignedIn ? (

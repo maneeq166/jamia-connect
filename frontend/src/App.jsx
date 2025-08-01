@@ -64,14 +64,14 @@ function App() {
                 </ProtectedRoutes>
               }
             />
-            <Route path="/blog/add-blog" element={
+            <Route path="/board/add-board" element={
               <ProtectedRoutes>
                 <Blog/>
               </ProtectedRoutes>
               } />
               <Route path="/history" element={<HistoryOfJMI/>}></Route>
               <Route path="/blog/:id" element={<SingleBlog/>}></Route>
-            <Route path="/blogs" element={<BlogIndex/>}  />
+            <Route path="/boards" element={<BlogIndex/>}  />
             <Route path="/pyq-material" element={<Pyqs/>}></Route>
             <Route path="/explore" element={<Explore />}></Route>
             <Route path="/user/:username" element={<OthersProfile />}></Route>

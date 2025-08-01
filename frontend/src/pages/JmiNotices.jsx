@@ -128,13 +128,13 @@ export default function JmiNotices() {
         )}
       </main>
       
-      {/* Footer */}
+      {/* Footer
       <footer className="w-full py-4 mt-10 bg-jmi-800">
           <div className="container mx-auto text-center text-jmi-300 text-sm">
               <p>All data is scraped from the official JMI Controller of Examinations website.</p>
               <p>This is an unofficial project.</p>
           </div>
-      </footer>
+      </footer> */}
     </div>
   );
 }

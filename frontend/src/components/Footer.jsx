@@ -29,8 +29,8 @@ const Footer = () => {
         {/* Quick Links */}
         <div className="flex flex-col gap-2">
           <h3 className="text-lg font-semibold mb-2">Quick Links</h3>
-          <Link to="/blogs" className={linkClass}>
-            Blogs
+          <Link to="/boards" className={linkClass}>
+            Boards
           </Link>
           <Link to="/pyq-material" className={linkClass}>
             PYQs
