@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
+import Footer from "../components/Footer";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Header from "../components/Header";
@@ -202,13 +203,16 @@ const Home = () => {
             has grown into a modern center of learning that promotes academic
             excellence, research, and inclusive development.
           </p>
-          <Link to="/history" className="font-bold text-l text-jmi-600 mt-5 relative right-0">
-  FOR FULL HISTORY CLICK HERE
-</Link>
-
-
+          <Link
+            to="/history"
+            className="font-bold text-l text-jmi-600 mt-5 relative right-0"
+          >
+            FOR FULL HISTORY CLICK HERE
+          </Link>
         </div>
+
       </div>
+        <Footer></Footer>
     </div>
   );
 };
