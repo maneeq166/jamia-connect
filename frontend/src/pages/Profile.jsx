@@ -53,7 +53,7 @@ function Profile() {
     );
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 bg-white border border-gray-200 rounded-lg shadow p-6 sm:p-10">
+    <div className="max-w-4xl  mx-auto mt-10 bg-white border border-gray-200 rounded-lg shadow p-6 sm:p-10">
       <div className="sm:flex sm:items-center sm:space-x-6 mb-8">
         <div
           aria-label="card-horizontal"

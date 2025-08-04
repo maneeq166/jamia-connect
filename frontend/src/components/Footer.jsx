@@ -49,7 +49,7 @@ const Footer = () => {
           <div className="flex gap-4 size-50">
             {/* Replace emojis with actual icons (like from react-icons) if needed */}
             <a
-              href="https://www.instagram.com/an33q._/"
+              href="https://x.com/MohammadAn62616"
               target="_blank"
               rel="noreferrer"
               className="hover:text-gray-300"

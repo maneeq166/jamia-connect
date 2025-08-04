@@ -24,7 +24,7 @@ const SingleBlog = () => {
 
   useEffect(() => {
     getSingleBlog();
-  }, [blog]);
+  }, []);
 
   if (!blog) return <p className="text-center mt-10">Loading...</p>;
 
@@ -38,7 +38,7 @@ const SingleBlog = () => {
       <img
         src={blog.image?.url}
         alt="Blog"
-        className="w-full h-64 object-cover rounded mb-6"
+        className="w-70 h-full object-cover rounded mb-6"
       />
       <p className="text-lg leading-relaxed whitespace-pre-wrap">
         {blog.content}

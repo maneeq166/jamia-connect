@@ -70,7 +70,7 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen relative bg-gradient-to-br from-[#F4FFC3] to-[#5D8736] font-poppins">
+    <div className="min-h-screen mb-[-25px] relative bg-gradient-to-br from-[#F4FFC3] to-[#5D8736] font-poppins">
       {/* Radial Glow Background */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_600px_at_50%_300px,rgba(244,255,195,0.5),rgba(169,196,108,0.35),rgba(93,135,54,0.2),transparent)] z-0 pointer-events-none" />
 
