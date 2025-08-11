@@ -3,17 +3,21 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
-
+import { ArrowUp } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 
 const BlogIndex = () => {
   const nav = useNavigate();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
+ 
 
   // Fetch blogs from backend
   const fetchBlogs = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/v1/blog/get-all-blogs");
+      const res = await axios.get(
+        "http://localhost:3000/api/v1/blog/get-all-blogs"
+      );
 
       if (res.data.success) {
         setBlogs(res.data.blogs);
@@ -28,13 +32,39 @@ const BlogIndex = () => {
     }
   };
 
+
+ const updateVote = async (id, vote) => {
+  try {
+    const res = await axios.patch("http://localhost:3000/api/v1/blog/add-vote", {
+      id,
+      vote
+    });
+
+    if (res.data.success) {
+      setBlogs((prev) =>
+        prev.map((b) => (b._id === id ? { ...b, vote: res.data.vote } : b))
+      );
+    }
+  } catch {
+    toast.error("Vote update failed");
+  }
+};
+
+
   useEffect(() => {
     fetchBlogs();
   }, []);
 
+  
+
   return (
     <div className="min-h-screen px-4 py-8 bg-gray-50">
-      <Button onClick={()=>nav("/board/add-board")} className="px-3 text-sm py-2 ">Create a board</Button>
+      <Button
+        onClick={() => nav("/board/add-board")}
+        className="px-3 text-sm py-2 "
+      >
+        Create a board
+      </Button>
       <h1 className="text-4xl font-bold text-center mb-8 text-jmi-600">
         /JMI Board/
       </h1>
@@ -50,14 +80,24 @@ const BlogIndex = () => {
               key={blog._id}
               className="bg-jmi-300 p-4 rounded-lg shadow hover:shadow-md transition-all"
             >
-              {blog.image?.url && (
-                <img
-                  src={blog.image.url}
-                  alt={blog.title}
-                  className="w-50 h-50 object-cover rounded-md mb-4"
-                />
-              )}
-              <h2 onClick={()=>nav(`/blog/${blog._id}`)} className="text-xl hover:cursor-pointer hover:text-jmi-500 font-semibold text-jmi-700 mb-2">
+              <div className="flex justify-between">
+                {blog.image?.url && (
+                  <img
+                    src={blog.image.url}
+                    alt={blog.title}
+                    className="w-50 h-50 object-cover rounded-md mb-4"
+                  />
+                )}
+                <div className="flex">
+                  <p>{blog.vote}</p>
+                  <ArrowUp onClick={()=>updateVote(blog._id,blog.vote+1)} className="hover:text-jmi-600" />
+                  <ArrowDown onClick={()=>updateVote(blog._id,blog.vote-1)} className="hover:text-jmi-600" />
+                </div>
+              </div>
+              <h2
+                onClick={() => nav(`/blog/${blog._id}`)}
+                className="text-xl hover:cursor-pointer hover:text-jmi-500 font-semibold text-jmi-700 mb-2"
+              >
                 {blog.title}
               </h2>
               <p className="text-gray-600 text-xs mb-2">

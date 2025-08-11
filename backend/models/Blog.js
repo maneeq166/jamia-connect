@@ -8,8 +8,8 @@ const BlogSchema = new mongoose.Schema({
     image:{
         public_url:String,
         url:String
-    }
-
+    },
+    vote:{type:Number,required:true,default:0}
 },{
     timestamps:true
 })

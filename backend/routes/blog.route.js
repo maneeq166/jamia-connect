@@ -1,4 +1,4 @@
-const { addBlog, getAllBlog, getBlog, deleteBlog } = require('../controllers/blog-controllers/blog.controller');
+const { addBlog, getAllBlog, getBlog, deleteBlog, addVote } = require('../controllers/blog-controllers/blog.controller');
 const {authMiddleware} = require("../middleware/authMiddleware")
 const {Router} = require("express");
 const { uploadMiddleware } = require('../middleware/uploadMiddleware');
@@ -9,6 +9,7 @@ blogRouter.post("/add-blog",authMiddleware,uploadMiddleware.single("image"),addB
 blogRouter.get("/get-all-blogs",getAllBlog);
 blogRouter.get("/get-blog/:id",getBlog);
 blogRouter.delete("/delete-blog/:id",authMiddleware,deleteBlog);
+blogRouter.patch("/add-vote",addVote);
 
 
 module.exports = blogRouter;

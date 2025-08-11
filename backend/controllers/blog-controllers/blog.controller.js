@@ -124,9 +124,43 @@ async function deleteBlog(req, res) {
   }
 }
 
+
+
+async function addVote(req, res) {
+  try {
+    const { vote, id } = req.body;
+
+    if (vote === undefined) {
+      return res.status(400).json({ message: "Vote value is required!", success: false });
+    }
+
+    const updatedBlog = await Blog.findOneAndUpdate(
+      { _id: id },
+      { vote },
+      { new: true, select: "vote" }
+    );
+
+    if (!updatedBlog) {
+      return res.status(404).json({ message: "Blog not found!", success: false });
+    }
+
+    return res.status(200).json({
+      message: "Vote updated successfully!",
+      success: true,
+      vote: updatedBlog.vote
+    });
+
+  } catch (error) {
+    console.error("Error updating vote:", error);
+    return res.status(500).json({ message: "Server error", success: false });
+  }
+}
+
+
 module.exports = {
   addBlog,
   getAllBlog,
   getBlog,
   deleteBlog,
+  addVote
 };
