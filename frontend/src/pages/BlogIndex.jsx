@@ -10,7 +10,7 @@ const BlogIndex = () => {
   const nav = useNavigate();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
- 
+ const token = localStorage.getItem("token");
 
   // Fetch blogs from backend
   const fetchBlogs = async () => {
@@ -33,11 +33,10 @@ const BlogIndex = () => {
   };
 
 
- const updateVote = async (id, vote) => {
+ const updateVote = async (id,token,votes) => {
   try {
     const res = await axios.patch("http://localhost:3000/api/v1/blog/add-vote", {
-      id,
-      vote
+      id,userId:token,votes
     });
 
     if (res.data.success) {
@@ -90,8 +89,8 @@ const BlogIndex = () => {
                 )}
                 <div className="flex">
                   <p>{blog.vote}</p>
-                  <ArrowUp onClick={()=>updateVote(blog._id,blog.vote+1)} className="hover:text-jmi-600" />
-                  <ArrowDown onClick={()=>updateVote(blog._id,blog.vote-1)} className="hover:text-jmi-600" />
+                  <ArrowUp onClick={()=>updateVote(blog._id,token,1)} className="hover:text-jmi-600" />
+                  <ArrowDown onClick={()=>updateVote(blog._id,token,0)} className="hover:text-jmi-600" />
                 </div>
               </div>
               <h2

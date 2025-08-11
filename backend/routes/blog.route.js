@@ -9,7 +9,7 @@ blogRouter.post("/add-blog",authMiddleware,uploadMiddleware.single("image"),addB
 blogRouter.get("/get-all-blogs",getAllBlog);
 blogRouter.get("/get-blog/:id",getBlog);
 blogRouter.delete("/delete-blog/:id",authMiddleware,deleteBlog);
-blogRouter.patch("/add-vote",addVote);
+blogRouter.patch("/add-vote",authMiddleware,addVote);
 
 
 module.exports = blogRouter;

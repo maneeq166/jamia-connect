@@ -9,7 +9,7 @@ const BlogSchema = new mongoose.Schema({
         public_url:String,
         url:String
     },
-    vote:{type:Number,required:true,default:0}
+    vote:{type:[mongoose.Schema.Types.ObjectId],unique:true,required:true,ref:"User"}
 },{
     timestamps:true
 })

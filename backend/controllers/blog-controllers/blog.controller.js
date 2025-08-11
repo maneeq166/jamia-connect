@@ -53,6 +53,8 @@ async function getAllBlog(req, res) {
   try {
     const blogs = await Blog.find();
 
+    
+
     if (!blogs) {
       return res.json({ message: "No Blog found!" });
     }
@@ -128,33 +130,35 @@ async function deleteBlog(req, res) {
 
 async function addVote(req, res) {
   try {
-    const { vote, id } = req.body;
+    
+    const {id,userId ,votes} = req.body;
 
-    if (vote === undefined) {
-      return res.status(400).json({ message: "Vote value is required!", success: false });
-    }
+    let vote;
 
-    const updatedBlog = await Blog.findOneAndUpdate(
-      { _id: id },
-      { vote },
-      { new: true, select: "vote" }
-    );
+  if(votes==1){
+    vote = await Blog.findByIdAndUpdate(id,{$push:{vote:userId}},{new:true});
 
-    if (!updatedBlog) {
-      return res.status(404).json({ message: "Blog not found!", success: false });
-    }
+  }
 
-    return res.status(200).json({
-      message: "Vote updated successfully!",
-      success: true,
-      vote: updatedBlog.vote
-    });
+  if(votes==0){
+    vote = await Blog.findByIdAndUpdate(id,{$pop:{vote:userId}},{new:true});
+  }
+
+  if(!vote){
+    res.status(400).json({message:"something went wrong",success:false})
+  }
+
+  const allVotes = vote.vote.length;
+
+  return res.status(200).json({message:"Vote updated!",success:true,vote:allVotes})
 
   } catch (error) {
     console.error("Error updating vote:", error);
     return res.status(500).json({ message: "Server error", success: false });
   }
 }
+
+
 
 
 module.exports = {
