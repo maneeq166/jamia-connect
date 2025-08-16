@@ -9,7 +9,8 @@ const BlogSchema = new mongoose.Schema({
         public_url:String,
         url:String
     },
-    vote:{type:[mongoose.Schema.Types.ObjectId],unique:true,required:true,ref:"User"}
+    downVote:{type:[mongoose.Schema.Types.ObjectId],ref:"User"},
+    upVote:{type:[mongoose.Schema.Types.ObjectId],ref:"User"}
 },{
     timestamps:true
 })

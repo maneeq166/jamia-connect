@@ -87,7 +87,7 @@ const Footer = () => {
 
       {/* Copyright */}
       <div className="border-t border-gray-600 mt-8 pt-4 text-center text-sm text-gray-300">
-        © {new Date().getFullYear()} JC - Jamia Companion. All rights reserved.
+        © {new Date().getFullYear()} JC - Jamia Connect. All rights reserved.
       </div>
     </footer>
   );

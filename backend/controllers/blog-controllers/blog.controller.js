@@ -1,3 +1,4 @@
+const { trusted } = require("mongoose");
 const { uploadToCloudinary } = require("../../helpers/cloudinaryHelper");
 const { Blog } = require("../../models/Blog");
 const User = require("../../models/User");
@@ -127,38 +128,83 @@ async function deleteBlog(req, res) {
 }
 
 
-
 async function addVote(req, res) {
   try {
+    const userId = req.userId;
+    const { blogId } = req.body;
+
+    if (!userId || !blogId ) {
+      return res.status(400).json({ message: "Required fields are missing", success: false });
+    }
+
+
+    let alreadyVoted = await Blog.findOne({ _id: blogId, upVote: userId });
+    if (alreadyVoted) {
+      alreadyVoted  =  await Blog.findByIdAndUpdate(blogId,{$pull:{upVote:userId}},{new:true}).select("upVote");
+      return res.status(200).json({message:"took your vote down!",success:true,totalVotes:alreadyVoted.upVote.length,voters:alreadyVoted.upVote})
+    }
+
     
-    const {id,userId ,votes} = req.body;
+    const updatedBlog = await Blog.findOneAndUpdate(
+      { _id: blogId },
+      { $addToSet: { upVote: userId } },   
+      { new: true }
+    ).select("upVote");
 
-    let vote;
-
-  if(votes==1){
-    vote = await Blog.findByIdAndUpdate(id,{$push:{vote:userId}},{new:true});
-
-  }
-
-  if(votes==0){
-    vote = await Blog.findByIdAndUpdate(id,{$pop:{vote:userId}},{new:true});
-  }
-
-  if(!vote){
-    res.status(400).json({message:"something went wrong",success:false})
-  }
-
-  const allVotes = vote.vote.length;
-
-  return res.status(200).json({message:"Vote updated!",success:true,vote:allVotes})
+    return res.status(201).json({
+      message: "Upvoted",
+      success: true,
+      totalVotes: updatedBlog.upVote.length,
+      voters: updatedBlog.upVote
+    });
 
   } catch (error) {
-    console.error("Error updating vote:", error);
-    return res.status(500).json({ message: "Server error", success: false });
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error!", success: false });
   }
 }
 
+async function removeVote(req, res) {
+  try {
+    const userId = req.userId;
+    const { blogId } = req.body;
 
+    if (!userId || !blogId) {
+      return res.status(400).json({ message: "Required fields are missing", success: false });
+    }
+
+    // Check if user has voted
+    let findVote = await Blog.findOne({ _id: blogId, downVote: userId });
+    if (!findVote) {
+      findVote = await Blog.findByIdAndUpdate(blogId,{$addToSet:{downVote:userId}},{new:true}).select("downVote");
+      return res.status(200).json({message:"down vote added",success:true,totalVotes:findVote.downVote.length,voters:findVote.downVote})
+    }
+
+
+
+    // Remove the vote
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      blogId,
+      { $pull: { downVote: userId } },
+      { new: true }
+    ).select("downVote");
+
+    // if (!updatedBlog) {
+    //   return res.status(404).json({ message: "Could not downvote", success: false });
+    // }
+
+    return res.status(201).json({
+      message: "Downvoted!",
+      success: true,
+      totalVotes: updatedBlog.downVote.length,
+      voters: updatedBlog.downVote
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error!", success: false });
+  }
+}
 
 
 module.exports = {
@@ -166,5 +212,6 @@ module.exports = {
   getAllBlog,
   getBlog,
   deleteBlog,
-  addVote
+  addVote,
+  removeVote
 };
