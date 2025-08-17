@@ -133,29 +133,40 @@ async function addVote(req, res) {
     const userId = req.userId;
     const { blogId } = req.body;
 
-    if (!userId || !blogId ) {
+    if (!userId || !blogId) {
       return res.status(400).json({ message: "Required fields are missing", success: false });
     }
 
+    const blog = await Blog.findById(blogId);
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found", success: false });
+    }
 
-    let alreadyVoted = await Blog.findOne({ _id: blogId, upVote: userId });
-    if (alreadyVoted) {
-      alreadyVoted  =  await Blog.findByIdAndUpdate(blogId,{$pull:{upVote:userId}},{new:true}).select("upVote");
-      return res.status(200).json({message:"took your vote down!",success:true,totalVotes:alreadyVoted.upVote.length,voters:alreadyVoted.upVote})
+    // If user has downvoted -> remove downvote first
+    if (blog.downVote.includes(userId)) {
+      await Blog.findByIdAndUpdate(blogId, { $pull: { downVote: userId } });
+    }
+
+    // If user already upvoted -> remove upvote (toggle off)
+    if (blog.upVote.includes(userId)) {
+      await Blog.findByIdAndUpdate(blogId, { $pull: { upVote: userId } });
+     return  res.status(200).json({ message: "Removed upvote", success: true });
     }
 
     
-    const updatedBlog = await Blog.findOneAndUpdate(
-      { _id: blogId },
-      { $addToSet: { upVote: userId } },   
+
+    // Add upvote
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      blogId,
+      { $addToSet: { upVote: userId } },
       { new: true }
-    ).select("upVote");
+    ).select("upVote downVote");
 
     return res.status(201).json({
       message: "Upvoted",
       success: true,
-      totalVotes: updatedBlog.upVote.length,
-      voters: updatedBlog.upVote
+      totalUpVotes: updatedBlog.upVote.length,
+      totalDownVotes: updatedBlog.downVote.length,
     });
 
   } catch (error) {
@@ -173,31 +184,36 @@ async function removeVote(req, res) {
       return res.status(400).json({ message: "Required fields are missing", success: false });
     }
 
-    // Check if user has voted
-    let findVote = await Blog.findOne({ _id: blogId, downVote: userId });
-    if (!findVote) {
-      findVote = await Blog.findByIdAndUpdate(blogId,{$addToSet:{downVote:userId}},{new:true}).select("downVote");
-      return res.status(200).json({message:"down vote added",success:true,totalVotes:findVote.downVote.length,voters:findVote.downVote})
+    const blog = await Blog.findById(blogId);
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found", success: false });
+    }
+
+    // If user has upvoted -> remove upvote first
+    if (blog.upVote.includes(userId)) {
+      await Blog.findByIdAndUpdate(blogId, { $pull: { upVote: userId } });
     }
 
 
+    // If user already downvoted -> remove downvote (toggle off)
+    if (blog.downVote.includes(userId)) {
+      await Blog.findByIdAndUpdate(blogId, { $pull: { downVote: userId } });
+      return res.status(200).json({ message: "Removed downvote", success: true });
+    }
 
-    // Remove the vote
+    
+    // Add downvote
     const updatedBlog = await Blog.findByIdAndUpdate(
       blogId,
-      { $pull: { downVote: userId } },
+      { $addToSet: { downVote: userId } },
       { new: true }
-    ).select("downVote");
-
-    // if (!updatedBlog) {
-    //   return res.status(404).json({ message: "Could not downvote", success: false });
-    // }
+    ).select("upVote downVote");
 
     return res.status(201).json({
-      message: "Downvoted!",
+      message: "Downvoted",
       success: true,
-      totalVotes: updatedBlog.downVote.length,
-      voters: updatedBlog.downVote
+      totalUpVotes: updatedBlog.upVote.length,
+      totalDownVotes: updatedBlog.downVote.length,
     });
 
   } catch (error) {
@@ -205,6 +221,7 @@ async function removeVote(req, res) {
     return res.status(500).json({ message: "Internal Server Error!", success: false });
   }
 }
+
 
 
 module.exports = {

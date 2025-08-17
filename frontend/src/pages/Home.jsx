@@ -203,12 +203,12 @@ const Home = () => {
             has grown into a modern center of learning that promotes academic
             excellence, research, and inclusive development.
           </p>
-          <Link
+          {/* <Link
             to="/history"
             className="font-bold text-l text-jmi-600 mt-5 relative right-0"
           >
             FOR FULL HISTORY CLICK HERE
-          </Link>
+          </Link> */}
         </div>
 
       </div>

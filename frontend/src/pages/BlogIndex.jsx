@@ -10,7 +10,7 @@ const BlogIndex = () => {
   const nav = useNavigate();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
- const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
   // Fetch blogs from backend
   const fetchBlogs = async () => {
@@ -32,20 +32,49 @@ const BlogIndex = () => {
     }
   };
 
-
- const updateVote = async (id,token,votes) => {
+const updateUpVote = async (blogId) => {
   try {
-    const res = await axios.patch("http://localhost:3000/api/v1/blog/add-vote", {
-      id,userId:token,votes
-    });
+    const res = await axios.patch(
+      "http://localhost:3000/api/v1/blog/add-vote",
+      { blogId },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
 
     if (res.data.success) {
       setBlogs((prev) =>
-        prev.map((b) => (b._id === id ? { ...b, vote: res.data.vote } : b))
+        prev.map((b) =>
+          b._id === blogId
+            ? { ...b, upVote: res.data.upvoters, downVote: res.data.downvoters }
+            : b
+        )
       );
     }
+    fetchBlogs();
   } catch {
-    toast.error("Vote update failed");
+    toast.error("Upvote failed");
+  }
+};
+
+const updateDownVote = async (blogId) => {
+  try {
+    const res = await axios.patch(
+      "http://localhost:3000/api/v1/blog/remove-vote",
+      { blogId },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    if (res.data.success) {
+      setBlogs((prev) =>
+        prev.map((b) =>
+          b._id === blogId
+            ? { ...b, downVote: res.data.downvoters, upVote: res.data.upvoters }
+            : b
+        )
+      );
+    }
+    fetchBlogs();
+  } catch {
+    toast.error("Downvote failed");
   }
 };
 
@@ -53,8 +82,6 @@ const BlogIndex = () => {
   useEffect(() => {
     fetchBlogs();
   }, []);
-
-  
 
   return (
     <div className="min-h-screen px-4 py-8 bg-gray-50">
@@ -88,9 +115,11 @@ const BlogIndex = () => {
                   />
                 )}
                 <div className="flex">
-                  <p>{blog.vote}</p>
-                  <ArrowUp onClick={()=>updateVote(blog._id,token,1)} className="hover:text-jmi-600" />
-                  <ArrowDown onClick={()=>updateVote(blog._id,token,0)} className="hover:text-jmi-600" />
+                  <p>{blog.upVote?.length || 0}</p>
+                  <ArrowUp onClick={() => updateUpVote(blog._id)} />
+
+                  <ArrowDown onClick={() => updateDownVote(blog._id)} />
+                  <p>{blog.downVote?.length || 0}</p>
                 </div>
               </div>
               <h2

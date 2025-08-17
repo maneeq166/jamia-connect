@@ -20,9 +20,7 @@ blogRouter.post(
 blogRouter.get("/get-all-blogs", getAllBlog);
 blogRouter.get("/get-blog/:id", getBlog);
 blogRouter.delete("/delete-blog/:id", authMiddleware, deleteBlog);
-blogRouter.patch("/add-vote",
-     authMiddleware,
-      addVote);
-blogRouter.patch("/remove-vote",authMiddleware,removeVote)
+blogRouter.patch("/add-vote", authMiddleware, addVote);
+blogRouter.patch("/remove-vote", authMiddleware, removeVote);
 
 module.exports = blogRouter;
