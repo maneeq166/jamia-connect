@@ -47,6 +47,7 @@ function Explore() {
   const [searchResults, setSearchResults] = useState(null);
   const [loading, setLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+  const [isExactSearching,setIsExactSearching] = useState(false);
 
   const totalPages = useRef(1);
   const navigate = useNavigate();
@@ -75,7 +76,7 @@ function Explore() {
     setIsSearching(true);
     try {
       const res = await axios.get(
-        `http://localhost:3000/api/v1/explore/user/${currentSearchTerm}`
+        `http://localhost:3000/api/v1/explore/users/${currentSearchTerm}`
       );
       setSearchResults(res.data.user);
     } catch (error) {
@@ -85,6 +86,25 @@ function Explore() {
       setIsSearching(false);
     }
   }, []);
+
+ const fetchExactUser = async (username) => {
+  if (!username.trim()) return;
+
+  setIsExactSearching(true);
+
+  try {
+    const res = await axios.post(
+      `http://localhost:3000/api/v1/explore/user/${username}`
+    );
+    setSearchResults(res.data.user);
+  } catch (error) {
+    console.log("Search failed:", error);
+    setSearchResults([]);
+  } finally {
+    setIsExactSearching(false); 
+  }
+};
+
 
   // Effect for debounced search-as-you-type
   useEffect(() => {
@@ -98,6 +118,15 @@ function Explore() {
     return () => clearTimeout(debounceTimer);
   }, [searchTerm, fetchUserBySearch]);
 
+  useEffect(()=>{
+    if (searchTerm.trim() === '') {
+      setSearchResults(null);
+      return;
+    }
+
+    fetchExactUser(searchTerm);
+
+  },[])
 
   // Effect to fetch all users when the page changes, but only if we're not searching.
   useEffect(() => {
@@ -157,13 +186,13 @@ function Explore() {
                 Clear
              </button>
           )}
-           <button type="submit" className="absolute right-2 bg-jmi-400 text-white py-2 px-4 rounded-md hover:bg-jmi-500">
+           <button type="submit"  oncClick={fetchExactUser} className="absolute right-2 bg-jmi-400 text-white py-2 px-4 rounded-md hover:bg-jmi-500">
               Search
            </button>
         </form>
 
         {/* Loading State Indicator */}
-        {(loading || isSearching) && (
+        {(loading || isSearching || isExactSearching  ) && (
           <div className="p-10 flex justify-center items-center">
             <Loader />
           </div>

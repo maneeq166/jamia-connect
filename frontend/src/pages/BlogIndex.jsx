@@ -32,52 +32,59 @@ const BlogIndex = () => {
     }
   };
 
-const updateUpVote = async (blogId) => {
-  try {
-    const res = await axios.patch(
-      "http://localhost:3000/api/v1/blog/add-vote",
-      { blogId },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-
-    if (res.data.success) {
-      setBlogs((prev) =>
-        prev.map((b) =>
-          b._id === blogId
-            ? { ...b, upVote: res.data.upvoters, downVote: res.data.downvoters }
-            : b
-        )
+  const updateUpVote = async (blogId) => {
+    try {
+      const res = await axios.patch(
+        "http://localhost:3000/api/v1/blog/add-vote",
+        { blogId },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
+
+      if (res.data.success) {
+        setBlogs((prev) =>
+          prev.map((b) =>
+            b._id === blogId
+              ? {
+                  ...b,
+                  upVote: res.data.upvoters,
+                  downVote: res.data.downvoters,
+                }
+              : b
+          )
+        );
+      }
+      fetchBlogs();
+    } catch {
+      toast.error("Upvote failed");
     }
-    fetchBlogs();
-  } catch {
-    toast.error("Upvote failed");
-  }
-};
+  };
 
-const updateDownVote = async (blogId) => {
-  try {
-    const res = await axios.patch(
-      "http://localhost:3000/api/v1/blog/remove-vote",
-      { blogId },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-
-    if (res.data.success) {
-      setBlogs((prev) =>
-        prev.map((b) =>
-          b._id === blogId
-            ? { ...b, downVote: res.data.downvoters, upVote: res.data.upvoters }
-            : b
-        )
+  const updateDownVote = async (blogId) => {
+    try {
+      const res = await axios.patch(
+        "http://localhost:3000/api/v1/blog/remove-vote",
+        { blogId },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-    }
-    fetchBlogs();
-  } catch {
-    toast.error("Downvote failed");
-  }
-};
 
+      if (res.data.success) {
+        setBlogs((prev) =>
+          prev.map((b) =>
+            b._id === blogId
+              ? {
+                  ...b,
+                  downVote: res.data.downvoters,
+                  upVote: res.data.upvoters,
+                }
+              : b
+          )
+        );
+      }
+      fetchBlogs();
+    } catch {
+      toast.error("Downvote failed");
+    }
+  };
 
   useEffect(() => {
     fetchBlogs();
@@ -114,12 +121,27 @@ const updateDownVote = async (blogId) => {
                     className="w-50 h-50 object-cover rounded-md mb-4"
                   />
                 )}
-                <div className="flex">
-                  <p>{blog.upVote?.length || 0}</p>
-                  <ArrowUp onClick={() => updateUpVote(blog._id)} />
-
-                  <ArrowDown onClick={() => updateDownVote(blog._id)} />
-                  <p>{blog.downVote?.length || 0}</p>
+                <div className="flex ">
+                  <div className="flex">
+                    <div className="flex flex-col mr-1">
+                      <p className="mb-4 mt-2">{blog.upVote?.length || 0}</p>
+                      <p>{blog.downVote?.length || 0}</p>
+                    </div>
+                    <div className="flex flex-col ">
+                      <div className="bg-jmi-400 p-2  rounded-2xl ">
+                        <ArrowUp
+                          className="hover:text-jmi-700"
+                          onClick={() => updateUpVote(blog._id)}
+                        />
+                      </div>
+                      <div className="bg-jmi-400 p-2  rounded-2xl ">
+                        <ArrowDown
+                          className="hover:text-jmi-700"
+                          onClick={() => updateDownVote(blog._id)}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <h2

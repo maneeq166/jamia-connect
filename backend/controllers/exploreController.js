@@ -26,37 +26,45 @@ async function getManyUsers(req, res) {
 async function getUsers(req, res) {
   try {
     const username = req.params.username;
+    const page = parseInt(req.query.page) || 1;
+    const limit = 30;
+
+    const skip = (page - 1) * limit;
 
     const user = await User.find({
       username: { $regex: username, $options: "i" },
-    }).select("-password");
+    })
+      .select("-password")
+      .skip(skip)
+      .limit(limit);
 
-    if (!user) {
+    if (!user.length) {
       return res.status(404).json({ message: "Not found", success: false });
     }
 
-    console.log(user);
+     const totalUsers = await User.countDocuments({
+      username: { $regex: username, $options: "i" },
+    });
 
-    return res.json({ user, success: true });
+    return res.json({
+      user,
+      success: true,
+      totalUsers,
+      totalPages: Math.ceil(totalUsers / limit),
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error", success: false });
   }
 }
 
-
-
-async function getSingleUser(req,res){
+async function getSingleUser(req, res) {
   try {
     const username = req.params.username;
-    
 
-    const user= await User.findOne({username:username}).select("-password");
+    const user = await User.findOne({ username: username }).select("-password");
 
-    
-
-    return res.status(200).json({success:true,user})
-
+    return res.status(200).json({ success: true, user });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error", success: false });
@@ -66,5 +74,5 @@ async function getSingleUser(req,res){
 module.exports = {
   getManyUsers,
   getUsers,
-  getSingleUser
+  getSingleUser,
 };

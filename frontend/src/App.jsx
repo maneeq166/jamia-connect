@@ -23,6 +23,7 @@ import HistoryOfJMI from "./pages/HistoryOfJMI.jsx";
 import JmiNotices from "./pages/JmiNotices.jsx";
 import OAuthSuccess from "./components/OauthSuccess.jsx";
 
+
 function App() {
   return (
     <>
