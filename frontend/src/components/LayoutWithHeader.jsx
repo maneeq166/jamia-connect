@@ -8,9 +8,7 @@ const LayoutWithHeader = () => {
     <>
       <Header />
       <Outlet />
-      <div className="mt-6">
-        <Footer />
-      </div>
+      
     </>
   );
 };

@@ -28,14 +28,14 @@ const Pyqs = () => {
   }, []);
 
   return (
-    <div>
-      <div className="flex justify-end px-5 mt-5">
+    <div >
+      <div className="flex justify-end  px-5 mt-5">
         <Button onClick={() => nav("/upload-pyq")} className="py-1 px-2 w-[200px]">
           Want to upload pyqs?
         </Button>
       </div>
 
-      <div className="flex flex-wrap min-h-screen ml-5 mr-5 mt-2 bg-jmi-300 p-4 border-2 rounded-2xl border-jmi-500 gap-x-5">
+      <div className="flex flex-wrap min-h-screen ml-5 mr-5 mt-2 space-y-4 gap-x-5">
         {loading ? (
           <div className='flex justify-center items-center  h-screen w-full'>
             <p className='text-xs'><Loader /></p>

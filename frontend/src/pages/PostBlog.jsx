@@ -85,8 +85,8 @@ const Blog = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-3 py-8">
-      <div className="rounded-2xl shadow-2xl w-full max-w-3xl p-8 space-y-6 bg-white">
-        <div className="flex justify-between items-center">
+      <div className="rounded-2xl shadow-2xl bg-jmi-300 w-full max-w-3xl p-8 space-y-6 ">
+        <div className="flex justify-between  items-center">
           <h1 className="text-4xl font-semibold bg-gradient-to-r from-jmi-400 via-jmi-600 to-jmi-600 bg-clip-text text-transparent">
             Write your Board
           </h1>

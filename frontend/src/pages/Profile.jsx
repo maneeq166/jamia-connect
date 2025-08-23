@@ -3,13 +3,12 @@ import axios from "axios";
 import { PaperClipIcon } from "@heroicons/react/20/solid";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
-
+import Footer from "../components/Footer";
 
 function Profile() {
   const nav = useNavigate();
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
-  
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -53,7 +52,9 @@ function Profile() {
     );
 
   return (
-    <div className="max-w-4xl  mx-auto mt-10 bg-white border border-gray-200 rounded-lg shadow p-6 sm:p-10">
+    <>
+    
+    <div className="max-w-4xl mb-4 mx-auto mt-10 bg-white border border-gray-200 rounded-lg shadow p-6 sm:p-10">
       <div className="sm:flex sm:items-center sm:space-x-6 mb-8">
         <div
           aria-label="card-horizontal"
@@ -70,56 +71,52 @@ function Profile() {
               className="object-cover  w-full h-full rounded-lg"
             />
           </div>
-          
-          
-  {/* File Upload Input (Hidden) */}
-  <input
-    id="pfpInput"
-    type="file"
-    accept="image/*"
-    className="hidden"
-    onChange={async (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const formData = new FormData();
-      formData.append("image", file);
 
-      try {
-        const token = localStorage.getItem("token");
-        await axios.patch(
-          "http://localhost:3000/api/v1/profile/avatar",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        alert("Profile picture updated!");
-        window.location.reload(); // Or refetch user
-      } catch (err) {
-        console.error("Upload error:", err);
-        alert("Failed to upload image");
-      }
-    }}
-  />
+          {/* File Upload Input (Hidden) */}
+          <input
+            id="pfpInput"
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={async (e) => {
+              const file = e.target.files[0];
+              if (!file) return;
+              const formData = new FormData();
+              formData.append("image", file);
 
-  {/* Edit Button Overlay */}
-  <label
-    htmlFor="pfpInput"
-    className="absolute top-36 left-36 size-6 p-1 bg-jmi-400 rounded-full shadow-md cursor-pointer"
-  >
-    <img
-      src="https://www.svgrepo.com/show/130377/pencil.svg"
-      alt="edit"
-      className="w-full h-full"
-    />
-  </label>
+              try {
+                const token = localStorage.getItem("token");
+                await axios.patch(
+                  "http://localhost:3000/api/v1/profile/avatar",
+                  formData,
+                  {
+                    headers: {
+                      "Content-Type": "multipart/form-data",
+                      Authorization: `Bearer ${token}`,
+                    },
+                  }
+                );
+                alert("Profile picture updated!");
+                window.location.reload(); // Or refetch user
+              } catch (err) {
+                console.error("Upload error:", err);
+                alert("Failed to upload image");
+              }
+            }}
+          />
 
-          
-          
-          
+          {/* Edit Button Overlay */}
+          <label
+            htmlFor="pfpInput"
+            className="absolute top-36 left-36 size-6 p-1 bg-jmi-400 rounded-full shadow-md cursor-pointer"
+          >
+            <img
+              src="https://www.svgrepo.com/show/130377/pencil.svg"
+              alt="edit"
+              className="w-full h-full"
+            />
+          </label>
+
           <div className="flex flex-col flex-1 gap-y-1">
             <h3 className="text-xl font-semibold text-jmi-500">
               Welcome, {user.username || "User"}!
@@ -166,10 +163,18 @@ function Profile() {
           )}
         </dl>
       </div>
-      <Button className="h-[30px] px-6 py-1" onClick={() => nav("/update-profile")}>
+      <Button
+        className="h-[30px] px-6 py-1"
+        onClick={() => nav("/update-profile")}
+      >
         Update User
       </Button>
+
+      
     </div>
+
+    <Footer></Footer>
+</>
   );
 }
 
