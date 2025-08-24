@@ -1,6 +1,8 @@
 const User = require("../../models/User");
 const { z } = require("zod");
 const bcrypt = require("bcrypt");
+const { Blog } = require("../../models/Blog");
+const { Pyq } = require("../../models/Pyq");
 
 async function getProfileInfo(req, res) {
   const userId = req.userId;
@@ -11,11 +13,26 @@ async function getProfileInfo(req, res) {
 
   const user = await User.findOne({ _id: userId }).select("-password");
 
+  
   if (!user) {
     return res.status(400).json({ message: "User does not exists" });
   }
 
-  res.json({ user });
+  let blog = await Blog.find({username:user.username});
+
+  let pyqs = await Pyq.find({username:user._id})
+
+  if(!blog || blog.length == 0){
+    blog = "No blogs found"
+  }
+  if(!pyqs||pyqs.length==0){
+    pyqs="No pyqs found"
+  }
+
+
+  
+
+  return res.json({ user ,blog ,pyqs });
 }
 
 async function updateProfileInfo(req, res) {
@@ -142,6 +159,10 @@ async function getAllUsers(req, res) {
     console.error(err);
     return res.status(500).json({ message: "Server error" });
   }
+}
+
+async function getUsersProfileBlogsAndPyqs(req,res){
+
 }
 
 
