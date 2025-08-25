@@ -18,21 +18,21 @@ async function getProfileInfo(req, res) {
     return res.status(400).json({ message: "User does not exists" });
   }
 
-  let blog = await Blog.find({username:user.username});
+  let blogs = await Blog.find({username:user.username});
 
   let pyqs = await Pyq.find({username:user._id})
 
-  if(!blog || blog.length == 0){
-    blog = "No blogs found"
+  if(!blogs|| blogs.length == 0){
+    blogs =[]
   }
   if(!pyqs||pyqs.length==0){
-    pyqs="No pyqs found"
+    pyqs=[];
   }
 
 
   
 
-  return res.json({ user ,blog ,pyqs });
+  return res.json({ user ,blogs ,pyqs });
 }
 
 async function updateProfileInfo(req, res) {
