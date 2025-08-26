@@ -10,10 +10,11 @@ const UserRow = ({ user }) => {
   const navigate = useNavigate();
   return (
     // UI UPDATED: Restored original even row background color and border color.
+    <>
     <div
-      className="grid grid-cols-9 gap-4 px-6 py-3 odd:bg-white even:bg-jmi-300 border-b border-jmi-bg-jmi-600 transition-all hover:bg-jmi-100 cursor-pointer"
+      className="hidden md:grid grid-cols-9 gap-4 px-6 py-3 odd:bg-white even:bg-jmi-300 border-b border-jmi-bg-jmi-600 transition-all hover:bg-jmi-100 cursor-pointer"
       onClick={() => navigate(`/user/${user.username}`)}
-    >
+      >
       <div className="col-span-1 flex items-center justify-center">
         <img
           src={
@@ -35,6 +36,30 @@ const UserRow = ({ user }) => {
         {new Date(user.createdAt).toLocaleDateString()}
       </div>
     </div>
+    <div
+        className="md:hidden bg-white border-b border-gray-200 p-4 cursor-pointer hover:bg-gray-50"
+        onClick={() => navigate(`/user/${user.username}`)}
+      >
+        <div className="flex items-center gap-3">
+          <img
+            src={
+              user?.avatar?.url ||
+              "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
+            }
+            alt={`${user.username}'s avatar`}
+            className="w-12 h-12 rounded-full object-cover"
+          />
+          <div>
+            <p className="font-semibold text-gray-800">{user.username}</p>
+            <p className="text-sm text-gray-600">Year: {user.year || "N/A"}</p>
+            <p className="text-sm text-gray-600">Dept: {user.department || "N/A"}</p>
+            <p className="text-xs text-gray-400">
+              Joined: {new Date(user.createdAt).toLocaleDateString()}
+            </p>
+          </div>
+        </div>
+      </div>
+</>
   );
 };
 
@@ -153,7 +178,7 @@ function Explore() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <div className="flex items-center justify-center pt-10 px-4">
+      <div className="hidden sm:flex items-center justify-center pt-10 px-4">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -202,7 +227,7 @@ function Explore() {
         {!loading && !isSearching && (
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             {/* Header Row */}
-            <div className="grid grid-cols-9 gap-4 px-6 py-3 bg-gradient-to-l from-[#5D8736] via-[#809D3C] to-[#A9C46C] text-white font-semibold rounded-t-md">
+            <div className="hidden md:grid grid-cols-9  gap-4 px-6 py-3 bg-gradient-to-l from-[#5D8736] via-[#809D3C] to-[#A9C46C] text-white font-semibold rounded-t-md">
               <div className="col-span-1 text-center">Avatar</div>
               <div className="col-span-4 ml-10">Name</div>
               <div className="col-span-1">Year</div>

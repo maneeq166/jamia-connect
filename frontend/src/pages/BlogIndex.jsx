@@ -94,7 +94,7 @@ const BlogIndex = () => {
     <div className="min-h-screen px-4 py-8 bg-gray-50">
       <Button
         onClick={() => nav("/board/add-board")}
-        className="px-3 text-sm py-2 "
+        className="mb-4 px-3 text-sm py-2 "
       >
         Create a board
       </Button>
