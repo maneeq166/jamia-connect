@@ -146,8 +146,25 @@ const Header = () => {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="md:hidden bg-[#0f4f3d] px-6 py-4 space-y-3 overflow-hidden"
+            className="md:hidden bg-jmi-700 px-6 py-4 space-y-3 overflow-hidden"
           >
+
+            <Link to="/jmi-notices" className="block text-white text-lg"
+                  onClick={() => {
+                    handleMobileLinkClick();
+                  }} >Notices</Link>
+                  <Link to="/boards" className="block text-white text-lg"
+                  onClick={() => {
+                    handleMobileLinkClick();
+                  }} >Boards</Link>
+                  <Link to="/explore" className="block text-white text-lg"
+                  onClick={() => {
+                    handleMobileLinkClick();
+                  }} >Explore</Link>
+                  <Link to="/pyq-material" className="block text-white text-lg"
+                  onClick={() => {
+                    handleMobileLinkClick();
+                  }} >Pyqs</Link>
             {isSignedIn ? (
               <>
                 <Link
