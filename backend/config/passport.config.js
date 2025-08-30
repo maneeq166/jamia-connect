@@ -5,6 +5,12 @@ const User = require("../models/User");
 require('dotenv').config();
 
 // This is the main Google OAuth strategy configuration
+let callbackURL;
+if(process.NODE_ENV == "production"){
+  callbackURL = process.env.GOOGLE_CALLBACK_URL_PROD
+}else{
+  callbackURL = process.env.GOOGLE_CALLBACK_URL
+}
 passport.use(
   new GoogleStrategy(
     {
@@ -12,7 +18,7 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       // This callback URL must match the one in your Google Cloud Console credentials
       // and the route defined in passport.route.js
-      callbackURL: process.env.GOOGLE_CALLBACK_URL,
+      callbackURL: callbackURL,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {

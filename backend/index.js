@@ -51,7 +51,7 @@ app.use(passport.initialize());
 
 
 // Routes
-app.get("/",()=>res.send("Welcome, to jamia connect api"));
+app.get("/",(req,res)=>res.send("Welcome, to jamia connect api"));
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/profile", profileRouter);
 app.use("/api/v1/chat", chatRouter);
