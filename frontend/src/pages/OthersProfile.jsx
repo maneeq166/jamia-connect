@@ -6,6 +6,7 @@ import { HovermeButton } from "../components/HovermeButton";
 import Loader from "../components/Loader";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
+import BACKEND_URL from "../../config/backend_url";
 
 function OthersProfile() {
   const [user, setUser] = useState(null);
@@ -16,7 +17,7 @@ function OthersProfile() {
     const fetchUser = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:3000/api/v1/explore/user/${username}`
+          `${BACKEND_URL}/api/v1/explore/user/${username}`
         );
         setUser(res.data.user);
       } catch (error) {

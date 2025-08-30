@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import GoogleButton from "../components/GoogleButton";
+import BACKEND_URL from '../../config/backend_url';
 
 
 
@@ -17,7 +18,7 @@ function Signin() {
   const handleSignin = async (e) => {
   e.preventDefault();
   try {
-    const res = await axios.post('http://localhost:3000/api/v1/auth/signin', {
+    const res = await axios.post(`${BACKEND_URL}/api/v1/auth/signin`, {
       email,
       password,
     });  // removed withCredentials

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
+import BACKEND_URL from "../../config/backend_url";
 
 
 function ProfileRow({ label, value }) {
@@ -43,7 +44,7 @@ function UpdateProfile() {
       throw new Error("User not authenticated");
     }
 
-    const res = await axios.get("http://localhost:3000/api/v1/profile/me", {
+    const res = await axios.get(`${BACKEND_URL}/api/v1/profile/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -121,7 +122,7 @@ function UpdateProfile() {
     try {
       const token = localStorage.getItem('token');
       await axios.put(
-        "http://localhost:3000/api/v1/profile/update",
+        `${BACKEND_URL}/api/v1/profile/update`,
         {
           ...formData,
           year: parseInt(formData.year) || undefined,

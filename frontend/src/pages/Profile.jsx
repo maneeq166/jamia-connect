@@ -4,6 +4,7 @@ import { PaperClipIcon } from "@heroicons/react/20/solid";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
+import BACKEND_URL from "../../config/backend_url";
 
 function Profile() {
   const nav = useNavigate();
@@ -20,7 +21,7 @@ function Profile() {
           throw new Error("Token does not exist");
         }
 
-        const res = await axios.get("http://localhost:3000/api/v1/profile/me", {
+        const res = await axios.get(`${BACKEND_URL}/api/v1/profile/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -92,7 +93,7 @@ function Profile() {
                 try {
                   const token = localStorage.getItem("token");
                   await axios.patch(
-                    "http://localhost:3000/api/v1/profile/avatar",
+                    "`/api/v1/profile/avat`r",
                     formData,
                     {
                       headers: {

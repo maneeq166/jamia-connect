@@ -5,6 +5,7 @@ import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import { ArrowUp } from "lucide-react";
 import { ArrowDown } from "lucide-react";
+import BACKEND_URL from "../../config/backend_url";
 
 const BlogIndex = () => {
   const nav = useNavigate();
@@ -16,7 +17,7 @@ const BlogIndex = () => {
   const fetchBlogs = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:3000/api/v1/blog/get-all-blogs"
+        `${BACKEND_URL}/api/v1/blog/get-all-blogs`
       );
 
       if (res.data.success) {
@@ -35,7 +36,7 @@ const BlogIndex = () => {
   const updateUpVote = async (blogId) => {
     try {
       const res = await axios.patch(
-        "http://localhost:3000/api/v1/blog/add-vote",
+        `${BACKEND_URL}/api/v1/blog/add-vote`,
         { blogId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -62,7 +63,7 @@ const BlogIndex = () => {
   const updateDownVote = async (blogId) => {
     try {
       const res = await axios.patch(
-        "http://localhost:3000/api/v1/blog/remove-vote",
+        `${BACKEND_URL}/api/v1/blog/remove-vote`,
         { blogId },
         { headers: { Authorization: `Bearer ${token}` } }
       );

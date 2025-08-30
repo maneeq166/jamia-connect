@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
 import Loader from "../components/Loader";
 import NotFound from "./NotFound"
+import BACKEND_URL from "../../config/backend_url";
 
 function Chat() {
   const [message, setMessage] = useState("");
@@ -19,7 +20,7 @@ function Chat() {
       const token = localStorage.getItem("token");
       if (!token) throw new Error("Token not found");
 
-      const res = await axios.get("http://localhost:3000/api/v1/profile/me", {
+      const res = await axios.get(`${BACKEND_URL}/api/v1/profile/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -36,7 +37,7 @@ function Chat() {
     try {
       if (!user || !username) return;
 
-      const res = await axios.post("http://localhost:3000/api/v1/chat/getmessage", {
+      const res = await axios.post(`${BACKEND_URL}/api/v1/chat/getmessage`, {
         sender: user.username,
         receiver: username,
       });
@@ -68,7 +69,7 @@ function Chat() {
 
     const token = localStorage.getItem("token");
 
-    socket.current = io("http://localhost:3000", {
+    socket.current = io(`${BACKEND_URL}`, {
       auth: { token },
     });
 

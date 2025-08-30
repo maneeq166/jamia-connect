@@ -4,16 +4,18 @@ import Button from "../components/Button";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import Loader from '../components/BookLoader';
+import BACKEND_URL from '../../config/backend_url';
 
 const Pyqs = () => {
   const [pyqs, setPyqs] = useState([]);
   const [loading, setLoading] = useState(true);
+  // eslint-disable-next-line no-unused-vars
   const [success, setSuccess] = useState();
   const nav = useNavigate();
 
   const getPyqOnFe = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/v1/pyqs/get-study-material");
+      const res = await axios.get(`${BACKEND_URL}/api/v1/pyqs/get-study-material`);
       setPyqs(res.data.pyq);
       setSuccess(res.data.success);
     } catch (err) {

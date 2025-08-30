@@ -1,10 +1,11 @@
 // components/GoogleButton.jsx
 import React from 'react';
+import BACKEND_URL from '../../config/backend_url';
 
 function GoogleButton({ text }) {
   const handleGoogleLogin = () => {
     // This is the corrected URL
-    window.open('http://localhost:3000/api/v1/auth/google', '_self');
+    window.open(`${BACKEND_URL}api/v1/auth/google`, '_self');
   };
 
   return (

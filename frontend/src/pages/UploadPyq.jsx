@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom"
+import BACKEND_URL from "../../config/backend_url";
 
 const UploadPyq = () => {
     const nav = useNavigate();
@@ -34,7 +35,7 @@ const UploadPyq = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/v1/pyqs/create-study-material", // change to your backend URL
+        `${BACKEND_URL}/api/v1/pyqs/create-study-material`, // change to your backend URL
         data,
         {
           headers: {

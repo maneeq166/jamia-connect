@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
+import BACKEND_URL from "../../config/backend_url";
 
 const Blog = () => {
   const [imagePreview, setImagePreview] = useState(null);
@@ -35,7 +36,7 @@ const Blog = () => {
 
       const token = localStorage.getItem("token");
       const res = await axios.post(
-        "http://localhost:3000/api/v1/blog/add-blog",
+        `${BACKEND_URL}/api/v1/blog/add-blog`,
         formData,
         {
           headers: {

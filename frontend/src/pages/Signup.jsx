@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import GoogleButton from "../components/GoogleButton";
+import BACKEND_URL from "../../config/backend_url";
 
 function Signup() {
   const [username, setName] = useState("");
@@ -14,7 +15,7 @@ function Signup() {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/v1/auth/signup",
+        `${BACKEND_URL}/api/v1/auth/signup`,
         {
           username,
           email,

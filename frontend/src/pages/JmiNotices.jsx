@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
+import BACKEND_URL from '../../config/backend_url';
 
 // --- Helper Components ---
 
@@ -30,7 +31,7 @@ export default function JmiNotices() {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch('http://localhost:3000/api/v1/scrape/scrape-jmi-all');
+        const response = await fetch(`${BACKEND_URL}/api/v1/scrape/scrape-jmi-all`);
         if (!response.ok) {
           throw new Error(`Failed to fetch: ${response.status} ${response.statusText}`);
         }

@@ -2,8 +2,10 @@ import axios from "axios";
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import Loader from "../components/Loader";
+import BACKEND_URL from "../../config/backend_url";
 
 // A reusable component to render a single user row to avoid code duplication.
 const UserRow = ({ user }) => {
@@ -75,6 +77,7 @@ function Explore() {
   const [isExactSearching,setIsExactSearching] = useState(false);
 
   const totalPages = useRef(1);
+  // eslint-disable-next-line no-unused-vars
   const navigate = useNavigate();
 
   // Fetches the paginated list of all users.
@@ -82,7 +85,7 @@ function Explore() {
     setLoading(true);
     try {
       const res = await axios.get(
-        `http://localhost:3000/api/v1/explore/users?page=${page}&limit=30`
+        `${BACKEND_URL}/api/v1/explore/users?page=${page}&limit=30`
       );
       setUsers(res.data.users);
       totalPages.current = res.data.totalPages;
@@ -101,7 +104,7 @@ function Explore() {
     setIsSearching(true);
     try {
       const res = await axios.get(
-        `http://localhost:3000/api/v1/explore/users/${currentSearchTerm}`
+        `${BACKEND_URL}/api/v1/explore/users/${currentSearchTerm}`
       );
       setSearchResults(res.data.user);
     } catch (error) {
@@ -119,7 +122,7 @@ function Explore() {
 
   try {
     const res = await axios.post(
-      `http://localhost:3000/api/v1/explore/user/${username}`
+      `${BACKEND_URL}/api/v1/explore/user/${username}`
     );
     setSearchResults(res.data.user);
   } catch (error) {
