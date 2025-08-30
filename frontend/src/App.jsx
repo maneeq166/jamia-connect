@@ -22,9 +22,7 @@ import SingleBlog from "./pages/SingleBlog.jsx";
 import HistoryOfJMI from "./pages/HistoryOfJMI.jsx";
 import JmiNotices from "./pages/JmiNotices.jsx";
 import OAuthSuccess from "./components/OauthSuccess.jsx";
-import dotenv from 'dotenv';
 
-dotenv.config();
 
 
 function App() {
