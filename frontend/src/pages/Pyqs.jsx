@@ -43,7 +43,7 @@ const Pyqs = () => {
             <p className='text-xs'><Loader /></p>
 
           </div>
-        ) : pyqs.length > 0 ? (
+        ) : pyqs?.length > 0 ? (
           pyqs.map((pyq, index) => (
             <Card
               key={index}
