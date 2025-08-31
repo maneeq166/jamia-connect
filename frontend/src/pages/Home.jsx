@@ -7,6 +7,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Header from "../components/Header";
 import HistoryOfJMI from "./HistoryOfJMI";
+import { BookOpenCheck , Handshake , FileType2 ,  Network , Users , Award } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -38,32 +39,32 @@ const Home = () => {
 
   const features = [
     {
-      icon: "📚",
+      icon: <BookOpenCheck />,
       title: "PYQs Repository",
       description: "Access previous year questions across departments.",
     },
     {
-      icon: "💬",
+      icon: <Handshake />,
       title: "Discussion Forums",
       description: "Engage in academic discussions.",
     },
     {
-      icon: "✍️",
+      icon: <FileType2 />,
       title: "Student Blogs",
       description: "Share your journey, tips & experiences.",
     },
     {
-      icon: "🤝",
+      icon: <Network />,
       title: "Connect & Network",
       description: "Find peers, mentors, and study partners.",
     },
     {
-      icon: "🎯",
+      icon: <Users />,
       title: "Study Groups",
       description: "Form collaborative study groups.",
     },
     {
-      icon: "🏆",
+      icon: <Award />,
       title: "Achievements",
       description: "Showcase awards, projects, and talent.",
     },
@@ -210,10 +211,9 @@ const Home = () => {
             FOR FULL HISTORY CLICK HERE
           </Link> */}
         </div>
-
       </div>
-        
-        <Footer></Footer>
+
+      <Footer></Footer>
     </div>
   );
 };

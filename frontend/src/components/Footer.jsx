@@ -6,7 +6,7 @@ const Footer = () => {
   const linkClass = "text-white hover:underline transition";
 
   return (
-    <footer className="w-full bg-jmi-700 text-jmi-400 pt-10 pb-5 px-5">
+    <footer className="w-full bg-jmi-700 text-jmi-400 pt-10 pb-5 px-5 h-[330px]">
       <div className="flex flex-col md:flex-row justify-between max-w-6xl mx-auto gap-10">
         {/* Logo Section */}
         <div className="flex flex-col items-start gap-4 ml-4">
@@ -86,7 +86,7 @@ const Footer = () => {
       </div>
 
       {/* Copyright */}
-      <div className="border-t border-gray-600 mt-8 pt-4 text-center text-sm text-gray-300">
+      <div className="border-t border-gray-600 mt-[5px] pt-4 text-center text-sm text-gray-300">
         © {new Date().getFullYear()} JC - Jamia Connect. All rights reserved.
       </div>
     </footer>
