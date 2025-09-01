@@ -11,6 +11,8 @@ const uploadToCloudinary = async (localFilePath) => {
       resource_type: "image",
     });   
 
+  
+
     return {
       url: result.secure_url,
       public_id: result.public_id,

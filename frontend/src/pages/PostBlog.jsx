@@ -75,7 +75,7 @@ const Blog = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Something went wrong!", {
+      toast.error("File is either too big or Something went wrong!", {
         style: {
           background: "var(--color-jmi-100)",
           color: "var(--color-jmi-900)",
@@ -153,6 +153,7 @@ const Blog = () => {
             >
               Upload Cover Image:
             </label>
+
             <input
               type="file"
               id="image"
@@ -160,6 +161,8 @@ const Blog = () => {
               onChange={handleImageChange}
               className="block w-full text-sm text-jmi-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-jmi-600 file:text-white hover:file:bg-jmi-700"
             />
+
+            <p className="text-xs mt-3 text-center  text-jmi-600">> keep image under 1mb </p>
           </div>
         </form>
       </div>

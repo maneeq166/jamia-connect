@@ -1,4 +1,3 @@
-const { trusted } = require("mongoose");
 const { uploadToCloudinary } = require("../../helpers/cloudinaryHelper");
 const { Blog } = require("../../models/Blog");
 const User = require("../../models/User");
@@ -19,6 +18,9 @@ async function addBlog(req, res) {
     if(req.file){
       const {url,public_id} = await uploadToCloudinary(req.file.path)
       image1 = {url,public_id};
+      if(!image1){
+        return res.status(400).json({message:"File is either too big or Something went Wrong",success:false})
+      }
     }
 
 
