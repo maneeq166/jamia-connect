@@ -40,8 +40,8 @@ const Blog = () => {
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`, // ✅ Important
+            // "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`, 
           },
         }
       );
