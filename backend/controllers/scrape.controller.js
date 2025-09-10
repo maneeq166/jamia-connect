@@ -5,17 +5,23 @@ const puppeteer = require('puppeteer');
  * @returns {Promise<Array<Object>>} A promise that resolves to a de-duplicated array of all notices.
  */
 async function getAllUniqueJmiNotices() {
-  console.log('Launching Puppeteer browser...');
+try {
+  console.log("Launching Puppeteer browser...");
   const browser = await puppeteer.launch({
-  headless: 'new',
-  args: [
-    '--no-sandbox',
-    '--disable-setuid-sandbox',
-    '--disable-dev-shm-usage',
-    '--disable-gpu',
-  ],
-  executablePath: '/usr/bin/chromium', // system Chromium
-});
+    headless: 'new',
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-gpu',
+    ],
+    executablePath: '/usr/bin/chromium',
+  });
+} catch (err) {
+  console.error("Puppeteer launch failed:", err.message);
+  throw err;
+}
+
 
   const page = await browser.newPage();
 
