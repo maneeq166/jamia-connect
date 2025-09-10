@@ -8,15 +8,16 @@ async function getAllUniqueJmiNotices() {
 try {
   console.log("Launching Puppeteer browser...");
   const browser = await puppeteer.launch({
-    headless: 'new',
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--disable-gpu',
-    ],
-    executablePath: '/usr/bin/chromium',
-  });
+  headless: 'new',
+  args: [
+    '--no-sandbox',
+    '--disable-setuid-sandbox',
+    '--disable-dev-shm-usage',
+    '--disable-gpu',
+  ],
+  
+});
+
 } catch (err) {
   console.error("Puppeteer launch failed:", err.message);
   throw err;
