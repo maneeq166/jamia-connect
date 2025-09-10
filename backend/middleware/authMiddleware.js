@@ -9,14 +9,14 @@ function authMiddleware(req, res, next) {
     }
 
     const token = authHeader.split(' ')[1];
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const decodedToken = jwt.verify(token,process.env.JWT_SECRET);
 
     if (!decodedToken) {
       return res.status(401).json({ message: "User does not exist" });
     }
 
     req.userId = decodedToken.id;
-req.username = decodedToken.username;
+    req.username = decodedToken.username;
 
     next();
   } catch (error) {

@@ -75,7 +75,7 @@ const Blog = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("File is either too big or Something went wrong!", {
+      toast.error("File is either too big or Signin again for new token!", {
         style: {
           background: "var(--color-jmi-100)",
           color: "var(--color-jmi-900)",

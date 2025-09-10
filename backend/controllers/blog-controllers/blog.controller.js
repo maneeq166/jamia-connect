@@ -6,8 +6,12 @@ async function addBlog(req, res) {
   try {
     const userId = req.userId;
 
+    console.log(userId);
+    
     const user = await User.findOne({ _id: userId }).select("username email");
 
+    console.log(user);
+    
     if (!user) {
       return res.status(404).json({ message: "Something went wrong!" });
     }
@@ -18,6 +22,8 @@ async function addBlog(req, res) {
     if(req.file){
       const {url,public_id} = await uploadToCloudinary(req.file.path)
       image1 = {url,public_id};
+      console.log(image1);
+      
       if(!image1){
         return res.status(400).json({message:"File is either too big or Something went Wrong",success:false})
       }
@@ -39,6 +45,8 @@ async function addBlog(req, res) {
       content,
       ...(image1 && {image:image1})
     });
+    
+    console.log(blog);
     
     if(!blog){
       return res.status(400).json({message:"Blog not created"})
