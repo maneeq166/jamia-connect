@@ -6,7 +6,7 @@ const Footer = () => {
   const linkClass = "text-white hover:underline transition";
 
   return (
-    <footer className="w-full bg-jmi-700 text-jmi-400 pt-10 pb-5 px-5 h-[330px]">
+    <footer className="w-full h-full bg-jmi-700 text-jmi-400 pt-10 pb-5 px-5 ">
       <div className="flex flex-col md:flex-row justify-between max-w-6xl mx-auto gap-10">
         {/* Logo Section */}
         <div className="flex flex-col items-start gap-4 ml-4">
