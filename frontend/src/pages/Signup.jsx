@@ -10,8 +10,11 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  // console.log("Backend URL:", BACKEND_URL);
 
   const handleSignup = async (e) => {
+
     e.preventDefault();
     try {
       const res = await axios.post(
@@ -20,8 +23,8 @@ function Signup() {
           username,
           email,
           password,
-        },
-        { withCredentials: true }
+        }
+        // { withCredentials: true }
       );
 
       if (res.data.success) {
@@ -66,14 +69,31 @@ function Signup() {
             className="w-full px-4 py-2 border border-gray-300 rounded-md"
             required
           />
-          <input
+          {/* <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full px-4 py-2 border border-gray-300 rounded-md"
             required
-          />
+          /> */}
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"} // <-- toggle type
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md"
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
+          </div>
           <button
             type="submit"
             className="w-full bg-[#5D8736] text-white py-2 rounded-md hover:bg-[#809D3C] font-semibold"

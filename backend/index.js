@@ -26,7 +26,7 @@ const { Server } = require("socket.io");
 const io = new Server(server, {
   cors: {
     origin: ["http://localhost:5173", "https://jamia-connect.vercel.app"],
-    credentials: true,
+    // credentials: true,
   },
 });
 
@@ -64,6 +64,11 @@ app.use(passport.initialize());
 
 // Routes
 app.get("/",(req,res)=>res.send("Welcome, to jamia connect api"));
+app.post("/api/v1/auth/test", (req, res) => {
+  console.log("Test POST hit!", req.body);
+  res.json({ success: true });
+});
+
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/profile", profileRouter);
 app.use("/api/v1/chat", chatRouter);
