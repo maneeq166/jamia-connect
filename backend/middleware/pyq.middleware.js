@@ -1,13 +1,21 @@
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
+
+// Ensure pyq folder exists
+const uploadDir = path.join(__dirname, "../pyq");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 // Storage config
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "pyq"); // Make sure this folder exists
+    cb(null, uploadDir);
   },
   filename: function (req, file, cb) {
-    const uniqueName = file.fieldname + "-" + Date.now() + path.extname(file.originalname);
+    const uniqueName =
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname);
     cb(null, uniqueName);
   },
 });
@@ -26,7 +34,7 @@ const uploadPyqMiddleware = multer({
   storage: storage,
   fileFilter: checkFileFilter,
   limits: {
-    fileSize: 1 * 1024 * 1024, // 1MB max
+    fileSize: 2 * 1024 * 1024, // 2MB max
   },
 });
 
