@@ -101,7 +101,7 @@ function Signin() {
           </button>
         </form>
         <div className="mt-2">
-          <GoogleButton text="Continue with Google" />
+          {/* <GoogleButton text="Continue with Google" /> */}
         </div>
         <p className="mt-6 text-center text-sm text-gray-600">
           Don’t have an account?{' '}
