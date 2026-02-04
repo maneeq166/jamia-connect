@@ -76,7 +76,7 @@ require("./config/passport.config");
 app.use(passport.initialize());
 
 // ==========================================================
-// HEALTH CHECK (important for Render)
+// HEALTH CHECK 
 // ==========================================================
 app.get("/health", (req, res) => {
   res.status(200).send("OK");

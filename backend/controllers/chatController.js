@@ -48,6 +48,8 @@ exports.getMessages = async (req, res) => {
   .populate("sender", "username")   // Only get 'username' from sender
   .populate("receiver", "username"); // Same for receiver
 
+  console.log(messages);
+  
 
     return res.status(200).json({ messages, success: true });
   } catch (error) {
