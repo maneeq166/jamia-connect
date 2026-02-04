@@ -10,7 +10,7 @@ const googleCallbackController = (req, res) => {
 
   if (!req.user) {
     console.error("ERROR: req.user is missing. Passport authentication likely failed.");
-    return res.redirect(`${process.env.FRONTEND_URL}/login?error=user_not_found`);
+    return res.redirect(`${process.env.FRONTEND_URL}login?error=user_not_found`);
   }
 
   // 2. Check environment variables
@@ -29,7 +29,7 @@ const googleCallbackController = (req, res) => {
     });
     console.log("5. Generated JWT:", token ? "Success!" : "Failed to generate token.");
 
-    const redirectURL = `${process.env.FRONTEND_URL}/oauth-success?token=${token}`;
+    const redirectURL = `${process.env.FRONTEND_URL}oauth-success?token=${token}`;
     console.log("6. Final Redirect URL:", redirectURL);
 
     console.log("--- Redirecting now ---");
