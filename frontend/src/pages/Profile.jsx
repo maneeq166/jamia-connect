@@ -5,6 +5,8 @@ import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import BACKEND_URL from "../../config/backend_url";
+import { Pen } from "lucide-react";
+
 
 function Profile() {
   const nav = useNavigate();
@@ -116,11 +118,7 @@ function Profile() {
               htmlFor="pfpInput"
               className="absolute top-36 left-36 size-6 p-1 bg-jmi-400 rounded-full shadow-md cursor-pointer"
             >
-              <img
-                src="https://www.svgrepo.com/show/130377/pencil.svg"
-                alt="edit"
-                className="w-full h-full"
-              />
+              <Pen className="size-4"></Pen>
             </label>
 
             <div className="flex flex-col flex-1 gap-y-1">
