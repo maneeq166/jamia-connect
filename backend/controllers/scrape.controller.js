@@ -15,14 +15,13 @@
 //     '--disable-dev-shm-usage',
 //     '--disable-gpu',
 //   ],
-  
+
 // });
 
 // } catch (err) {
 //   console.error("Puppeteer launch failed:", err.message);
 //   throw err;
 // }
-
 
 //   const page = await browser.newPage();
 
@@ -52,7 +51,7 @@
 //           }
 //         });
 //       };
-      
+
 //       // Scrape all relevant panels using valid selectors
 //       scrapePanel('marquee a');
 //       scrapePanel('#leftPanel ul li'); // Admission Notices
@@ -65,7 +64,7 @@
 
 //       return results;
 //     });
-    
+
 //     // --- Deduplication Logic ---
 //     const uniqueNoticesMap = new Map();
 //     allNotices.forEach(notice => {
@@ -94,78 +93,35 @@
 
 const axios = require("axios");
 const cheerio = require("cheerio");
+const Scrape = require("../models/Scrape");
 
 async function getAllUniqueJmiNotices() {
-  const { data } = await axios.get("https://jmicoe.in/", {
-    headers: {
-      "User-Agent":
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122 Safari/537.36",
-    },
-  });
+  const now = new Date();
+  const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);  // 24 hours ago
 
-  const $ = cheerio.load(data);
-  const results = [];
+  // Check if we have recent scrapes (within the last day)
+  const recentScrape = await Scrape.findOne({ scrapedAt: { $gte: oneDayAgo } }).sort({ scrapedAt: -1 });
 
-  // --- Scrape the marquee notices ---
-  $("marquee a").each((i, el) => {
-    const link = $(el).attr("href");
-    const title = $(el).text().trim().replace(/\s+/g, " ");
-    if (link && title) {
-      results.push({
-        title,
-        url: link.startsWith("http") ? link : `https://jmicoe.in/${link}`,
-      });
-    }
-  });
+  if (recentScrape) {
+    // If scraped within the last day, return cached data
+    const allRecent = await Scrape.find({ scrapedAt: { $gte: oneDayAgo } });
+    return allRecent.map(doc => ({ title: doc.title, url: doc.url, date: doc.date }));
+  }
 
-  // --- Scrape Admission Notices ---
-  $("#leftPanel ul li a").each((i, el) => {
-    const link = $(el).attr("href");
-    const title = $(el).text().trim().replace(/\s+/g, " ");
-    if (link && title) {
-      results.push({
-        title,
-        url: link.startsWith("http") ? link : `https://jmicoe.in/${link}`,
-      });
-    }
-  });
+  // If no recent scrape, perform scraping
+  try {
+    // Fetch website data
+    const { data } = await axios.get("https://jmicoe.in/", {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122 Safari/537.36",
+      },
+    });
 
-  // --- Scrape News & Notifications ---
-  $("#noticePanel ul.news li").each((i, el) => {
-    const link = $(el).find("a").attr("href");
-    const title = $(el).find("a").text().trim().replace(/\s+/g, " ");
-    const date = $(el).find(".news-date").text().trim() || null;
-    if (link && title) {
-      results.push({
-        title,
-        url: link.startsWith("http") ? link : `https://jmicoe.in/${link}`,
-        date,
-      });
-    }
-  });
+    const $ = cheerio.load(data);
+    const results = [];
 
-  // --- Scrape Regular Exam ---
-  $("#rightPanel ul li a").each((i, el) => {
-    const link = $(el).attr("href");
-    const title = $(el).text().trim().replace(/\s+/g, " ");
-    if (link && title) {
-      results.push({
-        title,
-        url: link.startsWith("http") ? link : `https://jmicoe.in/${link}`,
-      });
-    }
-  });
-
-  // --- Scrape other panels using attribute selectors ---
-  const otherPanels = [
-    "2ndleftPanel",
-    "3rdrightPanel",
-    "2ndrightPanel",
-    "3rdleftPanel",
-  ];
-
-  otherPanels.forEach((id) => {
-    $(`[id="${id}"] ul li a`).each((i, el) => {
+    // Scrape marquee notices
+    $("marquee a").each((i, el) => {
       const link = $(el).attr("href");
       const title = $(el).text().trim().replace(/\s+/g, " ");
       if (link && title) {
@@ -175,18 +131,83 @@ async function getAllUniqueJmiNotices() {
         });
       }
     });
-  });
 
-  // --- Deduplicate by URL ---
-  const uniqueMap = new Map();
-  results.forEach((item) => {
-    if (!uniqueMap.has(item.url)) uniqueMap.set(item.url, item);
-  });
+    // Scrape Admission Notices
+    $("#leftPanel ul li a").each((i, el) => {
+      const link = $(el).attr("href");
+      const title = $(el).text().trim().replace(/\s+/g, " ");
+      if (link && title) {
+        results.push({
+          title,
+          url: link.startsWith("http") ? link : `https://jmicoe.in/${link}`,
+        });
+      }
+    });
 
-  const uniqueResults = Array.from(uniqueMap.values());
-  console.log(`Scraped ${uniqueResults.length} unique notices`);
+    // Scrape News & Notifications
+    $("#noticePanel ul.news li").each((i, el) => {
+      const link = $(el).find("a").attr("href");
+      const title = $(el).find("a").text().trim().replace(/\s+/g, " ");
+      const date = $(el).find(".news-date").text().trim() || null;
+      if (link && title) {
+        results.push({
+          title,
+          url: link.startsWith("http") ? link : `https://jmicoe.in/${link}`,
+          date,
+        });
+      }
+    });
 
-  return uniqueResults;
+    // Scrape Regular Exam
+    $("#rightPanel ul li a").each((i, el) => {
+      const link = $(el).attr("href");
+      const title = $(el).text().trim().replace(/\s+/g, " ");
+      if (link && title) {
+        results.push({
+          title,
+          url: link.startsWith("http") ? link : `https://jmicoe.in/${link}`,
+        });
+      }
+    });
+
+    // Scrape other panels
+    const otherPanels = ["2ndleftPanel", "3rdrightPanel", "2ndrightPanel", "3rdleftPanel"];
+    otherPanels.forEach((id) => {
+      $(`[id="${id}"] ul li a`).each((i, el) => {
+        const link = $(el).attr("href");
+        const title = $(el).text().trim().replace(/\s+/g, " ");
+        if (link && title) {
+          results.push({
+            title,
+            url: link.startsWith("http") ? link : `https://jmicoe.in/${link}`,
+          });
+        }
+      });
+    });
+
+    // Deduplicate by URL
+    const uniqueMap = new Map();
+    results.forEach((item) => {
+      if (!uniqueMap.has(item.url)) uniqueMap.set(item.url, item);
+    });
+    const uniqueResults = Array.from(uniqueMap.values());
+
+    // Clear old scrapes (older than 1 day) to avoid accumulation
+    await Scrape.deleteMany({ scrapedAt: { $lt: oneDayAgo } });
+
+    // Save unique results to DB
+    for (const item of uniqueResults) {
+      await Scrape.create({ ...item, scrapedAt: now });
+    }
+
+    console.log(`Scraped and saved ${uniqueResults.length} unique notices`);
+    return uniqueResults;
+  } catch (error) {
+    console.error("Error during scraping:", error);
+    // On error, return any existing data if available
+    const allRecent = await Scrape.find({ scrapedAt: { $gte: oneDayAgo } });
+    return allRecent.map(doc => ({ title: doc.title, url: doc.url, date: doc.date }));
+  }
 }
 
 module.exports = { getAllUniqueJmiNotices };
