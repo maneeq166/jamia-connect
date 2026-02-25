@@ -11,8 +11,7 @@ const BlogIndex = () => {
   const nav = useNavigate();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const token = localStorage.getItem("token");
-  const decoded = jwtDecode(token);
+
 
   const fetchBlogs = async () => {
     try {
@@ -168,9 +167,14 @@ const BlogIndex = () => {
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
               >
                 {blogs.map((blog, index) => {
-                  const isUpvoted = blog.upVote?.includes(decoded.id);
+                  let isUpvoted = false, isDownvoted = false;
+                  if (localStorage.getItem("token")) {
+                    let token = localStorage.getItem("token")
+                    const decoded = jwtDecode(token);
+                    isUpvoted = blog.upVote?.includes(decoded.id);
 
-                  const isDownvoted = blog.downVote?.includes(decoded.id);
+                     isDownvoted = blog.downVote?.includes(decoded.id);
+                  }
 
                   return (
                     <motion.div

@@ -25,6 +25,7 @@ function OthersProfile() {
   const nav = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isAvatarOpen, setIsAvatarOpen] = useState(false);
 
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const profileCardRef = useRef(null);
@@ -55,6 +56,20 @@ function OthersProfile() {
     }
   }, [username]);
 
+  useEffect(() => {
+    if (!isAvatarOpen) return;
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") setIsAvatarOpen(false);
+    };
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [isAvatarOpen]);
+
   if (loading)
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#f7f9f3] via-[#eef4e3] to-[#f7f9f3] flex justify-center items-center">
@@ -74,6 +89,9 @@ function OthersProfile() {
         </div>
       </div>
     );
+
+  const avatarUrl = user?.avatar?.url;
+  const canOpenAvatar = Boolean(avatarUrl);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f7f9f3] via-[#eef4e3] to-[#f7f9f3] font-plex relative isolate overflow-x-hidden pt-28 pb-20 selection:bg-[#DFF09E] selection:text-[#1E2C12]">
@@ -122,10 +140,14 @@ function OthersProfile() {
               <div className="absolute inset-0 bg-[rgba(129,157,60,0.18)] blur-2xl scale-110 opacity-70 -z-10 rounded-2xl" />
               
               {/* Image with Glass Ring */}
-              <div className="relative w-24 h-24 md:w-28 md:h-28 rounded-2xl bg-white/50 backdrop-blur-lg border border-[#DFF09E]/40 shadow-lg p-1.5 group-hover:scale-105 transition-transform duration-500 ease-out">
+              <div
+                className={`relative w-24 h-24 md:w-28 md:h-28 rounded-2xl bg-white/50 backdrop-blur-lg border border-[#DFF09E]/40 shadow-lg p-1.5 group-hover:scale-105 transition-transform duration-500 ease-out ${canOpenAvatar ? "cursor-zoom-in" : ""}`}
+                onClick={canOpenAvatar ? () => setIsAvatarOpen(true) : undefined}
+                title={canOpenAvatar ? "View avatar" : undefined}
+              >
                 <img
                   src={
-                    user.avatar?.url ||
+                    avatarUrl ||
                     "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
                   }
                   alt={`${user.username}'s Avatar`}
@@ -183,9 +205,31 @@ function OthersProfile() {
         </div>
       </motion.div>
 
-      <div className="mt-24">
+      <div className="mt-70 -mb-20">
         <Footer />
       </div>
+
+      {isAvatarOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-md"
+          onClick={() => setIsAvatarOpen(false)}
+        >
+          <button
+            type="button"
+            onClick={() => setIsAvatarOpen(false)}
+            className="absolute top-6 right-6 bg-white/80 border border-white/60 text-[#2F441B] rounded-full w-10 h-10 shadow-lg hover:bg-white transition"
+            aria-label="Close avatar"
+          >
+            X
+          </button>
+          <img
+            src={avatarUrl}
+            alt={`${user.username}'s Avatar large`}
+            className="max-h-[70vh] max-w-[85vw] rounded-2xl shadow-2xl border border-white/50 bg-white"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </div>
   );
 }
