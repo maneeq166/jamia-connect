@@ -2,20 +2,26 @@
 
 import { useNavigate } from "react-router-dom";
 
-export function HovermeButton({username}) {
+export function HovermeButton({ username }) {
   const nav = useNavigate();
+  
   return (
-    <button onClick={()=>nav(`/chat/${username}`)} className="group relative inline-flex h-[30px] items-center justify-center rounded-full bg-jmi-500 py-4 pl-6 pr-14 font-medium text-jmi-100">
-      <span className="z-10 pr-2">want to talk with me</span>
-      <div className="absolute right-1 inline-flex h-[24px] w-13 items-center justify-end rounded-full bg-jmi-400 transition-[width] group-hover:w-[calc(100%-8px)]">
-        <div className="mr-3.5 flex items-center justify-center">
+    <button
+      onClick={() => nav(`/chat/${username}`)}
+      className="group relative inline-flex h-10 items-center justify-center rounded-xl bg-white/40 backdrop-blur-md border border-[#DFF09E]/40 pl-6 pr-14 font-plex font-medium text-[#2F441B] shadow-sm hover:shadow-[0_0_20px_rgba(129,157,60,0.25)] hover:-translate-y-[2px] active:scale-95 transition-all duration-300 overflow-hidden"
+    >
+      <span className="relative z-10 pr-2 transition-colors duration-300 group-hover:text-[#f5f3ea]">
+        Want to talk with me
+      </span>
+      <div className="absolute right-[3px] top-[3px] bottom-[3px] inline-flex w-8 items-center justify-end rounded-xl bg-gradient-to-r from-[#809D3C] to-[#5D8736] transition-[width] duration-500 ease-out group-hover:w-[calc(100%-6px)] z-0">
+        <div className="mr-1.5 flex items-center justify-center transition-transform duration-300 group-hover:translate-x-1">
           <svg
             width="15"
             height="15"
             viewBox="0 0 15 15"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 text-neutral-50"
+            className="h-5 w-5 text-[#f5f3ea]"
           >
             <path
               d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z"

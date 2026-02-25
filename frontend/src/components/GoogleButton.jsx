@@ -1,22 +1,28 @@
-// components/GoogleButton.jsx
 import React from 'react';
+import { motion } from 'framer-motion';
 import BACKEND_URL from '../../config/backend_url';
 
 function GoogleButton({ text }) {
   const handleGoogleLogin = () => {
-    // This is the corrected URL
     window.open(`${BACKEND_URL}/api/v1/auth/google`, '_self');
   };
 
   return (
-    <button
+    <motion.button
+      whileTap={{ scale: 0.98 }}
       type="button"
       onClick={handleGoogleLogin}
-      className="w-full bg-white border border-gray-300 flex items-center justify-center py-2 rounded-md hover:bg-gray-100"
+      className="w-full flex items-center justify-center py-2.5 px-4 rounded-lg bg-transparent hover:bg-white/60 text-[#1E2C12] font-plex font-medium transition-all duration-300 outline-none focus:ring-2 focus:ring-[#809D3C]/30"
     >
-      <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" className="w-5 h-5 mr-2" />
-      <span className="text-sm font-medium text-gray-700">{text}</span>
-    </button>
+      <div className="bg-white p-1 rounded-full shadow-sm mr-3 border border-[#E9F5D0]/50 flex items-center justify-center">
+        <img 
+          src="https://developers.google.com/identity/images/g-logo.png" 
+          alt="Google Logo" 
+          className="w-4 h-4 object-contain" 
+        />
+      </div>
+      <span className="text-sm tracking-wide">{text}</span>
+    </motion.button>
   );
 }
 
