@@ -11,7 +11,7 @@ const BlogIndex = () => {
   const nav = useNavigate();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
-
+let token = localStorage.getItem("token")
 
   const fetchBlogs = async () => {
     try {
@@ -169,7 +169,6 @@ const BlogIndex = () => {
                 {blogs.map((blog, index) => {
                   let isUpvoted = false, isDownvoted = false;
                   if (localStorage.getItem("token")) {
-                    let token = localStorage.getItem("token")
                     const decoded = jwtDecode(token);
                     isUpvoted = blog.upVote?.includes(decoded.id);
 
