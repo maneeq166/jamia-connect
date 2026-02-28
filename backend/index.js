@@ -10,7 +10,7 @@ process.on("unhandledRejection", (reason) => {
 });
 
 // ==========================================================
-
+const {rateLimit} = require("express-rate-limit")
 const express = require("express");
 const app = express();
 const http = require("http");
@@ -34,6 +34,15 @@ const { scrapeRouter } = require("./routes/scrape.route.js");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+	standardHeaders: 'draft-8', // draft-6: `RateLimit-*` headers; draft-7 & draft-8: combined `RateLimit` header
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+	ipv6Subnet: 56, // Set to 60 or 64 to be less aggressive, or 52 or 48 to be more aggressive
+	// store: ... , // Redis, Memcached, etc. See below.
+})
+
 const io = new Server(server, {
   cors: {
     origin: ["http://localhost:5173", "https://jamia-connect.vercel.app"],
@@ -45,6 +54,7 @@ initSocket(io);
 // ==========================================================
 // MIDDLEWARES
 // ==========================================================
+app.use(limiter)
 app.use(helmet());
 app.use(morgan("dev"));
 app.use(express.json());
@@ -133,7 +143,9 @@ app.use((req, res) => {
 // ==========================================================
 // MEMORY USAGE LOGGER (debug restarts)
 // ==========================================================
-setInterval(() => {
-  const mem = process.memoryUsage();
-  console.log("MEMORY USAGE:", mem);
-}, 15000);
+// setInterval(() => {
+//   const mem = process.memoryUsage();
+//   console.log("MEMORY USAGE:", mem);
+// }, 15000);
+
+

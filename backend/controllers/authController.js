@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const {z} = require('zod');
-const bcrpyt = require("bcrypt");
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken")
 
 const userSignup =  async (req,res) =>{
@@ -41,11 +41,11 @@ const userSignup =  async (req,res) =>{
         return res.status(400).json({message:"User already exists",success: false})
     }
 
-    const hashedpassword = await bcrpyt.hash(password,10);
+    const hashedpassword = await bcrypt.hash(password,10);
 
     if(!hashedpassword){
         return res.status(400).json({
-            message:"Wrong password",success: false
+            message:"Something went wrong",success: false
         })
     }
 
@@ -85,7 +85,7 @@ const userSignin = async (req, res) => {
       return res.status(400).json({ message: "User does not exist" });
     }
 
-    const userMatched = await bcrpyt.compare(password, user.password);
+    const userMatched = await bcrypt.compare(password, user.password);
     if (!userMatched) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
