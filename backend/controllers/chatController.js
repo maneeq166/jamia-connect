@@ -29,7 +29,7 @@ exports.sendMessage = async (req, res) => {
 };
 exports.getMessages = async (req, res) => {
   try {
-    const { sender, receiver } = req.body;
+    const { sender, receiver } = req.query;
 
     const senderUser = await User.findOne({ username: sender });
     const receiverUser = await User.findOne({ username: receiver });

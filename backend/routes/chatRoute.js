@@ -7,6 +7,6 @@ const chatRouter = Router();
 chatRouter.post("/addmessage", sendMessage);
 
 // Get messages between two users
-chatRouter.post("/getmessage", getMessages);
+chatRouter.get("/getmessage", getMessages);
 
 module.exports = { chatRouter };

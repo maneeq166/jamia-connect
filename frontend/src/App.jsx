@@ -43,7 +43,7 @@ function App() {
             />
             <Route path="/jmi-notices" element={<JmiNotices/>} />
             <Route
-              path="/chat/:username"
+              path="/chat/:usernames"
               element={
                 <ProtectedRoutes>
                   <Chat />

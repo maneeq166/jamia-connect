@@ -63,7 +63,7 @@ export default function JmiNotices() {
         <div className="fixed top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle_at_center,rgba(129,157,60,0.18),transparent_70%)] blur-[120px] pointer-events-none -z-10 opacity-50" />
 
         {/* Header */}
-        <div className="pt-24 pb-8 px-6 text-center relative z-10">
+        <div className="pt-24 mt-10 pb-8 px-6 text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}

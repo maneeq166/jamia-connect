@@ -2,12 +2,12 @@
 
 import { useNavigate } from "react-router-dom";
 
-export function HovermeButton({ username }) {
+export function HovermeButton({ username , us }) {
   const nav = useNavigate();
   
   return (
     <button
-      onClick={() => nav(`/chat/${username}`)}
+      onClick={() => nav(`/chat/${us}_${username}`)}
       className="group relative inline-flex h-10 items-center justify-center rounded-xl bg-white/40 backdrop-blur-md border border-[#DFF09E]/40 pl-6 pr-14 font-plex font-medium text-[#2F441B] shadow-sm hover:shadow-[0_0_20px_rgba(129,157,60,0.25)] hover:-translate-y-[2px] active:scale-95 transition-all duration-300 overflow-hidden"
     >
       <span className="relative z-10 pr-2 transition-colors duration-300 group-hover:text-[#f5f3ea]">

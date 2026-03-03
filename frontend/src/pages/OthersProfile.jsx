@@ -26,6 +26,7 @@ function OthersProfile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
+  const [us,setUs] = useState();
 
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const profileCardRef = useRef(null);
@@ -56,6 +57,31 @@ function OthersProfile() {
     }
   }, [username]);
 
+
+  const fetchUserProfile = async () => {
+     try {
+          const token = localStorage.getItem("token");
+          if (!token) throw new Error("Token not found");
+    
+          const res = await axios.get(`${BACKEND_URL}/api/v1/profile/me`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+    
+          setUs(res.data.user);
+        } catch (error) {
+          console.error(
+            "Error fetching profile:",
+            error.response?.data?.message || error.message
+          );
+        }
+  }
+
+  useEffect(() => {
+    fetchUserProfile();
+  }, []);
+
   useEffect(() => {
     if (!isAvatarOpen) return;
     const onKeyDown = (e) => {
@@ -68,6 +94,7 @@ function OthersProfile() {
       document.removeEventListener("keydown", onKeyDown);
       document.body.style.overflow = prevOverflow;
     };
+
   }, [isAvatarOpen]);
 
   if (loading)
@@ -163,7 +190,7 @@ function OthersProfile() {
               </h3>
               <div className="w-10 h-[2px] bg-[#A9C46C] rounded my-2 mx-auto sm:mx-0" />
               <div className="mt-2">
-                <HovermeButton username={user.username} />
+                {us && <HovermeButton username={user.username} us={us.username} />}
               </div>
             </div>
           </div>

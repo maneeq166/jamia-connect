@@ -73,16 +73,16 @@ const UploadPyq = () => {
         .font-plex { font-family: 'IBM Plex Sans', sans-serif; }
       `}</style>
 
-      <div className="min-h-screen bg-gradient-to-br from-[#f7f9f3] via-[#eef4e3] to-[#f7f9f3] font-plex flex items-center justify-center p-6 relative isolate selection:bg-[#DFF09E] selection:text-[#1E2C12]">
+      <div className="min-h-screen bg-gradient-to-br from-[#f7f9f3] via-[#eef4e3] to-[#f7f9f3] font-plex flex items-start md:items-center justify-center px-4 sm:px-6 pt-24 md:pt-6 pb-12 relative isolate overflow-x-hidden selection:bg-[#DFF09E] selection:text-[#1E2C12]">
         
         {/* Depth Glow Layer */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[rgba(129,157,60,0.15)] blur-3xl rounded-full pointer-events-none -z-10" />
+        <div className="absolute  top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[rgba(129,157,60,0.15)] blur-3xl rounded-full pointer-events-none -z-10" />
 
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="w-full max-w-2xl bg-white/60 backdrop-blur-xl border border-[#DFF09E]/40 shadow-[0_10px_40px_rgba(0,0,0,0.08)] rounded-3xl p-8 md:p-10 hover:-translate-y-[2px] transition-transform duration-500 relative overflow-hidden"
+          className="w-full mt-15 max-w-2xl mx-auto bg-white/60 backdrop-blur-xl border border-[#DFF09E]/40 shadow-[0_10px_40px_rgba(0,0,0,0.08)] rounded-3xl p-6 sm:p-8 md:p-10 hover:-translate-y-[2px] transition-transform duration-500 relative overflow-hidden"
         >
           {/* Subtle top reflection */}
           <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/50 to-transparent pointer-events-none" />

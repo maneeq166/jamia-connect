@@ -10,41 +10,17 @@ import BACKEND_URL from "../../config/backend_url";
 function Chat() {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const [user, setUser] = useState(null);
   const socket = useRef(null);
   const chatEndRef = useRef(null);
-  const { username } = useParams();
-
-  // Fetch user profile on mount
-  const fetchProfile = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) throw new Error("Token not found");
-
-      const res = await axios.get(`${BACKEND_URL}/api/v1/profile/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setUser(res.data.user);
-    } catch (error) {
-      console.error(
-        "Error fetching profile:",
-        error.response?.data?.message || error.message
-      );
-    }
-  };
+  const { usernames } = useParams();
+  const [ourUsername, otherUsername] = usernames ? usernames.split("_") : [null, null];
 
   // Load chat messages between sender and receiver
   const loadMessages = async () => {
     try {
-      if (!user || !username) return;
+      if (!ourUsername || !otherUsername) return;
 
-      const res = await axios.post(`${BACKEND_URL}/api/v1/chat/getmessage`, {
-        sender: user.username,
-        receiver: username,
-      });
+      const res = await axios.get(`${BACKEND_URL}/api/v1/chat/getmessage?sender=${ourUsername}&receiver=${otherUsername}`);
 
       setMessages(res.data.messages || []);
     } catch (error) {
@@ -59,17 +35,17 @@ function Chat() {
 
     const payload = {
       content: message,
-      sender: user.username,
-      receiver: username,
+      sender: ourUsername,
+      receiver: otherUsername,
     };
 
     socket.current.emit("send message", payload);
     setMessage("");
   };
 
-  // Setup socket after user is fetched
+  // Setup socket after username is set
   useEffect(() => {
-    if (!user) return;
+    if (!ourUsername) return;
 
     const token = localStorage.getItem("token");
 
@@ -84,26 +60,21 @@ function Chat() {
     return () => {
       socket.current.disconnect();
     };
-  }, [user]);
+  }, [ourUsername]);
 
-  // Fetch user on first render
+  // Load messages when usernames are set
   useEffect(() => {
-    fetchProfile();
-  }, []);
-
-  // Load messages when user and receiver are set
-  useEffect(() => {
-    if (user?.username && username) {
+    if (ourUsername && otherUsername) {
       loadMessages();
     }
-  }, [user, username]);
+  }, [ourUsername, otherUsername]);
 
   // Scroll to bottom when messages update
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  if (!user) {
+  if (!ourUsername || !otherUsername) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#f7f9f3] via-[#eef4e3] to-[#f7f9f3] flex items-center justify-center">
         <Loader />
@@ -111,7 +82,7 @@ function Chat() {
     );
   }
 
-  if (user.username === username) {
+  if (ourUsername === otherUsername) {
     return <NotFound />;
   }
 
@@ -149,7 +120,7 @@ function Chat() {
           <div className="bg-gradient-to-r from-[#809D3C]/90 to-[#5D8736]/90 backdrop-blur-md p-4 flex items-center gap-4 z-20">
             <div className="relative">
               <img
-                src={`https://ui-avatars.com/api/?name=${username}&background=f5f3ea&color=5D8736`}
+                src={`https://ui-avatars.com/api/?name=${otherUsername}&background=f5f3ea&color=5D8736`}
                 alt="Avatar"
                 className="w-10 h-10 rounded-full object-cover shadow-sm border border-white/20"
               />
@@ -157,7 +128,7 @@ function Chat() {
             </div>
             <div className="flex flex-col">
               <h2 className="font-fraunces text-white text-lg leading-tight tracking-wide">
-                {username}
+                {otherUsername}
               </h2>
               <span className="text-xs text-white/80 font-medium">Active</span>
             </div>
@@ -167,8 +138,8 @@ function Chat() {
           <div className="flex-1 px-6 py-4 space-y-3 overflow-y-auto chat-scroll relative z-10">
             {messages.map((msg, index) => {
               const isSender =
-                msg.sender === user.username ||
-                msg.sender?.username === user.username;
+                msg.sender === ourUsername ||
+                msg.sender?.username === ourUsername;
 
               return (
                 <motion.div

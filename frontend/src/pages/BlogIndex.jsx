@@ -99,9 +99,9 @@ let token = localStorage.getItem("token")
       <div className="min-h-screen bg-gradient-to-br from-[#f7f9f3] via-[#eef4e3] to-[#f7f9f3] font-plex relative isolate pb-20 pt-24 selection:bg-[#DFF09E] selection:text-[#1E2C12]">
 
         {/* Global Depth Glow Layer */}
-        <div className="fixed top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle_at_center,rgba(129,157,60,0.15),transparent_70%)] blur-3xl pointer-events-none -z-10 opacity-70" />
+        <div className="fixed top-1/3 left-1/2 -translate-x-1/2  -translate-y-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle_at_center,rgba(129,157,60,0.15),transparent_70%)] blur-3xl pointer-events-none -z-10 opacity-70" />
 
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-7xl mt-10 mx-auto px-6">
           {/* Header Section */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}

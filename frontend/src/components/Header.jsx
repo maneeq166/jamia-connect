@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
+import axios from "axios";
+import BACKEND_URL from "../../config/backend_url";
 
 const navLinks = [
   { title: "Explore", path: "/explore" },
@@ -17,11 +19,31 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [userAvatarUrl, setUserAvatarUrl] = useState("");
+  const [username, setUsername] = useState("User");
   const dropdownRef = useRef(null);
+  const defaultAvatarUrl =
+    "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg";
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsSignedIn(!!token);
+    if (!token) return;
+    const fetchProfile = async () => {
+      try {
+        const res = await axios.get(`${BACKEND_URL}/api/v1/profile/me`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setUserAvatarUrl(res?.data?.user?.avatar?.url || "");
+        setUsername(res?.data?.user?.username || "User");
+      } catch (error) {
+        console.error(
+          "Error fetching profile header:",
+          error.response?.data?.message || error.message
+        );
+      }
+    };
+    fetchProfile();
   }, []);
 
   useEffect(() => {
@@ -156,9 +178,24 @@ const Header = () => {
                     <motion.button
                       whileHover={{ scale: 1.05, y: -1 }}
                       onClick={() => setShowProfileDropdown(!showProfileDropdown)}
-                      className="font-plex text-[#E9F5D0] hover:text-[#FFB84D] px-4 py-1.5 rounded-full transition-all duration-300 text-sm font-medium flex items-center gap-1.5 outline-none"
+                      className="group font-plex text-[#E9F5D0] hover:text-[#FFB84D] px-3 py-1.5 rounded-full transition-all duration-300 text-sm font-medium flex items-center gap-2 outline-none"
+                      aria-label="Open profile menu"
                     >
-                      Profile <span className="font-mono text-[10px] mt-0.5">▼</span>
+                      <span className="relative flex items-center">
+                        <span className="absolute -inset-0.5 rounded-full bg-[#FFB84D]/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <span className="w-8 h-8 rounded-full overflow-hidden border border-[#809D3C]/50 shadow-[0_0_0_1px_rgba(129,157,60,0.4)]">
+                          <img
+                            src={userAvatarUrl || defaultAvatarUrl}
+                            alt={`${username}'s avatar`}
+                            className="w-full h-full object-cover bg-white"
+                          />
+                        </span>
+                      </span>
+                      <ChevronDown
+                        className={`w-4 h-4 transition-transform duration-200 ${
+                          showProfileDropdown ? "rotate-180" : ""
+                        }`}
+                      />
                     </motion.button>
                     <AnimatePresence>
                       {showProfileDropdown && (

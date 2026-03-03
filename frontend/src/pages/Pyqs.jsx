@@ -91,7 +91,7 @@ const Pyqs = () => {
         {/* Global Depth Glow */}
         <div className="fixed top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle_at_center,rgba(129,157,60,0.12),transparent_70%)] blur-[100px] pointer-events-none -z-10 opacity-70" />
 
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-7xl mt-10 mx-auto px-6">
           
           {/* Header & Upload Button */}
           <div className="flex flex-col sm:flex-row justify-between items-center mb-10 gap-4">
