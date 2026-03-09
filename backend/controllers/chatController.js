@@ -1,5 +1,6 @@
 const Message = require("../models/Message");
 const User = require("../models/User"); // Adjust path if needed
+const logger = require("../utils/logger");
 
 //http:localhost:3000/api/v1/chat/addmessage or getmessage
 
@@ -23,7 +24,7 @@ exports.sendMessage = async (req, res) => {
 
     return res.status(200).json({ data });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     return res.status(400).json({ message: "Message not sent", success: false });
   }
 };
@@ -48,12 +49,12 @@ exports.getMessages = async (req, res) => {
   .populate("sender", "username")   // Only get 'username' from sender
   .populate("receiver", "username"); // Same for receiver
 
-  console.log(messages);
+  logger.debug({ messages });
   
 
     return res.status(200).json({ messages, success: true });
   } catch (error) {
-    console.log("error in chatController getMessages", error);
+    logger.error("error in chatController getMessages", error);
     return res.status(404).json({ message: "Messages not found", success: false });
   }
 };

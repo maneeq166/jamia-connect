@@ -59,7 +59,8 @@ async function updateProfileInfo(req, res) {
       .json({ message: "Invalid input", error: parsedBody.error });
   }
 
-  console.log(parsedBody);
+  const logger = require("../../utils/logger");
+  logger.debug({ parsedBody });
 
   try {
     const data = parsedBody.data;
@@ -84,7 +85,7 @@ async function updateProfileInfo(req, res) {
       user,
     });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res.status(500).json({ message: "Internal Server error" });
   }
 }
@@ -116,7 +117,8 @@ async function updateProfilePassword(req, res) {
 
     res.json({ message: "Password updated successfully" });
   } catch (error) {
-    console.error("Error updating password:", error);
+    const logger = require("../../utils/logger");
+    logger.error("Error updating password:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 }
@@ -134,14 +136,14 @@ async function otherUserProfile(req, res) {
     if (!user)
       return res.status(404).json({ message: "isne kabhi id nhi baniye" });
 
-    console.log("Searched User:", user);
+    logger.debug({ searchedUser: user });
 
     return res.json({
       message: "Here is your result",
       user,
     });
   } catch (err) {
-    console.error(err);
+    logger.error(err);
     return res.status(500).json({ message: "Server error" });
   }
 }
@@ -156,7 +158,7 @@ async function getAllUsers(req, res) {
       users,
     });
   } catch (err) {
-    console.error(err);
+    logger.error(err);
     return res.status(500).json({ message: "Server error" });
   }
 }

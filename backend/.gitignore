@@ -2,4 +2,9 @@ node_modules
 .env
 MISTAKES.md
 socket.md
+LEARNING_QUESTIONS.md
 # uploads
+
+# tests - keep tests out of repo per request
+test
+backend/test

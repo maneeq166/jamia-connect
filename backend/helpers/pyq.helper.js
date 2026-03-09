@@ -11,14 +11,15 @@ const pyqHelper = async (localFilePath) => {
     });
 
     
-    console.log("Cloudinary PDF Upload Result:", result);
+    const logger = require("../utils/logger");
+    logger.debug("Cloudinary PDF Upload Result:", result);
 
     return {
       url: result.secure_url,
       public_id: result.public_id,
     };
   } catch (error) {
-    console.error("Cloudinary PDF upload error:", error);
+    logger.error("Cloudinary PDF upload error:", error);
     throw error;
   }
 };

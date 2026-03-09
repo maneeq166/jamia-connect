@@ -2,6 +2,7 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import showApiError from "../utils/apiError";
 import { motion } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
 import GoogleButton from "../components/GoogleButton";
@@ -34,6 +35,15 @@ const Signin = () => {
 
   const handleSignin = async (e) => {
     e.preventDefault();
+    // basic client-side validation
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      toast.error('Please enter a valid email');
+      return;
+    }
+    if (!password) {
+      toast.error('Password is required');
+      return;
+    }
     try {
       const res = await axios.post(`${BACKEND_URL}/api/v1/auth/signin`, {
         email,
@@ -44,8 +54,8 @@ const Signin = () => {
       toast.success(res.data.message || "Signin successful!");
       navigate('/profile');
     } catch (error) {
-      console.log(error);
-      toast.error(error.response?.data?.message || 'Signin failed.');
+      // use showApiError to present errors consistently
+      showApiError(error);
     }
   };
 

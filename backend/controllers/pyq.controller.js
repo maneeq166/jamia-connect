@@ -78,11 +78,12 @@ async function sendPyq(req, res) {
     //         })
     //     }
   } catch (error) {
+    const logger = require("../utils/logger");
+    logger.error(error);
     res.status(500).json({
       message: "Internal Server error",
       success: false,
     });
-    console.log(error);
   }
 }
 
@@ -96,10 +97,9 @@ async function getPyq(req, res) {
       return res.status(200).json({ pyq, success: true });
     }
   } catch (error) {
-
-    console.log(error);
+    const logger = require("../utils/logger");
+    logger.error(error);
     return res.status(500).json({message:"Internal Server error"})
-    
   }
 }
 

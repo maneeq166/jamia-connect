@@ -5,8 +5,10 @@ const { googleCallbackController } = require("../controllers/passport.controller
 require("../config/passport.config");
 const authRouter = Router();
 
-authRouter.post("/signup",userSignup)
-authRouter.post("/signin",userSignin)
+const { runValidations, signupValidator, signinValidator } = require("../middleware/validators");
+
+authRouter.post("/signup", runValidations(signupValidator()), userSignup);
+authRouter.post("/signin", runValidations(signinValidator()), userSignin);
 
 // Route 1: The initial call to start the Google OAuth flow.
 // The user will be redirected to Google's sign-in page.

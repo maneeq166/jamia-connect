@@ -4,7 +4,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken")
 
 const userSignup =  async (req,res) =>{
-    console.log("Request Body:", req.body);
+    const logger = require("../utils/logger");
+    logger.debug({ requestBody: req.body });
 
     try {
 
@@ -66,8 +67,8 @@ const userSignup =  async (req,res) =>{
             message:"Internal Server error",
             success: false
         })
-        console.log(error);
-        
+        const logger = require("../utils/logger");
+        logger.error(error);
     }
 
 }
@@ -101,7 +102,8 @@ const userSignin = async (req, res) => {
     // Send token in response body (client saves it in localStorage)
     res.json({ message: "Signed In!", token });
   } catch (error) {
-    console.error(error);
+    const logger = require("../utils/logger");
+    logger.error(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };

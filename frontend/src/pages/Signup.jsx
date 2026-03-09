@@ -2,6 +2,7 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import showApiError from "../utils/apiError";
 import { motion } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
 import GoogleButton from "../components/GoogleButton";
@@ -35,6 +36,20 @@ const Signup = () => {
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    // client-side validation
+    if (!/^[A-Za-z0-9_]{3,15}$/.test(username)) {
+      toast.error('Username must be 3-15 characters, alphanumeric or underscore');
+      return;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      toast.error('Please enter a valid email');
+      return;
+    }
+    if (password.length < 6) {
+      toast.error('Password must be at least 6 characters');
+      return;
+    }
+
     try {
       const res = await axios.post(`${BACKEND_URL}/api/v1/auth/signup`, {
         username,
@@ -49,7 +64,7 @@ const Signup = () => {
         toast.error(res.data.message || "Signup failed.");
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Signup failed.");
+      showApiError(error);
     }
   };
 

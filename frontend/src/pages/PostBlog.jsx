@@ -4,6 +4,7 @@ import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { ImagePlus, Send, Loader2 } from "lucide-react";
 import BACKEND_URL from "../../config/backend_url";
+import showApiError from "../utils/apiError";
 
 const Blog = () => {
   const [imagePreview, setImagePreview] = useState(null);
@@ -42,8 +43,13 @@ const Blog = () => {
 
   async function blogSubmit(e) {
     e.preventDefault();
-    if (!title.trim() || !content.trim()) {
-      toast.warning("Title and content are required.");
+    // client-side validation mirroring backend rules
+    if (!title.trim() || title.trim().length > 200) {
+      toast.warning("Title is required (max 200 chars).");
+      return;
+    }
+    if (!content.trim()) {
+      toast.warning("Content is required.");
       return;
     }
 
@@ -93,8 +99,9 @@ const Blog = () => {
         toast.error(res.data.message || "Failed to publish.");
       }
     } catch (error) {
-      console.log(error);
-      toast.error("Upload failed. File too large or session expired.");
+      const resp = showApiError(error);
+      // keep developer-friendly fallback toast handled by showApiError; no further action required
+      // but if caller wants inline handling they can inspect resp
     } finally {
       setIsPublishing(false);
     }

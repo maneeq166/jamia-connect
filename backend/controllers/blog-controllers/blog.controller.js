@@ -5,12 +5,13 @@ const User = require("../../models/User");
 async function addBlog(req, res) {
   try {
     const userId = req.userId;
+    const logger = require("../../utils/logger");
 
-    console.log(userId);
-    
+    logger.debug({ userId });
+
     const user = await User.findOne({ _id: userId }).select("username email");
 
-    console.log(user);
+    logger.debug({ user });
     
     if (!user) {
       return res.status(404).json({ message: "Something went wrong!" });
@@ -22,7 +23,7 @@ async function addBlog(req, res) {
     if(req.file){
       const {url,public_id} = await uploadToCloudinary(req.file.path)
       image1 = {url,public_id};
-      console.log(image1);
+      logger.debug({ image1 });
       
       if(!image1){
         return res.status(400).json({message:"File is either too big or Something went Wrong",success:false})
@@ -46,7 +47,7 @@ async function addBlog(req, res) {
       ...(image1 && {image:image1})
     });
     
-    console.log(blog);
+    logger.debug({ blog });
     
     if(!blog){
       return res.status(400).json({message:"Blog not created"})
@@ -55,7 +56,8 @@ async function addBlog(req, res) {
 
     return res.json({ message: "Blog Posted!", success: true, user });
   } catch (error) {
-    console.log(error);
+    const logger = require("../../utils/logger");
+    logger.error(error);
     res.status(500).json({ message: "Internal Server error" });
   }
 }
@@ -64,15 +66,14 @@ async function getAllBlog(req, res) {
   try {
     const blogs = await Blog.find();
 
-    
-
     if (!blogs) {
       return res.json({ message: "No Blog found!" });
     }
 
     return res.status(200).json({ blogs,success:true });
   } catch (error) {
-    console.log(error);
+    const logger = require("../../utils/logger");
+    logger.error(error);
     res.status(500).json({ message: "Internal Server error" });
   }
 }
@@ -97,6 +98,8 @@ async function getBlog(req, res) {
       return res.status(200).json({ blog, success:true });
     }
   } catch (error) {
+    const logger = require("../../utils/logger");
+    logger.error(error);
     return res
       .status(404)
       .json({ message: "Internal Server Error!", success: false });
@@ -129,6 +132,8 @@ async function deleteBlog(req, res){
       return res.status(200).json({ message: "Blog deleted", success: true });
     }
   } catch (error) {
+    const logger = require("../../utils/logger");
+    logger.error(error);
     if (error instanceof TypeError) {
       return res.status(400).json({ message: "Invalid request", success: false });
     } else if (error instanceof ReferenceError) {
@@ -181,7 +186,8 @@ async function addVote(req, res) {
     });
 
   } catch (error) {
-    console.error(error);
+    const logger = require("../../utils/logger");
+    logger.error(error);
     return res.status(500).json({ message: "Internal Server Error!", success: false });
   }
 }
@@ -228,7 +234,8 @@ async function removeVote(req, res) {
     });
 
   } catch (error) {
-    console.error(error);
+    const logger = require("../../utils/logger");
+    logger.error(error);
     return res.status(500).json({ message: "Internal Server Error!", success: false });
   }
 }

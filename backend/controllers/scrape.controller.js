@@ -107,10 +107,12 @@ async function getAllUniqueJmiNotices() {
       await Scrape.create({ ...item, scrapedAt: now });
     }
 
-    console.log(`Scraped and saved ${uniqueResults.length} unique notices`);
+    const logger = require('../utils/logger');
+    logger.info(`Scraped and saved ${uniqueResults.length} unique notices`);
     return uniqueResults;
   } catch (error) {
-    console.error("Error during scraping:", error);
+    const logger = require('../utils/logger');
+    logger.error("Error during scraping:", error);
     // On error, return any existing data if available
     const allRecent = await Scrape.find({ scrapedAt: { $gte: oneDayAgo } });
     return allRecent.map(doc => ({ title: doc.title, url: doc.url, date: doc.date }));

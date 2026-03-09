@@ -91,6 +91,7 @@ function UpdateProfile() {
 
     if (!username.trim()) errors.username = "Username is required";
     else if (username.length < 3) errors.username = "Username must be at least 3 characters";
+    else if (!/^[A-Za-z0-9_]+$/.test(username)) errors.username = "Username can only contain letters, numbers and underscore";
 
     if (!email.trim()) errors.email = "Email is required";
     else if (!/\S+@\S+\.\S+/.test(email)) errors.email = "Email is invalid";
@@ -134,7 +135,25 @@ function UpdateProfile() {
       setValidationErrors({});
       setTimeout(() => nav("/profile"), 1500);
     } catch (err) {
-      setError(err.response?.data?.message || "Error updating profile");
+      // show validation errors inline if express-validator returned them
+      if (err.response?.data?.errors) {
+        const fieldErrors = {};
+        err.response.data.errors.forEach((e) => {
+          fieldErrors[e.param] = e.msg;
+        });
+        setValidationErrors(fieldErrors);
+        setError("Please correct highlighted fields.");
+      } else {
+        // prefer centralized toast but also show inline message
+        try {
+          const showApiError = (await import("../utils/apiError")).default;
+          const resp = showApiError(err);
+          setError(resp.message || (err.response?.data?.message || "Error updating profile"));
+        } catch (e) {
+          setError(err.response?.data?.message || "Error updating profile");
+          console.error(err);
+        }
+      }
     } finally {
       setSaving(false);
     }

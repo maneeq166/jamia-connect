@@ -18,8 +18,9 @@ async function getManyUsers(req, res) {
       totalPages: Math.ceil(totalUsers / limit),
     });
   } catch (error) {
+    const logger = require("../utils/logger");
+    logger.error("Error:", error);
     res.status(500).json({ message: "Server error", success: false });
-    console.log("Error:", error);
   }
 }
 // app.use("/api/v1/explore", exploreRouter);
@@ -53,7 +54,8 @@ async function getUsers(req, res) {
       totalPages: Math.ceil(totalUsers / limit),
     });
   } catch (error) {
-    console.error(error);
+    const logger = require("../utils/logger");
+    logger.error(error);
     res.status(500).json({ message: "Server error", success: false });
   }
 }
@@ -66,7 +68,8 @@ async function getSingleUser(req, res) {
 
     return res.status(200).json({ success: true, user });
   } catch (error) {
-    console.error(error);
+    const logger = require("../utils/logger");
+    logger.error(error);
     res.status(500).json({ message: "Server error", success: false });
   }
 }

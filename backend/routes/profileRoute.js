@@ -6,8 +6,10 @@ const { uploadMiddleware } = require("../middleware/uploadMiddleware");
 const profileRouter = Router();
 
 profileRouter.get("/me",authMiddleware,getProfileInfo);
-profileRouter.put("/update",authMiddleware,updateProfileInfo);
-profileRouter.patch("/password",authMiddleware,updateProfilePassword);
+const { runValidations, updateProfileValidator, updatePasswordValidator, exploreUsernameParam } = require("../middleware/validators");
+
+profileRouter.put("/update", authMiddleware, runValidations(updateProfileValidator()), updateProfileInfo);
+profileRouter.patch("/password", authMiddleware, runValidations(updatePasswordValidator()), updateProfilePassword);
 profileRouter.get("/user/:username",otherUserProfile)
 profileRouter.get("/all",getAllUsers)
 profileRouter.patch(

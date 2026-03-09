@@ -67,7 +67,12 @@ const Pyqs = () => {
       setPyqs(res.data.pyq);
       setSuccess(res.data.success);
     } catch (err) {
-      console.error("Failed to fetch PYQs:", err);
+      try {
+        const showApiError = (await import("../utils/apiError")).default;
+        showApiError(err);
+      } catch (e) {
+        console.error("Failed to fetch PYQs:", err);
+      }
     } finally {
       setLoading(false);
     }

@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const Message = require("../models/Message");
 const User = require("../models/User");
+const logger = require("../utils/logger");
 
 function initSocket(io) {
   io.on("connection", async (socket) => {
@@ -8,7 +9,7 @@ function initSocket(io) {
       const token = socket.handshake.auth.token;
 
       if (!token) {
-        console.log("No token provided.");
+        logger.warn("No token provided.");
         return;
       }
 
@@ -16,14 +17,14 @@ function initSocket(io) {
       const username = decoded.username;
 
       if (!username) {
-        console.log("Invalid token - username missing.");
+        logger.warn("Invalid token - username missing.");
         return;
       }
 
       socket.join(username); // Join the user to their own room
-      console.log(`${username} joined their room`);
+      logger.info(`${username} joined their room`);
     } catch (err) {
-      console.error("Socket auth error:", err.message);
+      logger.error("Socket auth error:", err.message);
       return;
     }
 
@@ -36,7 +37,7 @@ function initSocket(io) {
         const receiverUser = await User.findOne({ username: receiver });
 
         if (!senderUser || !receiverUser) {
-          console.log("Sender or receiver not found");
+          logger.warn("Sender or receiver not found");
           return;
         }
 
@@ -54,14 +55,14 @@ function initSocket(io) {
         io.to(sender).emit("receive message", fullMsg);
         io.to(receiver).emit("receive message", fullMsg);
 
-        console.log(`Message sent to ${sender} and ${receiver}`);
+        logger.info(`Message sent to ${sender} and ${receiver}`);
       } catch (err) {
-        console.error("Error sending message via socket:", err.message);
+        logger.error("Error sending message via socket:", err.message);
       }
     });
 
     socket.on("disconnect", () => {
-      console.log("Socket disconnected");
+      logger.info("Socket disconnected");
     });
   });
 }

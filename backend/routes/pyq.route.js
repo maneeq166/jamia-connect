@@ -5,8 +5,16 @@ const pyqRouter = Router();
 const {uploadPyqMiddleware} = require("../middleware/pyq.middleware")
 
 
-pyqRouter.post("/create-study-material",authMiddleware,uploadPyqMiddleware.single("pdf"),sendPyq);
-pyqRouter.get("/get-study-material",getPyq);
+const { runValidations, sendPyqValidator } = require("../middleware/validators");
+pyqRouter.post(
+  "/create-study-material",
+  authMiddleware,
+  // multer must run before validation so req.body is populated for multipart/form-data
+  uploadPyqMiddleware.single("pdf"),
+  runValidations(sendPyqValidator()),
+  sendPyq
+);
+pyqRouter.get("/get-study-material", getPyq);
 
 module.exports = {
     pyqRouter

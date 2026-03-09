@@ -20,7 +20,8 @@ function authMiddleware(req, res, next) {
 
     next();
   } catch (error) {
-    console.log("Error in authMiddleware:", error);
+    const logger = require("../utils/logger");
+    logger.error("Error in authMiddleware:", error);
     res.status(401).json({ message: "Unauthorized: Invalid or Expired token" });
   }
 }

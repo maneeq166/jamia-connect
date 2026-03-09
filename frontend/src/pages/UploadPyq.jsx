@@ -27,7 +27,10 @@ const UploadPyq = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // client-side validation
     if (!pdf) return setStatus("error:Please select a PDF file to upload.");
+    if (pdf.type !== 'application/pdf') return setStatus('error:Only PDF files are allowed');
+    if (pdf.size > 2 * 1024 * 1024) return setStatus('error:PDF file must be <= 2MB');
 
     setIsUploading(true);
     setStatus("");
@@ -58,8 +61,15 @@ const UploadPyq = () => {
         setStatus(`error:${response.data.message || "Failed to upload."}`);
       }
     } catch (error) {
-      console.error(error);
-      setStatus("error:Something went wrong. Please try again.");
+      // prefer standardized toast and return shape
+      try {
+        const showApiError = (await import("../utils/apiError")).default;
+        const resp = showApiError(error);
+        setStatus(`error:${resp.message}`);
+      } catch (e) {
+        console.error(error);
+        setStatus("error:Something went wrong. Please try again.");
+      }
     } finally {
       setIsUploading(false);
     }
