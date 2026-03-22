@@ -6,7 +6,10 @@ const logger = require("../utils/logger");
 function initSocket(io) {
   io.on("connection", async (socket) => {
     try {
-      const token = socket.handshake.auth.token;
+      const cookieHeader = socket.handshake.headers?.cookie || "";
+      const cookiePairs = cookieHeader.split(";").map((c) => c.trim());
+      const tokenPair = cookiePairs.find((c) => c.startsWith("token="));
+      const token = tokenPair ? tokenPair.split("=").slice(1).join("=") : null;
 
       if (!token) {
         logger.warn("No token provided.");

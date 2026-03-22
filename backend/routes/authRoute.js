@@ -1,5 +1,5 @@
 const {Router} = require("express");
-const { userSignup, userSignin } = require("../controllers/authController");
+const { userSignup, userSignin, logoutUser } = require("../controllers/authController");
 const passport = require("passport");
 const { googleCallbackController } = require("../controllers/passport.controller");
 require("../config/passport.config");
@@ -9,6 +9,7 @@ const { runValidations, signupValidator, signinValidator } = require("../middlew
 
 authRouter.post("/signup", runValidations(signupValidator()), userSignup);
 authRouter.post("/signin", runValidations(signinValidator()), userSignin);
+authRouter.post("/logout", logoutUser);
 
 // Route 1: The initial call to start the Google OAuth flow.
 // The user will be redirected to Google's sign-in page.

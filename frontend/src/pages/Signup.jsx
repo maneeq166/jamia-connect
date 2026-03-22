@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -17,13 +17,6 @@ const Signup = () => {
 
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const formRef = useRef(null);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-    localStorage.removeItem("token");
-    toast.info("You have been logged out. Please sign in again.");
-  }, []);
 
   const handleMouseMove = useCallback((e) => {
     if (!formRef.current) return;

@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import Loader from "../components/Loader";
 import NotFound from "./NotFound";
 import BACKEND_URL from "../../config/backend_url";
+import shouldSendCredentials from "../../config/credentials";
 
 function Chat() {
   const [message, setMessage] = useState("");
@@ -47,10 +48,8 @@ function Chat() {
   useEffect(() => {
     if (!ourUsername) return;
 
-    const token = localStorage.getItem("token");
-
     socket.current = io(`${BACKEND_URL}`, {
-      auth: { token },
+      withCredentials: shouldSendCredentials,
     });
 
     socket.current.on("receive message", (msg) => {

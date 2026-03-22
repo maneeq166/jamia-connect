@@ -60,14 +60,7 @@ function OthersProfile() {
 
   const fetchUserProfile = async () => {
      try {
-          const token = localStorage.getItem("token");
-          if (!token) throw new Error("Token not found");
-    
-          const res = await axios.get(`${BACKEND_URL}/api/v1/profile/me`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          const res = await axios.get(`${BACKEND_URL}/api/v1/profile/me`);
     
           setUs(res.data.user);
         } catch (error) {

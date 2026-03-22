@@ -41,12 +41,7 @@ function UpdateProfile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem("token");
-        if (!token) throw new Error("User not authenticated");
-
-        const res = await axios.get(`${BACKEND_URL}/api/v1/profile/me`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axios.get(`${BACKEND_URL}/api/v1/profile/me`);
 
         const user = res.data.user;
         setFormData({
@@ -119,15 +114,13 @@ function UpdateProfile() {
     setSuccess("");
 
     try {
-      const token = localStorage.getItem("token");
       await axios.put(
         `${BACKEND_URL}/api/v1/profile/update`,
         {
           ...formData,
           year: parseInt(formData.year) || undefined,
           links: formData.links.filter((link) => link.trim() !== ""),
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
+        }
       );
 
       setSuccess("Profile updated successfully!");

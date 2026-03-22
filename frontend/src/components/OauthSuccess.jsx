@@ -9,20 +9,11 @@ function OAuthSuccess() {
   const location = useLocation();
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const token = urlParams.get('token');
-
-    if (token) {
-      try {
-        localStorage.setItem('token', token);
-        navigate('/profile');
-      } catch (error) {
-        console.error("Error in OAuthSuccess:", error);
-        toast.error("Something went wrong while saving the session.");
-        navigate('/signin');
-      }
-    } else {
-      toast.error("Authentication failed. No token received.");
+    try {
+      navigate('/profile');
+    } catch (error) {
+      console.error("Error in OAuthSuccess:", error);
+      toast.error("Something went wrong while creating the session.");
       navigate('/signin');
     }
   }, [navigate, location]);

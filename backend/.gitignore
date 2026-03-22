@@ -8,3 +8,5 @@ LEARNING_QUESTIONS.md
 # tests - keep tests out of repo per request
 test
 backend/test
+combined.log
+error.log

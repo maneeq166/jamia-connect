@@ -30,7 +30,15 @@ const googleCallbackController = (req, res) => {
     });
     logger.debug("5. Generated JWT:", token ? "Success!" : "Failed to generate token.");
 
-    const redirectURL = `${process.env.FRONTEND_URL}oauth-success?token=${token}`;
+    const isProd = process.env.NODE_ENV === "production";
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: isProd,
+      sameSite: isProd ? "None" : "Lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    const redirectURL = `${process.env.FRONTEND_URL}oauth-success`;
     logger.debug("6. Final Redirect URL:", redirectURL);
 
     logger.debug("--- Redirecting now ---");

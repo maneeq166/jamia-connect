@@ -63,15 +63,9 @@ const Blog = () => {
         formData.append("image", imageFile);
       }
 
-      const token = localStorage.getItem("token");
       const res = await axios.post(
         `${BACKEND_URL}/api/v1/blog/add-blog`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, 
-          },
-        }
+        formData
       );
 
       if (res?.data?.success) {

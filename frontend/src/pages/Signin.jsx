@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -16,13 +16,6 @@ const Signin = () => {
 
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const formRef = useRef(null);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-    localStorage.removeItem("token");
-    toast.info("You have been logged out. Please sign in again.");
-  }, []);
 
   const handleMouseMove = useCallback((e) => {
     if (!formRef.current) return;
@@ -45,12 +38,11 @@ const Signin = () => {
       return;
     }
     try {
-      const res = await axios.post(`${BACKEND_URL}/api/v1/auth/signin`, {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        `${BACKEND_URL}/api/v1/auth/signin`,
+        { email, password }
+      );
 
-      localStorage.setItem('token', res.data.token);
       toast.success(res.data.message || "Signin successful!");
       navigate('/profile');
     } catch (error) {

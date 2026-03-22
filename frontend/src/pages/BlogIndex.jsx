@@ -5,13 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { ArrowUp, ArrowDown, Plus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import BACKEND_URL from "../../config/backend_url";
-import { jwtDecode } from "jwt-decode";
 
 const BlogIndex = () => {
   const nav = useNavigate();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
-let token = localStorage.getItem("token")
+  const [currentUserId, setCurrentUserId] = useState(null);
 
   const fetchBlogs = async () => {
     try {
@@ -33,8 +32,7 @@ let token = localStorage.getItem("token")
     try {
       const res = await axios.patch(
         `${BACKEND_URL}/api/v1/blog/add-vote`,
-        { blogId },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { blogId }
       );
 
       if (res.data.success) {
@@ -51,8 +49,12 @@ let token = localStorage.getItem("token")
         );
       }
       fetchBlogs();
-    } catch {
-      toast.error("Upvote failed");
+    } catch (error) {
+      if (error?.response?.status === 401) {
+        toast.info("Please sign in to vote.");
+      } else {
+        toast.error("Upvote failed");
+      }
     }
   };
 
@@ -60,8 +62,7 @@ let token = localStorage.getItem("token")
     try {
       const res = await axios.patch(
         `${BACKEND_URL}/api/v1/blog/remove-vote`,
-        { blogId },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { blogId }
       );
 
       if (res.data.success) {
@@ -78,13 +79,29 @@ let token = localStorage.getItem("token")
         );
       }
       fetchBlogs();
-    } catch {
-      toast.error("Downvote failed");
+    } catch (error) {
+      if (error?.response?.status === 401) {
+        toast.info("Please sign in to vote.");
+      } else {
+        toast.error("Downvote failed");
+      }
     }
   };
 
   useEffect(() => {
     fetchBlogs();
+  }, []);
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const res = await axios.get(`${BACKEND_URL}/api/v1/profile/me`);
+        setCurrentUserId(res?.data?.user?._id || null);
+      } catch {
+        setCurrentUserId(null);
+      }
+    };
+    fetchCurrentUser();
   }, []);
 
   return (
@@ -167,13 +184,12 @@ let token = localStorage.getItem("token")
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
               >
                 {blogs.map((blog, index) => {
-                  let isUpvoted = false, isDownvoted = false;
-                  if (localStorage.getItem("token")) {
-                    const decoded = jwtDecode(token);
-                    isUpvoted = blog.upVote?.includes(decoded.id);
-
-                     isDownvoted = blog.downVote?.includes(decoded.id);
-                  }
+                  const isUpvoted = currentUserId
+                    ? blog.upVote?.includes(currentUserId)
+                    : false;
+                  const isDownvoted = currentUserId
+                    ? blog.downVote?.includes(currentUserId)
+                    : false;
 
                   return (
                     <motion.div

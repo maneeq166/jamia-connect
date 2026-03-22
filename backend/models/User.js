@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
   state:{ type: String, default: "" },
   department: { type: String, default: "" },
   year: { type: Number, default: null },
+  passoutYear: { type: Number, default: 2024 },
   bio: { type: String, default: "" },
   avatar: { 
     url:{ type: String },

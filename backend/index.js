@@ -48,6 +48,7 @@ const limiter = rateLimit({
 const io = new Server(server, {
   cors: {
     origin: ["http://localhost:5173", "https://jamia-connect.vercel.app"],
+    credentials: true,
   },
 });
 
@@ -72,11 +73,11 @@ app.use(
   cors({
     origin: function (origin, callback) {
       if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
+        return callback(null, true);
       }
+      return callback(new Error("Not allowed by CORS"));
     },
+    credentials: true,
   })
 );
 
@@ -109,6 +110,7 @@ app.use("/api/v1/scrape", scrapeRouter);
 // ==========================================================
 // CONNECT DB & START SERVER
 // ==========================================================
+const PORT = process.env.PORT||3000;
 async function connection() {
   try {
     await connectDB();
@@ -123,8 +125,8 @@ async function connection() {
       logger.error("MONGODB DISCONNECTED");
     });
 
-    server.listen(process.env.PORT, () =>
-      logger.info("Server running on port:", process.env.PORT)
+    server.listen(PORT, () =>
+      logger.info("Server running on port:", PORT)
     );
   } catch (error) {
     logger.error("Connection error:", error);

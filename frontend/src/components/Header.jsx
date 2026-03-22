@@ -26,24 +26,25 @@ const Header = () => {
     "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg";
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsSignedIn(!!token);
-    if (!token) return;
+    let isMounted = true;
     const fetchProfile = async () => {
       try {
-        const res = await axios.get(`${BACKEND_URL}/api/v1/profile/me`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axios.get(`${BACKEND_URL}/api/v1/profile/me`);
+        if (!isMounted) return;
+        setIsSignedIn(true);
         setUserAvatarUrl(res?.data?.user?.avatar?.url || "");
         setUsername(res?.data?.user?.username || "User");
       } catch (error) {
-        console.error(
-          "Error fetching profile header:",
-          error.response?.data?.message || error.message
-        );
+        if (!isMounted) return;
+        setIsSignedIn(false);
+        setUserAvatarUrl("");
+        setUsername("User");
       }
     };
     fetchProfile();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -64,12 +65,17 @@ const Header = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    setIsSignedIn(false);
-    setShowProfileDropdown(false);
-    setMenuOpen(false);
-    navigate("/signin");
+  const logout = async () => {
+    try {
+      await axios.post(`${BACKEND_URL}/api/v1/auth/logout`);
+    } catch (error) {
+      // ignore errors on logout; still clear client state
+    } finally {
+      setIsSignedIn(false);
+      setShowProfileDropdown(false);
+      setMenuOpen(false);
+      navigate("/signin");
+    }
   };
 
   const handleMobileLinkClick = (path) => {

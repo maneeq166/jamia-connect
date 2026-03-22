@@ -43,16 +43,7 @@ function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          throw new Error("Token does not exist");
-        }
-
-        const res = await axios.get(`${BACKEND_URL}/api/v1/profile/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await axios.get(`${BACKEND_URL}/api/v1/profile/me`);
 
         setUser(res.data.user);
         setPyqs(res.data.pyqs);
@@ -179,14 +170,12 @@ function Profile() {
 
                 try {
                   const toastId = toast.loading("Updating profile picture...");
-                  const token = localStorage.getItem("token");
                   await axios.patch(
                     `${BACKEND_URL}/api/v1/profile/avatar`,
                     formData,
                     {
                       headers: {
                         "Content-Type": "multipart/form-data",
-                        Authorization: `Bearer ${token}`,
                       },
                     }
                   );
